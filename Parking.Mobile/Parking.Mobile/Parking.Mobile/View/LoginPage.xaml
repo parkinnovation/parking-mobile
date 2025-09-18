@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Parking.Mobile.View.LoginPage">
+    <StackLayout Style="{StaticResource stkDefault}" >
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" HeightRequest="300">
+                <Image Source="@drawable/BrandIco"/>
+            </StackLayout>
+
+            <Frame CornerRadius="25"
+                       Padding="7"
+                       HasShadow="False"
+                       BorderColor="#EEEEEE"
+                       BackgroundColor="#E5E7EB">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                    <Image Source="@drawable/User"/>
+                    <Entry x:Name="txtUser" Text="{Binding User}" Placeholder="Usuário" Style="{StaticResource inputDefault}"/>
+                </StackLayout>
+              
+            </Frame>
+           
+            <Frame CornerRadius="25"
+                       Padding="7"
+                       HasShadow="False"
+                       BorderColor="#EEEEEE"
+                       BackgroundColor="#E5E7EB"> 
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Image Source="@drawable/LockKeyOpen"/>
+                        <Entry x:Name="txtPassword" Text="{Binding Password}" Placeholder="Senha" IsPassword="True" Style="{StaticResource inputDefault}"/>
+                    </StackLayout>
+            </Frame>
+            <StackLayout HorizontalOptions="EndAndExpand">
+                <Label Text="LEMBRAR SENHA" IsVisible="False" Style="{StaticResource lblLink}"/>
+            </StackLayout>
+
+            <StackLayout VerticalOptions="FillAndExpand"/>
+
+            <StackLayout HorizontalOptions="FillAndExpand" IsVisible="{Binding EnableButton}">
+                <Button x:Name="btnLogin" Text="ENTRAR"   Style="{StaticResource btnConfirm}" Command="{Binding ActionLogin}" CommandParameter="Login"/>
+            </StackLayout>
+
+            <StackLayout HeightRequest="10"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="100"/>
+                    <ColumnDefinition  Width="*"/>
+                    <ColumnDefinition  Width="100"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <FlexLayout Grid.Column="1" Grid.Row="0" Direction="Column" AlignItems="Center" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+                    <Button ImageSource="@drawable/Configuration" FontSize="Micro" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Command="{Binding ActionLogin}" CommandParameter="Configuration"/>
+                </FlexLayout>
+
+                 
+            </Grid>
+        </StackLayout>
+    
+</ContentPage>
+

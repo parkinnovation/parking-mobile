@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Parking.Mobile.App">
+     <Application.Resources>
+        <ResourceDictionary>
+
+            <Color x:Key="Primary">#5070D44B</Color>
+            
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackground">
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                      
+                      <GradientStop Color="#74E0C1"
+                                    Offset="0.50" />
+
+                      <GradientStop Color="#70D44B"
+                                    Offset="1.00" />
+                   </LinearGradientBrush>   
+                </Setter>
+                <Setter Property="BarTextColor" Value="Black" />
+            </Style>
+
+            <Style x:Key="lblTitle" TargetType="Label">
+                <Setter Property="FontSize" Value="Large" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            
+            <Style x:Key="btnConfirm" TargetType="Button">
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="DarkBlue"/>
+                <Setter Property="CornerRadius" Value="25"/>
+                <Setter Property="Padding" Value="12"/>
+                <Setter Property="HeightRequest" Value="50"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="btnCancel" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="12"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="BorderColor" Value="#70D44B"/>
+                <Setter Property="BorderWidth" Value="1"/>
+            </Style>
+
+            <Style x:Key="btnScanner" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="12"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="btnPlate" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="HeightRequest" Value="32"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="btnPrice" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="UniSansSemiBold"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="12,0,12,0"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style x:Key="btnDiscount" TargetType="Button">
+                <Setter Property="TextColor" Value="Red"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontFamily" Value="UniSansSemiBold"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="12,0,12,0"/>
+                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style x:Key="stkDefault" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="white" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+
+            <Style x:Key="stkDefaultFlow" TargetType="StackLayout">
+                <Setter Property="BackgroundColor" Value="white" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="lblFlow" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lblFlowStart" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lblFlowItem" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lblGridItem" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Left" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lblInfoFlow" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="rbInfoFlow" TargetType="RadioButton">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lblInfoFlowNormal" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="entFlow" TargetType="Entry">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="entFlowLower" TargetType="Entry">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="dpFlow" TargetType="DatePicker">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="tpFlow" TargetType="TimePicker">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="lvInfo" TargetType="ListView">
+                <Setter Property="BackgroundColor" Value="LightGray" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+               
+            </Style>
+
+            <Style x:Key="lblListViewItem" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Left" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="Margin" Value="10,5,0,0"/>
+
+            </Style>
+
+            <Style x:Key="picFlow" TargetType="Picker">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="inputDefault" TargetType="Entry">
+                <Setter Property="PlaceholderColor" Value="#B5B5B5" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+
+            <Style x:Key="lblLink" TargetType="Label">
+                <Setter Property="TextColor" Value="#70D44B"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="TextDecorations" Value="Underline"/>
+            </Style>
+
+            <Style x:Key="stkMenu" TargetType="StackLayout">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+
+            </Style>
+
+            <Style x:Key="lblMenu" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="FontFamily" Value="UniSansSemiBold"/>
+                <Setter Property="FontAttributes" Value="None"/>
+            </Style>
+
+            <Style x:Key="lblMenuBox" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="FontFamily" Value="UniSansSemiBold"/>
+                <Setter Property="FontAttributes" Value="None"/>
+            </Style>
+
+            <Style x:Key="cpDefault" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="White"/>
+            </Style>
+
+            <Style x:Key="bvMenuEntry" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#5070D44B" />
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="0,0,5,5"/>
+            </Style>
+
+            <Style x:Key="bvMenuTicketLost" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="0,5,5,0"/>
+                <Setter Property="BorderColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="bvMenuCancelTicket" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#FFE4E4" />
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="0,5,5,0"/>
+            </Style>
+
+            <Style x:Key="bvMenuPayment" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="#5074E0C1" />
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Margin" Value="5,0,0,5"/>
+            </Style>
+
+            <Style x:Key="btnMenu" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontFamily" Value="Calibri"/>
+                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextTransform" Value="None"/>
+                <Setter Property="ContentLayout" Value="Top, 50"/>
+            </Style>
+
+            <Style x:Key="maskSearchForm" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="CornerRadius" Value="30"/>
+                <Setter Property="IsClippedToBounds" Value="True"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="BorderColor" Value="Black"/>
+            </Style>
+
+            <Style x:Key="searchForm" TargetType="SearchBar">
+                <Setter Property="PlaceholderColor" Value="Black" />
+                <Setter Property="TextColor" Value="Black" />
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="CancelButtonColor" Value="Black"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
