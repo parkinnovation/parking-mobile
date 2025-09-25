@@ -2,6 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.MonoDroid LastDeploySdkVersion="13.2.2.0" />
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Data FirstBuild="True" />
   <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.pixel_5_-_api_22" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Parking.Mobile.Application/AppAuthentication.cs">
     <Files>
@@ -43,8 +44,8 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Android PreferredExecutionTarget="Android.pixel_5_-_api_22" />
-  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.DependencyService FirstBuild="True" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Entity FirstBuild="True" />
 </Properties>

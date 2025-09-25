@@ -26,6 +26,10 @@
     <Folder Include="ViewModel\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Parking.Mobile.Application\Parking.Mobile.Application.csproj" />
+    <ProjectReference Include="..\..\Parking.Mobile.Common\Parking.Mobile.Common.csproj" />
+    <ProjectReference Include="..\..\Parking.Mobile.DependencyService\Parking.Mobile.DependencyService.csproj" />
+    <ProjectReference Include="..\..\Parking.Mobile.Interface\Parking.Mobile.Interface.csproj" />
+    <ProjectReference Include="..\..\Parking.Mobile.Application\Parking.Mobile.ApplicationCore.csproj" />
+    <ProjectReference Include="..\..\Parking.Mobile.Data\Parking.Mobile.Data.csproj" />
   </ItemGroup>
 </Project>

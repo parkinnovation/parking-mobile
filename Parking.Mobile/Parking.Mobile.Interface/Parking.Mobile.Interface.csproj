@@ -9,11 +9,13 @@
     <None Remove="Message\" />
     <None Remove="Message\Request\" />
     <None Remove="Message\Response\" />
+    <None Remove="Message\Enum\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Message\" />
     <Folder Include="Message\Request\" />
     <Folder Include="Message\Response\" />
+    <Folder Include="Message\Enum\" />
   </ItemGroup>
 </Project>
