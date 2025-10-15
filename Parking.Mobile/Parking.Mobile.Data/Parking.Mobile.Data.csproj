@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2612" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Parking.Mobile.Entity\Parking.Mobile.Entity.csproj" />

@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.OS;
 using ZXing.Mobile;
 using Acr.UserDialogs;
+using Parking.Mobile.Common;
 
 namespace Parking.Mobile.Droid
 {
@@ -27,6 +28,8 @@ namespace Parking.Mobile.Droid
             UserDialogs.Init(this);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
+            AppContextGeneral.Version = typeof(MainActivity).Assembly.GetName().Version.ToString();
 
             LoadApplication(new App());
         }

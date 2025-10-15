@@ -9,6 +9,7 @@ using Parking.Mobile.DependencyService.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.ApplicationCore;
 using Parking.Mobile.Data.Model;
+using Parking.Mobile.View;
 
 namespace Parking.Mobile.ViewModel
 {

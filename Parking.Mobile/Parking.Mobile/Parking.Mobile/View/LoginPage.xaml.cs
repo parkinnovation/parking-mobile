@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Parking.Mobile.ViewModel;
 using Xamarin.Forms;
 
 namespace Parking.Mobile.View
@@ -9,8 +9,10 @@ namespace Parking.Mobile.View
 	{	
 		public LoginPage ()
 		{
-			InitializeComponent ();
-		}
+            InitializeComponent();
+
+            BindingContext = new LoginViewModel(this.Navigation);
+        }
 	}
 }
 

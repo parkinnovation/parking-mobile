@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Parking.Mobile.View.MenuReportPage">
+        <ContentPage.Content>
+         <StackLayout Style="{StaticResource stkDefault}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="*"/>
+                            <ColumnDefinition  Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="170"/>
+                        </Grid.RowDefinitions>
+
+
+                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="100" Padding="2" Margin="5,5,5,5"  Grid.Column="0" Grid.Row="0" >
+                       <Frame.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#00D4FF"
+                                                        Offset="0.00" />
+
+                                    <GradientStop Color="#090979"
+                                                Offset="1.00" />
+                                
+                            </LinearGradientBrush>
+                        </Frame.Background>
+
+                        <Frame BackgroundColor="#e3f9ff" CornerRadius="100" Margin="1" HasShadow="False">
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <Button ImageSource="@drawable/FinancialReport" Style="{StaticResource btnMenu}" Text="Relatório Financeiro" Command="{Binding ActionOpenPage}" CommandParameter="Payment"/>
+                            </StackLayout>
+                        </Frame>
+                    </Frame>
+
+                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="100" Padding="2" Margin="5,5,5,5"  Grid.Column="1" Grid.Row="0" >
+                        <Frame.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#00D4FF"
+                                                        Offset="0.00" />
+
+                                    <GradientStop Color="Green"
+                                                Offset="1.00" />
+                                
+                            </LinearGradientBrush>
+                        </Frame.Background>
+
+                        <Frame BackgroundColor="#e3f9ff" CornerRadius="100" Margin="1" HasShadow="False">
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <Button ImageSource="@drawable/SearchCredential" Style="{StaticResource btnMenu}" Text="Consulta Cred/Mens" Command="{Binding ActionOpenPage}" CommandParameter="Payment"/>
+                            </StackLayout>
+                        </Frame>
+                    </Frame>
+
+                    
+                        
+                    </Grid>
+                </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
+

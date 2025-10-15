@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:Parking.Mobile.CustomComponents"
+    Title="Saida/Pagamento"
+    x:Class="Parking.Mobile.View.PaymentPage">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="15">
+
+                <!-- ==================== MODO PESQUISA ==================== -->
+                <StackLayout IsVisible="{Binding IsSearchMode}">
+                    <Label Text="Placa" Style="{StaticResource lblInfoFlow}"/>
+                    <Entry Keyboard="Text" 
+                           Style="{StaticResource entFlow}"
+                           Text="{Binding Plate}"
+                           MaxLength="8">
+                        <Entry.Behaviors>
+                            <behavior:MaskedBehavior Mask="AAA-9X99" />
+                        </Entry.Behaviors>
+                    </Entry>
+
+                    <Label Text="Ticket"  Style="{StaticResource lblInfoFlow}"/>
+                    <Entry Keyboard="Numeric" MaxLength="30" Text="{Binding Ticket}" Style="{StaticResource entFlow}"/>
+
+                    <StackLayout>
+                        <Button x:Name="btnScanner" ImageSource="@drawable/Barcode" Style="{StaticResource btnScanner}" Command="{Binding ActionPage}" CommandParameter="Scanner"/>
+                    </StackLayout>
+
+                    <StackLayout VerticalOptions="FillAndExpand" HeightRequest="40" />
+                    <!-- Botões -->
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">
+                        
+                        <Button
+                                Text="Cancelar"
+                                Command="{Binding ActionPage}"
+                                CommandParameter="Cancel"
+                                Style="{StaticResource btnCancel}"
+                                HorizontalOptions="FillAndExpand" />
+
+                        <Button
+                                Text="Pesquisar"
+                                Command="{Binding ActionPage}"
+                                CommandParameter="Search"
+                                Style="{StaticResource btnConfirm}"
+                                HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- ==================== MODO TICKET ==================== -->
+                <StackLayout IsVisible="{Binding IsTicketMode}" Spacing="10">
+
+                    <Grid ColumnSpacing="10" RowSpacing="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Linha 1 -->
+                        <StackLayout Grid.Row="0" Grid.Column="0">
+                            <Label Text="Ticket" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.Ticket}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="0" Grid.Column="1">
+                            <Label Text="Placa" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.Plate}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="0" Grid.Column="2">
+                            <Label Text="Entrada" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.DateEntry, StringFormat='{0:dd/MM/yyyy HH:mm}'}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+
+                        <!-- Linha 2 -->
+                        <StackLayout Grid.Row="1" Grid.Column="0">
+                            <Label Text="Veículo" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.VehicleModel}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1" Grid.Column="1">
+                            <Label Text="Cor" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.VehicleColor}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+                        <StackLayout Grid.Row="1" Grid.Column="2">
+                            <Label Text="Permanência" Style="{StaticResource lblInfoFlow}" />
+                            <Label Text="{Binding TicketInfo.Stay}" Style="{StaticResource lblInfoFlowNormal}"/>
+                        </StackLayout>
+                    </Grid>
+
+                    <!-- Dropdown tabela de preço -->
+                    <Label Text="Selecione a Tabela de Preço:" Style="{StaticResource lblInfoFlow}" Margin="0,10,0,0" />
+                    <Picker ItemsSource="{Binding PriceTables}" SelectedItem="{Binding SelectedPriceTable}" Title="Tabela de Preço" Style="{StaticResource entFlow}"/>
+
+                    <Label Text="Selecione o Desconto:" Style="{StaticResource lblInfoFlow}" Margin="0,10,0,0" />
+                    <Picker ItemsSource="{Binding Discounts}" SelectedItem="{Binding SelectedDiscount}" Title="Desconto" Style="{StaticResource entFlow}"/>
+
+                </StackLayout>
+
+                <!-- ==================== MODO PAGAMENTO ==================== -->
+                <StackLayout IsVisible="{Binding IsPaymentMode}" Spacing="10">
+
+                    <StackLayout  HorizontalOptions="FillAndExpand">
+                        <Label Text="Valor da estadia" Style="{StaticResource lblInfoFlow}"/>
+                    
+                        <Button x:Name="btnPrice"  HorizontalOptions="FillAndExpand" Style="{StaticResource btnPrice}" Text="{Binding CalculatedPrice, StringFormat='R$ {0:F2}'}"/>
+                    </StackLayout>
+
+                    <StackLayout  HorizontalOptions="FillAndExpand" IsVisible="{Binding TicketInfo.DiscountAuthorized}">
+                        <Label Text="Valor do Desconto" Style="{StaticResource lblInfoFlow}"/>
+                        <Button x:Name="btnDiscount" HorizontalOptions="FillAndExpand" Style="{StaticResource btnDiscount}" Text="{Binding TicketInfo.DiscountValueText}"/>
+                    </StackLayout>
+
+                    <StackLayout  HorizontalOptions="FillAndExpand" >
+                        <Label Text="Total à pagar" Style="{StaticResource lblInfoFlow}"/>
+                        <Button x:Name="btnNetPrice" HorizontalOptions="FillAndExpand" Style="{StaticResource btnPrice}" Text="{Binding CalculatedPrice, StringFormat='R$ {0:F2}'}"/>
+                    </StackLayout>
+                    <Label Text="Forma de Pagamento:" Style="{StaticResource lblInfoFlow}" />
+                    <Picker ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPaymentMethod}" Title="Selecione" />
+
+                   
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">
+                        
+                        <Button
+                                Text="Cancelar"
+                                Command="{Binding ActionPage}"
+                                CommandParameter="Cancel"
+                                Style="{StaticResource btnCancel}"
+                                HorizontalOptions="FillAndExpand" />
+
+                        <Button
+                                Text="Confirmar"
+                                Command="{Binding ActionPage}"
+                                CommandParameter="Confirm"
+                                Style="{StaticResource btnConfirm}"
+                                HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

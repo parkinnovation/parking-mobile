@@ -7,5 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Parking.Mobile.Interface\Parking.Mobile.Interface.csproj" />
+    <ProjectReference Include="..\Parking.Mobile.Entity\Parking.Mobile.Entity.csproj" />
+    <ProjectReference Include="..\Parking.Mobile.Common\Parking.Mobile.Common.csproj" />
   </ItemGroup>
 </Project>

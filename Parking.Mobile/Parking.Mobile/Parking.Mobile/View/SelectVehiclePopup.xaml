@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+    x:Class="Parking.Mobile.View.SelectVehiclePopup">
+
+    <Frame Padding="20" CornerRadius="10" BackgroundColor="White" WidthRequest="300">
+        <StackLayout>
+
+            <Label Text="Selecione o veículo" FontAttributes="Bold" FontSize="Medium" />
+
+            <SearchBar Placeholder="Buscar veículo..." 
+                       Text="{Binding SearchText}" />
+
+            <CollectionView 
+                ItemsSource="{Binding FilteredList}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedVehicle, Mode=TwoWay}"
+                IsVisible="{Binding ShowList}"
+                HeightRequest="200">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="10" Margin="5" HasShadow="False" BackgroundColor="#EEE">
+                            <Label Text="{Binding .}" />
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">
+                <Button Text="CANCELAR"
+                    HorizontalOptions="FillAndExpand"
+                    Command="{Binding CloseCommand}"
+                    Style="{StaticResource btnCancel}"/>
+      
+            </StackLayout>
+
+        </StackLayout>
+    </Frame>
+</toolkit:Popup>

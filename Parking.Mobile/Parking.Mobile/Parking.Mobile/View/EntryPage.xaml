@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:Parking.Mobile.CustomComponents"
+    x:Class="Parking.Mobile.View.EntryPage"
+    Title="{Binding Title}">
+
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout Style="{StaticResource stkDefaultFlow}" Padding="20">
+
+                <!-- Placa -->
+                <Label Text="Placa" Style="{StaticResource lblInfoFlow}"/>
+                <Entry Keyboard="Text" 
+                       Style="{StaticResource entFlow}"
+                       Text="{Binding Plate}"
+                       MaxLength="8">
+                    <Entry.Behaviors>
+                        <behavior:MaskedBehavior Mask="AAA-9X99" />
+                    </Entry.Behaviors>
+                </Entry>
+
+                <!-- Veículo -->
+                <Label Text="Veículo" Style="{StaticResource lblInfoFlow}" />
+                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10">
+                    <Label Text="{Binding Vehicle}" />
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenVehiclePopup}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <!-- Cor -->
+                <Label Text="Cor" Style="{StaticResource lblInfoFlow}" />
+                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10">
+                    <Label Text="{Binding Color}" />
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenColorPopup}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+
+                <!-- Prisma -->
+                <Label Text="Prisma" Style="{StaticResource lblInfoFlow}" />
+                <Entry Keyboard="Text" 
+                       Style="{StaticResource entFlow}"
+                       Text="{Binding Prism}" />
+
+                <StackLayout VerticalOptions="FillAndExpand" />
+
+                <!-- Botões -->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">
+                    
+                    <Button Text="CANCELAR"
+                            HorizontalOptions="FillAndExpand"
+                            Style="{StaticResource btnCancel}"
+                            Command="{Binding ActionPage}"
+                            CommandParameter="Cancel"/>
+
+                    <Button Text="CONFIRMAR"
+                            HorizontalOptions="FillAndExpand"
+                            Style="{StaticResource btnConfirm}"
+                            Command="{Binding ActionPage}"
+                            CommandParameter="Confirm"
+                            IsVisible="{Binding EnableButton}" />
+                </StackLayout>
+            </StackLayout>
+
+            <!-- Loading -->
+            <BoxView x:Name="bvLoading" Color="Black" Opacity="0.7" IsVisible="{Binding Loading}" />
+            <ActivityIndicator x:Name="aiLoading"
+                               Color="Green"
+                               IsVisible="{Binding Loading}"
+                               IsRunning="{Binding Loading}"
+                               Scale="0.2" />
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

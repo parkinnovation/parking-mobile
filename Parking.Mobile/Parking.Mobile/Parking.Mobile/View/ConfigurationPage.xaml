@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Parking.Mobile.View.ConfigurationPage">
+    <ContentPage.Content>
+        
+        <StackLayout Style="{StaticResource stkDefaultFlow}">
+            <Label Text="Configurações" Style="{StaticResource lblTitle}"/>
+            <Label Text="" HeightRequest="50"/>
+            <Label Text="Código da Garagem" Style="{StaticResource lblInfoFlow}"/>
+            <Entry Keyboard="Numeric" Style="{StaticResource entFlow}" Text="{Binding ParkingCode}" MaxLength="6"/>
+
+            <Label Text="Código do Terminal" Style="{StaticResource lblInfoFlow}"/>
+            <Entry Keyboard="Numeric" Style="{StaticResource entFlow}" Text="{Binding IDDevice}" MaxLength="4"/>
+
+            <Label Text="Url do Serviço" Style="{StaticResource lblInfoFlow}"/>
+            <Entry Keyboard="Url" Style="{StaticResource entFlow}" Text="{Binding UrlService}" MaxLength="100"/>
+
+            <Label Text="{Binding AndroidVersion}" Style="{StaticResource lblInfoFlow}"/>
+
+            <StackLayout VerticalOptions="FillAndExpand" />
+
+            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" >
+                <Button x:Name="btnCancel" Text="CANCELAR" HorizontalOptions="FillAndExpand" Style="{StaticResource btnCancel}" Command="{Binding ActionPage}" CommandParameter="Cancel"/>
+                <Button x:Name="btnConfirm" Text="SALVAR" HorizontalOptions="FillAndExpand" IsVisible="{Binding EnableButton}" Style="{StaticResource btnConfirm}" Command="{Binding ActionPage}" CommandParameter="Confirm"/>
+            </StackLayout>
+               
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+

@@ -1,4 +1,7 @@
 ﻿using System;
+using Parking.Mobile.Common;
+using Parking.Mobile.Data.Repository;
+using Parking.Mobile.Entity;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Response;
 
@@ -6,7 +9,28 @@ namespace Parking.Mobile.ApplicationCore
 {
 	public class AppConfiguration : IConfigurationController
     {
-		public ResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode)
+        public ConfigurationApp GetConfigurationApp()
+        {
+            ConfigurationAppRepository configurationAppRepository = new ConfigurationAppRepository(AppContextGeneral.databaseInstance.Connection);
+
+            return configurationAppRepository.Get();
+        }
+
+        public void SaveConfigurationApp(ConfigurationApp configurationApp)
+        {
+            ConfigurationAppRepository configurationAppRepository = new ConfigurationAppRepository(AppContextGeneral.databaseInstance.Connection);
+
+            if (String.IsNullOrEmpty(configurationApp.IDConfigurationApp))
+            {
+                configurationApp.IDConfigurationApp = Guid.NewGuid().ToString();
+            }
+
+            configurationAppRepository.Save(configurationApp);
+
+            AppContextGeneral.configurationApp = configurationApp;
+        }
+
+        public ResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode)
         {
             return new ResponseDefault<GetParkingInfoResponse>
             {
@@ -16,7 +40,8 @@ namespace Parking.Mobile.ApplicationCore
                     ParkingCode = parkingCode,
                     Address = "Lab",
                     Cnpj = "99999",
-                    Description = "Parking Dev MOCK"
+                    Description = "Parking Dev MOCK",
+                    AllowEntryWithoutPlate = false
                 }
             };
             

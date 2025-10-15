@@ -10,4 +10,7 @@
     <ProjectReference Include="..\Parking.Mobile.Entity\Parking.Mobile.Entity.csproj" />
     <ProjectReference Include="..\Parking.Mobile.Data\Parking.Mobile.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>

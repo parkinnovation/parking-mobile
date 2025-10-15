@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<xct:Popup
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Parking.Mobile.View.OpenCashierPage"
+
+    Size="300,400"
+    IsLightDismissEnabled="False"
+    xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit">
+    <StackLayout Style="{StaticResource stkDefault}">
+        <Label Text="Confirme a abertura do caixa para prosseguir" Style="{StaticResource lblFlowItem}"/>
+
+        
+        <Label Text="" Style="{StaticResource lblInfoFlow}"/>
+
+        <Label Text="Fundo de caixa" Style="{StaticResource lblInfoFlow}"/>
+
+        <Entry Keyboard="Numeric" Style="{StaticResource entFlow}" Text="{Binding CashFund}" />
+       
+        <StackLayout VerticalOptions="FillAndExpand" />
+
+        <StackLayout HorizontalOptions="FillAndExpand" >
+            <Button x:Name="btnConfirm" Text="CONFIRMAR" Style="{StaticResource btnConfirm}" Clicked="btnConfirm_Clicked"/>
+        </StackLayout>
+
+        <StackLayout HeightRequest="50" />
+
+    </StackLayout>
+
+   
+   
+</xct:Popup>

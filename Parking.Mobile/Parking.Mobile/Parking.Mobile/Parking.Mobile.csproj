@@ -12,18 +12,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="Acr.UserDialogs" Version="3.0.0" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2612" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.6" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="View\" />
     <None Remove="ViewModel\" />
+    <None Remove="Model\" />
+    <None Remove="CustomComponents\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="View\" />
     <Folder Include="ViewModel\" />
+    <Folder Include="Model\" />
+    <Folder Include="CustomComponents\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Parking.Mobile.Common\Parking.Mobile.Common.csproj" />

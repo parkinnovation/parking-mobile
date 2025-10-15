@@ -10,6 +10,7 @@ namespace Parking.Mobile.Interface.Message.Response
         public DateTime ToleranceExit { get; set; }
         public DateTime TolerancePayment { get; set; }
         public DateTime TolerancePeriod { get; set; }
+        public bool AllowEntryWithoutPlate { get; set; }
     }
 }
 

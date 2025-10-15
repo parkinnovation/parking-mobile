@@ -1,24 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
              x:Class="Parking.Mobile.App">
      <Application.Resources>
         <ResourceDictionary>
 
-            <Color x:Key="Primary">#5070D44B</Color>
+            <Color x:Key="Primary">#78A3FF</Color>
             
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackground">
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                       
-                      <GradientStop Color="#74E0C1"
-                                    Offset="0.50" />
+                      <GradientStop Color="#00D4FF"
+                                    Offset="0.0" />
 
-                      <GradientStop Color="#70D44B"
+                      <GradientStop Color="#090979"
                                     Offset="1.00" />
                    </LinearGradientBrush>   
                 </Setter>
-                <Setter Property="BarTextColor" Value="Black" />
+                <Setter Property="BarTextColor" Value="White" />
             </Style>
 
             <Style x:Key="lblTitle" TargetType="Label">
@@ -41,16 +42,16 @@
             </Style>
 
             <Style x:Key="btnCancel" TargetType="Button">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="TextColor" Value="red"/>
+                <Setter Property="FontSize" Value="14"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="BackgroundColor" Value="White"/>
-                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="CornerRadius" Value="25"/>
                 <Setter Property="Padding" Value="12"/>
-                <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="HeightRequest" Value="50"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-                <Setter Property="BorderColor" Value="#70D44B"/>
+                <Setter Property="BorderColor" Value="red"/>
                 <Setter Property="BorderWidth" Value="1"/>
             </Style>
 
@@ -260,9 +261,10 @@
             </Style>
 
             <Style x:Key="bvMenuEntry" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="#5070D44B" />
-                <Setter Property="CornerRadius" Value="10"/>
-                <Setter Property="Margin" Value="0,0,5,5"/>
+                <Setter Property="BackgroundColor" Value="Blue" />
+                <Setter Property="CornerRadius" Value="300"/>
+                <Setter Property="Margin" Value="10,10,10,0"/>
+                <Setter Property="BorderColor" Value="Blue"/>
             </Style>
 
             <Style x:Key="bvMenuTicketLost" TargetType="Frame">
