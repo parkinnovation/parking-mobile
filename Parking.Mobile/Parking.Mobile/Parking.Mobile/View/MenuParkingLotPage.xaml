@@ -13,9 +13,9 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="{Binding HeightRowParkingLotCounter}"/>
-                            <RowDefinition Height="170"/>
-                            <RowDefinition Height="170"/>
-                            <RowDefinition Height="170"/>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="150"/>
+                            <RowDefinition Height="150"/>
                         </Grid.RowDefinitions>
 
 

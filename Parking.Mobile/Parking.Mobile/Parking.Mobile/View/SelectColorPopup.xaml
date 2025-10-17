@@ -17,6 +17,7 @@
                 ItemsSource="{Binding FilteredList}"
                 SelectionMode="Single"
                 SelectedItem="{Binding SelectedColor, Mode=TwoWay}"
+                IsVisible="{Binding ShowList}"
                 HeightRequest="200">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

@@ -19,7 +19,20 @@ namespace Parking.Mobile.ApplicationCore
 
         public ResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request)
         {
-            throw new NotImplementedException();
+            return new ResponseDefault<GetCredentialInfoResponse>()
+            {
+                Success = request.Plate == "AAA-0002",
+                Data = new GetCredentialInfoResponse()
+                {
+                    IDClient = 1,
+                    Name = "Cliente Teste",
+                    ClientActive = true,
+                    DateStart = new DateTime(2000, 1, 1),
+                    DateEnd = new DateTime(2049, 1, 1),
+                    Credential = "111",
+                    CredentialActive = true
+                }
+            };
         }
 
         public ResponseDefault<ListClientResponse> ListClient(ListClientRequest request)

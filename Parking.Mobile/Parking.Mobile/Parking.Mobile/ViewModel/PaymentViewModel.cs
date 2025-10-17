@@ -7,12 +7,58 @@ using Xamarin.Forms;
 using Acr.UserDialogs;
 using Parking.Mobile.ApplicationCore;
 using Parking.Mobile.View;
+using Parking.Mobile.Common;
+using System.Threading.Tasks;
+using Parking.Mobile.Interface.Message.Request;
+using Parking.Mobile.Data.Model;
+using Parking.Mobile.Interface.Message.Response;
 
 namespace Parking.Mobile.ViewModel
 {
     public class PaymentViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private int idPriceTableIndex = -1;
+
+        public int IDPriceTableIndex
+        {
+            get => idPriceTableIndex;
+            set
+            {
+                idPriceTableIndex = value;
+
+                if (idPriceTableIndex >= 0)
+                {
+                    LoadDiscount();
+                    UpdateCalculatedPrice();
+                }
+
+                OnPropertyChanged(nameof(IDPriceTableIndex));
+
+                IsPaymentMode = true;
+            }
+        }
+
+        private int idDiscountIndex = -1;
+
+        public int IDDiscountIndex
+        {
+            get => idDiscountIndex;
+            set
+            {
+                idDiscountIndex = value;
+
+                if(idDiscountIndex>=0)
+                {
+                    UpdateCalculatedPrice();
+                }
+
+                OnPropertyChanged(nameof(IDDiscountIndex));
+            }
+        }
+
+        private string CodeRead;
 
         private string plate;
         public string Plate { get => plate; set { plate = value; OnPropertyChanged(nameof(Plate)); } }
@@ -32,9 +78,11 @@ namespace Parking.Mobile.ViewModel
         private TicketInfoModel ticketInfo;
         public TicketInfoModel TicketInfo { get => ticketInfo; set { ticketInfo = value; OnPropertyChanged(nameof(TicketInfo)); } }
 
-        public List<string> PriceTables { get; set; } = new List<string> { "Normal", "Premium", "VIP" };
+        private List<PriceTableInfo> priceTables;
+        public List<PriceTableInfo> PriceTables { get => priceTables; set { priceTables = value; OnPropertyChanged(nameof(PriceTables)); } }
 
-        public List<string> Discounts { get; set; } = new List<string> { "NETPARK", "10%" };
+        private List<DiscountInfo> discounts;
+        public List<DiscountInfo> Discounts { get => discounts; set { discounts = value; OnPropertyChanged(nameof(Discounts)); } }
 
         private string selectedPriceTable;
         public string SelectedPriceTable
@@ -82,7 +130,24 @@ namespace Parking.Mobile.ViewModel
         public PaymentViewModel(INavigation navigation)
         {
             Navigation = navigation;
+
+            AppContextGeneral.scannerDep.ClearDelegates();
+            AppContextGeneral.scannerDep.OnScannerReader += ScannerDep_OnScannerReader;
+
             ActionPage = new Command<string>(ActionButton);
+        }
+
+        private void ScannerDep_OnScannerReader(string barCode)
+        {
+            this.CodeRead = barCode;
+
+            if (!String.IsNullOrEmpty(barCode))
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    GetTicketInfo();
+                });
+            }
         }
 
         private void ActionButton(string parameter)
@@ -94,8 +159,10 @@ namespace Parking.Mobile.ViewModel
                     break;
 
                 case "Scanner":
-                    Application.Current.MainPage.DisplayAlert("Scanner", "Abrindo leitor de código...", "OK");
-                    // Aqui você pode chamar seu serviço de scanner ZXing
+                    this.CodeRead = null;
+
+                    AppContextGeneral.scannerDep.ScanAsync();
+
                     break;
 
                 case "Confirm":
@@ -106,6 +173,258 @@ namespace Parking.Mobile.ViewModel
                     ResetScreen();
                     break;
             }
+        }
+
+        private void LoadPriceTable()
+        {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    AppPricing appPricing = new AppPricing();
+
+                    var response = appPricing.GetListPriceTable(new GetListPriceTableRequest()
+                    {
+                        IdDevice = AppContextGeneral.deviceInfo.IDDevice,
+                        IdParkingLot = this.TicketInfo.IDParkingLot,
+                        ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                        Code = this.TicketInfo.Ticket
+                    });
+
+                    if (response.Success)
+                    {
+                        if (response.Data != null && response.Data.PriceTables != null && response.Data.PriceTables.Count > 0)
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                this.PriceTables = response.Data.PriceTables;
+
+                                if (this.PriceTables.Count > 1)
+                                {
+                                    int indexDefault = this.PriceTables.FindIndex(x => x.Default);
+
+                                    if (indexDefault >= 0)
+                                    {
+                                        this.IDPriceTableIndex = indexDefault;
+                                    }
+                                }
+                                else
+                                {
+                                    this.IDPriceTableIndex = 0;
+                                }
+                            });
+                        }
+                        else
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                Application.Current.MainPage.DisplayAlert("Erro", "Não existe tabela de preço configurada", "Ok");
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        });
+                    }
+                }catch(Exception ex)
+                {
+
+                }
+            });
+        }
+
+        private void LoadDiscount()
+        { 
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    AppPricing appPricing = new AppPricing();
+
+                    var response = appPricing.GetListDiscount(AppContextGeneral.parkingInfo.ParkingCode, PriceTables[IDPriceTableIndex].IdPriceTable);
+
+                    if (response.Success)
+                    {
+                        if (response.Data != null && response.Data.Discounts != null && response.Data.Discounts.Count > 0)
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                this.Discounts = response.Data.Discounts;
+                            });
+                        }
+                        else
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+                            });
+                        }
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            });
+        }
+
+        private void GetTicketInfo()
+        {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(async () =>
+            {
+                AppParkingLot appParkingLot = new AppParkingLot();
+
+                string accessCode = "";
+
+                if (!String.IsNullOrEmpty(Plate))
+                {
+                    accessCode = this.Plate;
+                }
+
+                if (!String.IsNullOrEmpty(ticket))
+                {
+                    accessCode = this.Ticket;
+                }
+
+                if (!String.IsNullOrEmpty(CodeRead))
+                {
+                    accessCode = this.CodeRead;
+                }
+
+                var response = appParkingLot.GetTicketInfo(new GetTicketInfoRequest()
+                {
+                    AccessCode = accessCode,
+                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    IDUser = AppContextGeneral.userInfo.IdUser,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        TicketInfo = new TicketInfoModel()
+                        {
+                            Credential = response.Data.Credential,
+                            CredentialName = response.Data.CredentialName,
+                            DateEntry = response.Data.DateEntry,
+                            IDParkingLot = response.Data.IDParkingLot,
+                            Plate = response.Data.Plate,
+                            Prism = response.Data.Prism,
+                            Stay = response.Data.Stay,
+                            Ticket = response.Data.Ticket,
+                            VehicleColor = response.Data.VehicleColor,
+                            VehicleModel = response.Data.VehicleModel
+                        };
+
+                        if (response.Data.Payments != null)
+                        {
+                            TicketInfo.PaymentsOriginal = (from p in response.Data.Payments
+                                                           select new TicketPaymentItemInfo()
+                                                           {
+                                                               Amount = p.Amount,
+                                                               Description = p.Description,
+                                                               IDDiscount = p.IDDiscount,
+                                                               IDParkingSeal = p.IDParkingSeal,
+                                                               IDPayment = p.IDPayment,
+                                                               IDPaymentMethod = p.IDPaymentMethod
+                                                           }).ToList();
+
+                            TicketInfo.Payments = Util.Clone<List<TicketPaymentItemInfo>>(ticketInfo.PaymentsOriginal);
+                        }
+
+                        IsSearchMode = false;
+                        IsTicketMode = true;
+                        IsPaymentMode = false;
+
+                        LoadPriceTable();
+                    });
+                }
+                else
+                {
+                    string codeAux = this.CodeRead;
+
+                    this.CodeRead = null;
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message + " - " + codeAux, "Ok");
+                    });
+                }
+            });
+        }
+
+        private bool GetTicketPrice()
+        {
+            
+            AppPricing appPricing = new AppPricing();
+
+            var response = appPricing.GetTicketPrice(new GetTicketPriceRequest()
+            {
+                AccessCode = this.TicketInfo.Ticket,
+                IdParkingLot = this.TicketInfo.IDParkingLot,
+                IdPriceTable = PriceTables[IDPriceTableIndex].IdPriceTable,
+                IdDevice = AppContextGeneral.deviceInfo.IDDevice,
+                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                DatePriceScheduller = this.TicketInfo.DatePriceScheduller,
+                DateBillingLimit = this.TicketInfo.DateBillingLimit,
+                IdDiscount = IDDiscountIndex>=0 ? Discounts[IDDiscountIndex].IdDiscount : -1
+            });
+
+            if (response.Success)
+            {
+                TicketInfoModel model = this.TicketInfo;
+
+                model.DateLimitExit = response.Data.DateLimitExit;
+                model.Price = response.Data.Price;
+                model.DiscountPercent = response.Data.DiscountPercent;
+
+                this.TicketInfo = model;
+
+                return true;
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.HideLoading();
+
+                    Application.Current.MainPage.DisplayAlert("Aviso", response.Message, "Ok");
+                });
+
+                return false;
+            }
+            
         }
 
         private void SearchTicket()
@@ -119,20 +438,7 @@ namespace Parking.Mobile.ViewModel
             UserDialogs.Instance.ShowLoading("Buscando ticket...");
             Thread.Sleep(500); // Simula busca
 
-            TicketInfo = new TicketInfoModel
-            {
-                Ticket = Ticket ?? "0000123456",
-                Plate = Plate ?? "ABC-1234",
-                DateEntry = DateTime.Now.AddHours(-2),
-                VehicleModel = "Fusca",
-                VehicleColor = "Azul",
-                Stay = "2h",
-                BasePrice = 20m
-            };
-
-            IsSearchMode = false;
-            IsTicketMode = true;
-            IsPaymentMode = false;
+            GetTicketInfo();
 
             UserDialogs.Instance.HideLoading();
         }
@@ -154,15 +460,7 @@ namespace Parking.Mobile.ViewModel
 
         private void UpdateCalculatedPrice()
         {
-            if (TicketInfo == null) return;
-
-            CalculatedPrice = SelectedPriceTable switch
-            {
-                "Normal" => TicketInfo.BasePrice,
-                "Premium" => TicketInfo.BasePrice * 1.2m,
-                "VIP" => TicketInfo.BasePrice * 1.5m,
-                _ => TicketInfo.BasePrice
-            };
+            GetTicketPrice();
         }
 
         private void ResetScreen()
@@ -174,14 +472,5 @@ namespace Parking.Mobile.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
-    public class TicketInfoModel
-    {
-        public string Ticket { get; set; }
-        public string Plate { get; set; }
-        public DateTime DateEntry { get; set; }
-        public string VehicleModel { get; set; }
-        public string VehicleColor { get; set; }
-        public string Stay { get; set; }
-        public decimal BasePrice { get; set; }
-    }
+    
 }

@@ -5,12 +5,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using Xamarin.Forms;
+using Parking.Mobile.Data.Model;
+using Parking.Mobile.Common;
 
 namespace Parking.Mobile.ViewModel
 {
     public class ChangeSectorViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private string CodeRead;
 
         private string plate;
         public string Plate { get => plate; set { plate = value; OnPropertyChanged(nameof(Plate)); } }
@@ -34,7 +38,26 @@ namespace Parking.Mobile.ViewModel
         public ChangeSectorViewModel(INavigation navigation)
         {
             Navigation = navigation;
+
+            AppContextGeneral.scannerDep.ClearDelegates();
+            AppContextGeneral.scannerDep.OnScannerReader += ScannerDep_OnScannerReader;
+
             ActionPage = new Command<string>(ActionButton);
+        }
+
+        private void ScannerDep_OnScannerReader(string barCode)
+        {
+            this.CodeRead = barCode;
+
+            if (!String.IsNullOrEmpty(barCode))
+            {
+                //Thread.Sleep(200);
+
+                //Device.BeginInvokeOnMainThread(() =>
+                //{
+                //    ActionButton("NextPage");
+                //});
+            }
         }
 
         private void ActionButton(string parameter)
@@ -46,8 +69,8 @@ namespace Parking.Mobile.ViewModel
                     break;
 
                 case "Scanner":
-                    Application.Current.MainPage.DisplayAlert("Scanner", "Abrindo leitor de código...", "OK");
-                    // Aqui você pode chamar seu serviço de scanner ZXing
+                    AppContextGeneral.scannerDep.ScanAsync();
+
                     break;
 
                 case "Confirm":
@@ -78,8 +101,7 @@ namespace Parking.Mobile.ViewModel
                 DateEntry = DateTime.Now.AddHours(-2),
                 VehicleModel = "Fusca",
                 VehicleColor = "Azul",
-                Stay = "2h",
-                BasePrice = 20m
+                Stay = "2h"
             };
 
             IsSearchMode = false;

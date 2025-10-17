@@ -94,31 +94,51 @@
 
                     <!-- Dropdown tabela de preço -->
                     <Label Text="Selecione a Tabela de Preço:" Style="{StaticResource lblInfoFlow}" Margin="0,10,0,0" />
-                    <Picker ItemsSource="{Binding PriceTables}" SelectedItem="{Binding SelectedPriceTable}" Title="Tabela de Preço" Style="{StaticResource entFlow}"/>
+                    <Picker ItemsSource="{Binding PriceTables}" ItemDisplayBinding="{Binding Description}" SelectedIndex="{Binding IDPriceTableIndex}" Title="Tabela de Preço" Style="{StaticResource entFlow}"/>
 
                     <Label Text="Selecione o Desconto:" Style="{StaticResource lblInfoFlow}" Margin="0,10,0,0" />
-                    <Picker ItemsSource="{Binding Discounts}" SelectedItem="{Binding SelectedDiscount}" Title="Desconto" Style="{StaticResource entFlow}"/>
+                    <Picker ItemsSource="{Binding Discounts}" ItemDisplayBinding="{Binding Description}" SelectedIndex="{Binding IDDiscountIndex}" Title="Desconto" Style="{StaticResource entFlow}"/>
 
                 </StackLayout>
 
                 <!-- ==================== MODO PAGAMENTO ==================== -->
                 <StackLayout IsVisible="{Binding IsPaymentMode}" Spacing="10">
 
-                    <StackLayout  HorizontalOptions="FillAndExpand">
-                        <Label Text="Valor da estadia" Style="{StaticResource lblInfoFlow}"/>
-                    
-                        <Button x:Name="btnPrice"  HorizontalOptions="FillAndExpand" Style="{StaticResource btnPrice}" Text="{Binding CalculatedPrice, StringFormat='R$ {0:F2}'}"/>
-                    </StackLayout>
+                    <Grid ColumnSpacing="2" HorizontalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                    <StackLayout  HorizontalOptions="FillAndExpand" IsVisible="{Binding TicketInfo.DiscountAuthorized}">
-                        <Label Text="Valor do Desconto" Style="{StaticResource lblInfoFlow}"/>
-                        <Button x:Name="btnDiscount" HorizontalOptions="FillAndExpand" Style="{StaticResource btnDiscount}" Text="{Binding TicketInfo.DiscountValueText}"/>
-                    </StackLayout>
+                        <!-- Coluna 1 -->
+                        <StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand">
+                            <Label Text="Valor da estadia" Style="{StaticResource lblInfoFlow}" />
+                            <Button x:Name="btnPrice"
+                                    HorizontalOptions="FillAndExpand"
+                                    Style="{StaticResource btnPrice}"
+                                    Text="{Binding TicketInfo.Price, StringFormat='R$ {0:F2}'}" />
+                        </StackLayout>
 
-                    <StackLayout  HorizontalOptions="FillAndExpand" >
-                        <Label Text="Total à pagar" Style="{StaticResource lblInfoFlow}"/>
-                        <Button x:Name="btnNetPrice" HorizontalOptions="FillAndExpand" Style="{StaticResource btnPrice}" Text="{Binding CalculatedPrice, StringFormat='R$ {0:F2}'}"/>
-                    </StackLayout>
+                        <!-- Coluna 2 -->
+                        <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand">
+                            <Label Text="Valor do Desconto" Style="{StaticResource lblInfoFlow}" />
+                            <Button x:Name="btnDiscount"
+                                    HorizontalOptions="FillAndExpand"
+                                    Style="{StaticResource btnDiscount}"
+                                    Text="{Binding TicketInfo.DiscountValue, StringFormat='R$ {0:F2}'}" />
+                        </StackLayout>
+
+                        <!-- Coluna 3 -->
+                        <StackLayout Grid.Column="2" HorizontalOptions="FillAndExpand">
+                            <Label Text="Total à pagar" Style="{StaticResource lblInfoFlow}" />
+                            <Button x:Name="btnNetPrice"
+                                    HorizontalOptions="FillAndExpand"
+                                    Style="{StaticResource btnPrice}"
+                                     Text="{Binding TicketInfo.PaymentValue, StringFormat='R$ {0:F2}'}" />
+                        </StackLayout>
+                    </Grid>
+
                     <Label Text="Forma de Pagamento:" Style="{StaticResource lblInfoFlow}" />
                     <Picker ItemsSource="{Binding PaymentMethods}" SelectedItem="{Binding SelectedPaymentMethod}" Title="Selecione" />
 

@@ -18,8 +18,6 @@ namespace Parking.Mobile.Droid
         {
             base.OnResume();
 
-            await Task.Delay(3000);
-
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }
     }

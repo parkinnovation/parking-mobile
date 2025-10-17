@@ -10,6 +10,7 @@ using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.ApplicationCore;
 using Parking.Mobile.Data.Model;
 using Parking.Mobile.View;
+using System.Linq;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -294,6 +295,52 @@ namespace Parking.Mobile.ViewModel
             }
         }
 
+        private bool LoadVehicleModel()
+        {
+            AppConfiguration appConfiguration = new AppConfiguration();
+
+            var response = appConfiguration.GetListVehicleModel(AppContextGeneral.parkingInfo.ParkingCode);
+
+            if (response.Success)
+            {
+                AppContextGeneral.vehicles = response.Data.Models;
+
+                return true;
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                });
+
+                return false;
+            }
+        }
+
+        private bool LoadListColor()
+        {
+            AppConfiguration appConfiguration = new AppConfiguration();
+
+            var response = appConfiguration.GetListColor(AppContextGeneral.parkingInfo.ParkingCode);
+
+            if (response.Success)
+            {
+                AppContextGeneral.colors = response.Data.Colors;
+
+                return true;
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                });
+
+                return false;
+            }
+        }
+
         public void LoginApp(string parameter)
         {
 
@@ -313,28 +360,33 @@ namespace Parking.Mobile.ViewModel
                             {
                                 if (LoadCashierInfo())
                                 {
-                                    AppContextGeneral.scannerDep = Xamarin.Forms.DependencyService.Get<ICamScanner>();
-                                        
-                                    try
+                                    if (LoadVehicleModel())
                                     {
-                                        Device.BeginInvokeOnMainThread(() =>
+                                        if (LoadListColor())
                                         {
-                                            Application.Current.MainPage = new MenuPage();
+                                            AppContextGeneral.scannerDep = Xamarin.Forms.DependencyService.Get<ICamScanner>();
 
-                                            UserDialogs.Instance.HideLoading();
+                                            try
+                                            {
+                                                Device.BeginInvokeOnMainThread(() =>
+                                                {
+                                                    Application.Current.MainPage = new MenuPage();
 
-                                        });
+                                                    UserDialogs.Instance.HideLoading();
+
+                                                });
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Device.BeginInvokeOnMainThread(() =>
+                                                {
+                                                    UserDialogs.Instance.HideLoading();
+
+                                                    Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+                                                });
+                                            }
+                                        }
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        Device.BeginInvokeOnMainThread(() =>
-                                        {
-                                            UserDialogs.Instance.HideLoading();
-
-                                            Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
-                                        });
-                                    }
-
                                 }
                             }
                         }

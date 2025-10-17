@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.CommunityToolkit.UI.Views;
+using Parking.Mobile.Common;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -62,11 +63,9 @@ namespace Parking.Mobile.ViewModel
         {
             popup = popupRef;
 
-            Vehicles = new ObservableCollection<string>
-            {
-                "Fiat Uno", "Honda Civic", "Toyota Corolla",
-                "Chevrolet Onix", "VW Gol", "Hyundai HB20"
-            };
+            Vehicles = new ObservableCollection<string>(
+                AppContextGeneral.vehicles.Select(l => l.Description)
+            );
 
             FilteredList = new ObservableCollection<string>();
 

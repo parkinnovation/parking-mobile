@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.CommunityToolkit.UI.Views;
+using Parking.Mobile.Common;
+using System.Linq;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -62,11 +64,9 @@ namespace Parking.Mobile.ViewModel
         {
             popup = popupRef;
 
-            Colors = new ObservableCollection<string>
-            {
-                "Branco", "Preto", "Prata",
-                "Azul", "Amarelo", "Vermelho", "Outra"
-            };
+            Colors = new ObservableCollection<string>(
+                AppContextGeneral.colors.Select(l => l.Description)
+            );
 
             FilteredList = new ObservableCollection<string>();
 

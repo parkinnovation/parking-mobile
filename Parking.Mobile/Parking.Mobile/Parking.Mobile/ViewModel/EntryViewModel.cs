@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Parking.Mobile.ApplicationCore;
 using Parking.Mobile.Interface.Message.Request;
 using Xamarin.CommunityToolkit.Extensions;
+using Parking.Mobile.DependencyService.Interfaces;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -45,7 +46,17 @@ namespace Parking.Mobile.ViewModel
             set
             {
                 plate = value;
+                
+                if(!String.IsNullOrEmpty(value) && plate.Length>=8)
+                {
+                    if(CheckPlate())
+                    {
+                        CheckCredential();
+                    }
+                }
+
                 OnPropertyChanged(nameof(Plate));
+
                 ValidateButton();
             }
         }
@@ -161,22 +172,174 @@ namespace Parking.Mobile.ViewModel
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-                UserDialogs.Instance.ShowLoading("Confirmando...");
-                await Task.Delay(1000);
-                UserDialogs.Instance.HideLoading();
-
-                await Application.Current.MainPage.DisplayAlert(
-                    "Sucesso",
-                    $"Veículo: {Vehicle}\nCor: {Color}\nPlaca: {Plate}\nPrisma: {Prism}",
-                    "OK");
+                ProcessEntry();
+                
+               
 
                 Application.Current.MainPage = new MenuPage();
             });
         }
 
+        private void ProcessEntry()
+        {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(async () =>
+            {
+                AppParkingLot appParkingLot = new AppParkingLot();
+
+                var response = appParkingLot.ProcessEntry(new ProcessEntryRequest()
+                {
+                    Color = this.Color,
+                    Credential = this.Credential,
+                    IDDevice = AppContextGeneral.configurationApp.IDDevice,
+                    IDUser = AppContextGeneral.userInfo.IdUser,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                    Plate = this.Plate,
+                    Prism = this.Prism,
+                    VehicleModel = this.Vehicle
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        
+                        try
+                        {
+                             Application.Current.MainPage.DisplayAlert(
+                            "Sucesso",
+                            $"Veículo: {Vehicle}\nCor: {Color}\nPlaca: {Plate}\nPrisma: {Prism} {response.Data.Ticket}",
+                            "OK");
+                            /*if (String.IsNullOrEmpty(this.Credential) || (!String.IsNullOrEmpty(this.Credential))
+                            {
+                                for (int i = 0; i < AppContextGeneral.parkingInfo.NumberPrintEntryCopies; i++)
+                                {
+
+                                    print.PrintTicketEntry(response.Data.Ticket, this.Credential, this.CredentialName, response.Data.DateEntry, this.Prism, this.Plate, this.VehicleModel, this.Color, response.Data.QrCodeContingency, (PrintTicketMobileLevel)AppContextGeneral.parkingInfo.PrintTicketMobileLevel, AppContextGeneral.parkingInfo.QrCodeFooter);
+                                }
+                            }*/
+
+                            UserDialogs.Instance.HideLoading();
+                        }
+                        catch (Exception ex)
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+                        }
+
+                        Application.Current.MainPage = new MenuPage();
+                        
+
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    });
+                }
+            });
+        }
+
+        private bool CheckPlate()
+        {
+            
+            AppParkingLot appParkingLot = new AppParkingLot();
+
+            var response = appParkingLot.ValidateEntryPlate(AppContextGeneral.parkingInfo.ParkingCode, this.Plate);
+
+            if (response.Success)
+            {
+                return true;
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.HideLoading();
+
+                    Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+
+                    Plate = null;
+                });
+
+                
+
+                return false;
+            }
+        }
+
         private void CheckCredential()
         {
-            // código original mantido
+            AppCredential appCredential = new AppCredential();
+
+            var response = appCredential.GetCredentialInfo(new GetCredentialInfoRequest()
+            {
+                AccessCode = null,
+                IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                Plate = this.Plate
+            });
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                if (response.Success)
+                {
+
+                    if (response.Data.ClientActive)
+                    {
+                        if (response.Data.CredentialActive)
+                        {
+                            if (DateTime.Now >= response.Data.DateStart && DateTime.Now <= response.Data.DateEnd)
+                            {
+                                this.Credential = response.Data.Credential;
+                                this.CredentialName = response.Data.Name;
+
+                                UserDialogs.Instance.HideLoading();
+                            }
+                            else
+                            {
+                                this.Credential = null;
+                                this.CredentialName = null;
+
+                                UserDialogs.Instance.HideLoading();
+
+                                this.CredentialName = "Credencial expirada";
+                            }
+                        }
+                        else
+                        {
+                            this.Credential = null;
+                            this.CredentialName = null;
+
+                            UserDialogs.Instance.HideLoading();
+
+                            this.CredentialName = "Credencial inativa";
+                        }
+                    }
+                    else
+                    {
+                        this.Credential = null;
+                        this.CredentialName = null;
+
+                        UserDialogs.Instance.HideLoading();
+
+                        this.CredentialName = "Cliente inativo";
+                    }
+
+                }
+                else
+                {
+                    this.Credential = null;
+                    this.CredentialName = null;
+                }
+            });
+        
         }
 
         private void OnPropertyChanged(string nameProperty)

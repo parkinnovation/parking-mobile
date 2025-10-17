@@ -8,6 +8,10 @@ namespace Parking.Mobile.Interface.Interfaces
         ResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode);
 
         ResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice);
+
+        ResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode);
+
+        ResponseDefault<GetListColorResponse> GetListColor(string parkingCode);
     }
 }
 

@@ -21,6 +21,8 @@
                     </Entry.Behaviors>
                 </Entry>
 
+                <Label Text="{Binding CredentialName}" Style="{StaticResource lblInfoFlow}" />
+
                 <!-- Veículo -->
                 <Label Text="Veículo" Style="{StaticResource lblInfoFlow}" />
                 <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10">

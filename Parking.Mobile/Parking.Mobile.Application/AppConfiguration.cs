@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Parking.Mobile.Common;
 using Parking.Mobile.Data.Repository;
 using Parking.Mobile.Entity;
@@ -63,6 +64,63 @@ namespace Parking.Mobile.ApplicationCore
                     TEFId ="000",
                     TEFMobileId ="AAA",
                     TypeDescription = "ENTRY"
+                }
+            };
+        }
+
+        public ResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode)
+        {
+            List<VehicleModelInfo> lst = new List<VehicleModelInfo>();
+
+            lst.Add(new VehicleModelInfo()
+            {
+                Description = "Gol",
+                Type = 1
+            });
+
+            lst.Add(new VehicleModelInfo()
+            {
+                Description = "Uno",
+                Type = 1
+            });
+
+            lst.Add(new VehicleModelInfo()
+            {
+                Description = "Argo",
+                Type = 1
+            });
+
+            lst.Add(new VehicleModelInfo()
+            {
+                Description = "Kwid",
+                Type = 1
+            });
+
+            return new ResponseDefault<GetListVehicleModelResponse>()
+            {
+                Data = new GetListVehicleModelResponse()
+                {
+                    Models = lst
+                },
+                Success = true
+            };
+        }
+
+        public ResponseDefault<GetListColorResponse> GetListColor(string parkingCode)
+        {
+            List<ColorInfo> lst = new List<ColorInfo>();
+
+            lst.Add(new ColorInfo() { Description = "Branco" });
+            lst.Add(new ColorInfo() { Description = "Preto" });
+            lst.Add(new ColorInfo() { Description = "Prata" });
+            lst.Add(new ColorInfo() { Description = "Vermelho" });
+
+            return new ResponseDefault<GetListColorResponse>()
+            {
+                Success = true,
+                Data = new GetListColorResponse()
+                {
+                    Colors = lst
                 }
             };
         }

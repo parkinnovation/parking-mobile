@@ -257,7 +257,7 @@ namespace Parking.Mobile.ViewModel
                     }
                     else
                     {
-                        //var retCloseCashier = Navigation.ShowPopupAsync<object>(new CloseCashierPage());
+                        var retCloseCashier = Navigation.ShowPopupAsync<object>(new CloseCashierPage());
                     }
                     break;
 

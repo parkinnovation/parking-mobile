@@ -6,6 +6,7 @@ using Parking.Mobile.Data.Model;
 using Parking.Mobile.Data.Repository;
 using Parking.Mobile.DependencyService.Interfaces;
 using Parking.Mobile.Entity;
+using Parking.Mobile.Interface.Message.Response;
 
 namespace Parking.Mobile.Common
 {
@@ -24,6 +25,8 @@ namespace Parking.Mobile.Common
         public static ParkingInfoModel parkingInfo;
         public static DeviceInfoModel deviceInfo;
         public static CashierInfoModel cashierInfo;
+        public static List<VehicleModelInfo> vehicles;
+        public static List<ColorInfo> colors;
     }
 }
 
