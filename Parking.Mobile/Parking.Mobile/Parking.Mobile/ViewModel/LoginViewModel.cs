@@ -21,6 +21,14 @@ namespace Parking.Mobile.ViewModel
         private string user;
         private string password;
 
+        public string Version
+        {
+            get
+            {
+                return "v" + AppContextGeneral.Version;
+            }
+        }
+
         public string User
         {
             get

@@ -10,7 +10,7 @@ using Parking.Mobile.Common;
 
 namespace Parking.Mobile.Droid
 {
-    [Activity(Label = "NetPark", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
+    [Activity(Label = "LockiD", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         public static MainActivity Instance { get; private set; }
@@ -19,6 +19,7 @@ namespace Parking.Mobile.Droid
         {
             base.OnCreate(savedInstanceState);
 
+            
             Instance = this;
 
             MobileBarcodeScanner.Initialize(this.Application);

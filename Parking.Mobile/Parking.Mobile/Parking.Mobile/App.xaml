@@ -12,14 +12,14 @@
                 <Setter Property="BarBackground">
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                       
-                      <GradientStop Color="#00D4FF"
+                      <GradientStop Color="#F2E8EC"
                                     Offset="0.0" />
 
-                      <GradientStop Color="#090979"
+                      <GradientStop Color="#b83d6e"
                                     Offset="1.00" />
                    </LinearGradientBrush>   
                 </Setter>
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarTextColor" Value="#8e1e53" />
             </Style>
 
             <Style x:Key="lblTitle" TargetType="Label">
@@ -34,7 +34,7 @@
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="BackgroundColor" Value="DarkBlue"/>
+                <Setter Property="BackgroundColor" Value="#b83d6e"/>
                 <Setter Property="CornerRadius" Value="25"/>
                 <Setter Property="Padding" Value="12"/>
                 <Setter Property="HeightRequest" Value="50"/>
@@ -60,7 +60,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="BackgroundColor" Value="#ffdbf1"/>
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="Padding" Value="12"/>
                 <Setter Property="HeightRequest" Value="40"/>
@@ -72,7 +72,7 @@
                 <Setter Property="FontSize" Value="10"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
                 <Setter Property="FontAttributes" Value="None"/>
-                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="BackgroundColor" Value="#ffdbf1"/>
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="HeightRequest" Value="32"/>
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
@@ -84,7 +84,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontFamily" Value="UniSansSemiBold"/>
                 <Setter Property="FontAttributes" Value="None"/>
-                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="BackgroundColor" Value="#ffdbf1"/>
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="Padding" Value="12,0,12,0"/>
                 <Setter Property="HeightRequest" Value="40"/>
@@ -97,7 +97,7 @@
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontFamily" Value="UniSansSemiBold"/>
                 <Setter Property="FontAttributes" Value="None"/>
-                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="BackgroundColor" Value="#ffdbf1"/>
                 <Setter Property="CornerRadius" Value="10"/>
                 <Setter Property="Padding" Value="12,0,12,0"/>
                 <Setter Property="HeightRequest" Value="40"/>
@@ -287,13 +287,12 @@
             </Style>
 
             <Style x:Key="btnMenu" TargetType="Button">
-                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="TextColor" Value="#8e1e53"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="FontFamily" Value="Calibri"/>
-                <Setter Property="FontAttributes" Value="None"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
                 <Setter Property="BackgroundColor" Value="Transparent"/>
                 <Setter Property="TextTransform" Value="None"/>
-                <Setter Property="ContentLayout" Value="Top, 10"/>
             </Style>
 
             <Style x:Key="maskSearchForm" TargetType="Frame">

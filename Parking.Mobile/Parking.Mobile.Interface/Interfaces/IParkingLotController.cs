@@ -15,6 +15,8 @@ namespace Parking.Mobile.Interface.Interfaces
         ResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate);
 
         ResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request);
+
+        ResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request);
     }
 }
 

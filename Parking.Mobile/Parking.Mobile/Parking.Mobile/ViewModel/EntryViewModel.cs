@@ -170,14 +170,8 @@ namespace Parking.Mobile.ViewModel
 
         private void ConfirmAction()
         {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                ProcessEntry();
-                
-               
-
-                Application.Current.MainPage = new MenuPage();
-            });
+            ProcessEntry();
+           
         }
 
         private void ProcessEntry()
@@ -204,13 +198,28 @@ namespace Parking.Mobile.ViewModel
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        
-                        try
-                        {
-                             Application.Current.MainPage.DisplayAlert(
+
+                    try
+                    {
+
+                        var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                            print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
+                            {
+                                CredentialName = CredentialName,
+                                CredentialNumber = Credential,
+                                DateEntry = response.Data.DateEntry,
+                                Plate = Plate,
+                                Prism = Prism,
+                                TicketNumber = response.Data.Ticket,
+                                VehicleColor = Color,
+                                VehicleModel = Vehicle
+                            });
+                            
+                            /*Application.Current.MainPage.DisplayAlert(
                             "Sucesso",
                             $"Veículo: {Vehicle}\nCor: {Color}\nPlaca: {Plate}\nPrisma: {Prism} {response.Data.Ticket}",
-                            "OK");
+                            "OK");*/
                             /*if (String.IsNullOrEmpty(this.Credential) || (!String.IsNullOrEmpty(this.Credential))
                             {
                                 for (int i = 0; i < AppContextGeneral.parkingInfo.NumberPrintEntryCopies; i++)
@@ -220,6 +229,8 @@ namespace Parking.Mobile.ViewModel
                                 }
                             }*/
 
+                            Application.Current.MainPage = new MenuPage();
+
                             UserDialogs.Instance.HideLoading();
                         }
                         catch (Exception ex)
@@ -228,10 +239,6 @@ namespace Parking.Mobile.ViewModel
 
                             Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
                         }
-
-                        Application.Current.MainPage = new MenuPage();
-                        
-
                     });
                 }
                 else

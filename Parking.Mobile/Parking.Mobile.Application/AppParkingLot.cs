@@ -12,21 +12,30 @@ namespace Parking.Mobile.ApplicationCore
             throw new NotImplementedException();
         }
 
+        public ResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request)
+        {
+            return new ResponseDefault<ChangeSectorResponse>()
+            {
+                Success = true,
+                Data = new ChangeSectorResponse()
+            };
+        }
+
         public ResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request)
         {
             return new ResponseDefault<GetTicketInfoResponse>()
             {
-                Success = request.AccessCode == "12345678",
+                Success = request.AccessCode == "123456789012",
                 Data = new GetTicketInfoResponse()
                 {
                     DateEntry = DateTime.Now,
                     IDParkingLot = 999,
                     Plate = "AAA-0004",
-                    Ticket = "12345678",
+                    Ticket = "123456789012",
                     VehicleColor = "Azul",
                     VehicleModel = "A5"
                 },
-                Message = request.AccessCode != "12345678" ? "Ticket não encontrado" : null
+                Message = request.AccessCode != "123456789012" ? "Ticket não encontrado" : null
             };
         }
 
@@ -40,7 +49,7 @@ namespace Parking.Mobile.ApplicationCore
                     DateEntry = DateTime.Now,
                     PaymentInEntry = false,
                     QrCodeContingency = null,
-                    Ticket = "1234567890"
+                    Ticket = "123456789012"
                 }
             };
         }

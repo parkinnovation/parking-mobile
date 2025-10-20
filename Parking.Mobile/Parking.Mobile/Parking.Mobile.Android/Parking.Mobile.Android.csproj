@@ -81,6 +81,7 @@
     <Compile Include="SplashActivity.cs" />
     <Compile Include="DependencyService\CamScanner.cs" />
     <Compile Include="DependencyService\FilePath.cs" />
+    <Compile Include="DependencyService\PrinterService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -186,6 +187,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Brand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -204,6 +209,10 @@
     <ProjectReference Include="..\..\Parking.Mobile.Common\Parking.Mobile.Common.csproj">
       <Project>{3D6622AF-5A6E-43E4-93C6-7D1AC61F8AB4}</Project>
       <Name>Parking.Mobile.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Parking.Mobile.Data\Parking.Mobile.Data.csproj">
+      <Project>{0BCADAC0-E2CC-477E-9742-E7FC059DB109}</Project>
+      <Name>Parking.Mobile.Data</Name>
     </ProjectReference>
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

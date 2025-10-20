@@ -6,7 +6,7 @@ using Android.OS;
 
 namespace Parking.Mobile.Droid
 {
-	[Activity(Label = "NetPark", Icon = "@drawable/Icon", MainLauncher = true, Theme = "@style/SplashTheme", NoHistory = true)]
+	[Activity(Label = "LockiD", Icon = "@drawable/Icon", MainLauncher = true, Theme = "@style/SplashTheme", NoHistory = true)]
     public class SplashActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -18,6 +18,7 @@ namespace Parking.Mobile.Droid
         {
             base.OnResume();
 
+            
             StartActivity(new Intent(Application.Context, typeof(MainActivity)));
         }
     }

@@ -297,7 +297,7 @@ namespace Parking.Mobile.ViewModel
 
                 case "SearchCredential":
 
-                    //Navigation.PushAsync(new SearchCredentialPage());
+                    Navigation.PushAsync(new SearchCredentialPage());
 
                     break;
 

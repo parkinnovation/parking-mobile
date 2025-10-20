@@ -45,19 +45,21 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition  Width="100"/>
+                    <ColumnDefinition  Width="150"/>
                     <ColumnDefinition  Width="*"/>
-                    <ColumnDefinition  Width="100"/>
+                    <ColumnDefinition  Width="150"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
 
-                <FlexLayout Grid.Column="1" Grid.Row="0" Direction="Column" AlignItems="Center" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-                    <Button ImageSource="@drawable/Configuration" FontSize="Micro" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" Command="{Binding ActionLogin}" CommandParameter="Configuration"/>
+                <FlexLayout Grid.Column="0" Grid.Row="0" Direction="Column" AlignItems="Center" HorizontalOptions="StartAndExpand" VerticalOptions="Start">
+                    <Button ImageSource="@drawable/Configuration" FontSize="Micro" HorizontalOptions="Start" Text="CONFIGURAÇÕES" BackgroundColor="Transparent" Command="{Binding ActionLogin}" CommandParameter="Configuration"/>
                 </FlexLayout>
 
-                 
+                <FlexLayout Grid.Column="2" Grid.Row="0" Direction="Column" AlignItems="End" HorizontalOptions="EndAndExpand" VerticalOptions="End">
+                    <Button FontSize="Micro" BackgroundColor="Transparent" HorizontalOptions="End" VerticalOptions="End" Text="{Binding Version}"/>
+                </FlexLayout>
             </Grid>
         </StackLayout>
     

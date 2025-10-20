@@ -7,6 +7,10 @@ using System.Threading;
 using Xamarin.Forms;
 using Parking.Mobile.Data.Model;
 using Parking.Mobile.Common;
+using System.Threading.Tasks;
+using Parking.Mobile.Interface.Message.Request;
+using Parking.Mobile.ApplicationCore;
+using System.Linq;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -92,22 +96,83 @@ namespace Parking.Mobile.ViewModel
             }
 
             UserDialogs.Instance.ShowLoading("Buscando ticket...");
-            Thread.Sleep(500); // Simula busca
 
-            TicketInfo = new TicketInfoModel
-            {
-                Ticket = Ticket ?? "0000123456",
-                Plate = Plate ?? "ABC-1234",
-                DateEntry = DateTime.Now.AddHours(-2),
-                VehicleModel = "Fusca",
-                VehicleColor = "Azul",
-                Stay = "2h"
-            };
-
-            IsSearchMode = false;
-            IsTicketMode = true;
+            GetTicketInfo();
     
             UserDialogs.Instance.HideLoading();
+        }
+
+        private void GetTicketInfo()
+        {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(async () =>
+            {
+                AppParkingLot appParkingLot = new AppParkingLot();
+
+                string accessCode = "";
+
+                if (!String.IsNullOrEmpty(Plate))
+                {
+                    accessCode = this.Plate;
+                }
+
+                if (!String.IsNullOrEmpty(ticket))
+                {
+                    accessCode = this.Ticket;
+                }
+
+                if (!String.IsNullOrEmpty(CodeRead))
+                {
+                    accessCode = this.CodeRead;
+                }
+
+                var response = appParkingLot.GetTicketInfo(new GetTicketInfoRequest()
+                {
+                    AccessCode = accessCode,
+                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    IDUser = AppContextGeneral.userInfo.IdUser,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        TicketInfo = new TicketInfoModel()
+                        {
+                            Credential = response.Data.Credential,
+                            CredentialName = response.Data.CredentialName,
+                            DateEntry = response.Data.DateEntry,
+                            IDParkingLot = response.Data.IDParkingLot,
+                            Plate = response.Data.Plate,
+                            Prism = response.Data.Prism,
+                            Stay = response.Data.Stay,
+                            Ticket = response.Data.Ticket,
+                            VehicleColor = response.Data.VehicleColor,
+                            VehicleModel = response.Data.VehicleModel
+                        };
+
+                        IsSearchMode = false;
+                        IsTicketMode = true;
+                    });
+                }
+                else
+                {
+                    string codeAux = this.CodeRead;
+
+                    this.CodeRead = null;
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message + " - " + codeAux, "Ok");
+                    });
+                }
+            });
         }
 
         private void ConfirmChange()

@@ -58,6 +58,19 @@ namespace Parking.Mobile.ViewModel
             }
         }
 
+        private int idPaymentMethodIndex = -1;
+
+        public int IDPaymentMethodIndex
+        {
+            get => idPaymentMethodIndex;
+            set
+            {
+                idPaymentMethodIndex = value;
+
+                OnPropertyChanged(nameof(IDPaymentMethodIndex));
+            }
+        }
+
         private string CodeRead;
 
         private string plate;
@@ -83,6 +96,12 @@ namespace Parking.Mobile.ViewModel
 
         private List<DiscountInfo> discounts;
         public List<DiscountInfo> Discounts { get => discounts; set { discounts = value; OnPropertyChanged(nameof(Discounts)); } }
+
+        private List<PaymentMethodInfo> paymentMethods;
+        public List<PaymentMethodInfo> PaymentMethods { get => paymentMethods; set { paymentMethods = value; OnPropertyChanged(nameof(PaymentMethods)); } }
+
+        private string selectedPaymentMethod;
+        public string SelectedPaymentMethod { get => selectedPaymentMethod; set { selectedPaymentMethod = value; OnPropertyChanged(nameof(SelectedPaymentMethod)); } }
 
         private string selectedPriceTable;
         public string SelectedPriceTable
@@ -119,11 +138,7 @@ namespace Parking.Mobile.ViewModel
         private decimal calculatedPrice;
         public decimal CalculatedPrice { get => calculatedPrice; set { calculatedPrice = value; OnPropertyChanged(nameof(CalculatedPrice)); } }
 
-        public List<string> PaymentMethods { get; set; } = new List<string> { "Dinheiro", "Cartão", "PIX" };
-
-        private string selectedPaymentMethod;
-        public string SelectedPaymentMethod { get => selectedPaymentMethod; set { selectedPaymentMethod = value; OnPropertyChanged(nameof(SelectedPaymentMethod)); } }
-
+        
         public Command<string> ActionPage { get; }
         private readonly INavigation Navigation;
 
@@ -292,6 +307,41 @@ namespace Parking.Mobile.ViewModel
             });
         }
 
+        private void LoadListPaymentMethod()
+        {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(() =>
+            {
+                AppPayment appPayment = new AppPayment();
+
+                var response = appPayment.GetListPaymentMethod(new GetListPaymentMethodRequest()
+                {
+                    Plate = this.TicketInfo.Plate,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        this.PaymentMethods = response.Data.Methods;
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    });
+                }
+            });
+        }
+
         private void GetTicketInfo()
         {
             UserDialogs.Instance.ShowLoading("Processando...");
@@ -366,6 +416,8 @@ namespace Parking.Mobile.ViewModel
                         IsPaymentMode = false;
 
                         LoadPriceTable();
+
+                        LoadListPaymentMethod();
                     });
                 }
                 else
@@ -445,17 +497,118 @@ namespace Parking.Mobile.ViewModel
 
         private void ConfirmPayment()
         {
-            if (string.IsNullOrEmpty(SelectedPaymentMethod))
+            if (IDPaymentMethodIndex<0)
             {
                 Application.Current.MainPage.DisplayAlert("Aviso", "Selecione a forma de pagamento.", "OK");
                 return;
             }
 
+            TicketPaymentItemInfo ticketPaymentItemInfo = new TicketPaymentItemInfo()
+            {
+                Amount = TicketInfo.PaymentValue,
+                IDDiscount = IDDiscountIndex >= 0 ? Discounts[IDDiscountIndex].IdDiscount : -1,
+                IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].IDPaymentMethod
+            };
+
+            TicketInfo.Payments = new List<TicketPaymentItemInfo>();
+
+            TicketInfo.Payments.Add(ticketPaymentItemInfo);
+
+            ProcessPayment();
+
             Application.Current.MainPage.DisplayAlert("Sucesso",
-                $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {SelectedPaymentMethod}",
+                $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {PaymentMethods[IDPaymentMethodIndex].Description}",
                 "OK");
 
             ResetScreen();
+        }
+
+        private void ProcessPayment()
+        {
+            try
+            {
+                AppPayment appPayment = new AppPayment();
+
+                DateTime? dateExit = null;
+
+                if (this.TicketInfo.DatePriceScheduller.HasValue && AppContextGeneral.deviceInfo.PaymentInEntry)
+                {
+                    dateExit = this.TicketInfo.DatePriceScheduller.Value;
+                }
+
+                if (TicketInfo.Payments == null)
+                {
+                    TicketInfo.Payments = new List<TicketPaymentItemInfo>();
+                }
+
+                if (TicketInfo.PriceHistory == null)
+                {
+                    TicketInfo.PriceHistory = new List<TicketHistoryPriceInfo>();
+                }
+
+                
+                var response = appPayment.ProcessPayment(new ProcessPaymentRequest()
+                {
+                    CNPJ = this.TicketInfo.Cnpj,
+                    CPF = this.TicketInfo.Cpf,
+                    DatePayment = this.TicketInfo.DatePriceScheduller.HasValue ? this.TicketInfo.DatePriceScheduller.Value : DateTime.Now,
+                    DateBillingLimit = this.TicketInfo.DateBillingLimit,
+                    IDCashTransaction = AppContextGeneral.cashierInfo.CashTransactionId,
+                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    IDPriceTable = this.PriceTables[IDPriceTableIndex].IdPriceTable,
+                    IDUser = AppContextGeneral.userInfo.IdUser,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                    TicketNumber = this.TicketInfo.Ticket,
+                    DateExit = dateExit,
+                    Payments = (from l in this.TicketInfo.Payments
+                                select new PaymentItemInfo()
+                                {
+                                    Amount = l.Amount,
+                                    AuthorizationCode = l.AuthorizationCode,
+                                    Brand = l.Brand,
+                                    CardNumberTruncated = l.CardNumberTruncated,
+                                    IDDiscount = l.IDDiscount,
+                                    IDParkingSeal = l.IDParkingSeal,
+                                    IDPayment = l.IDPayment,
+                                    IDPaymentMethod = l.IDPaymentMethod,
+                                    Nsu = l.Nsu,
+                                    NsuHost = l.NsuHost,
+                                    PriceTableValue = l.PriceTableValue,
+                                    SealCode = l.SealCode,
+                                    SealCodeRead = l.SealCodeRead,
+                                    SealNumber = l.SealNumber,
+                                    SealTypeAccess = l.SealTypeAccess,
+                                    SealValue = l.SealValue,
+                                    IDBrand = l.IDBrand
+                                }).ToList()
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.HideLoading();
+
+                    Application.Current.MainPage.DisplayAlert("Erro ex", ex.StackTrace, "Ok");
+                });
+            }
         }
 
         private void UpdateCalculatedPrice()
