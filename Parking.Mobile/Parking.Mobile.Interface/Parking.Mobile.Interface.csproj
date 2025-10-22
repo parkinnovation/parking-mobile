@@ -13,9 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="Message\" />
     <Folder Include="Message\Request\" />
-    <Folder Include="Message\Response\" />
     <Folder Include="Message\Enum\" />
   </ItemGroup>
 </Project>

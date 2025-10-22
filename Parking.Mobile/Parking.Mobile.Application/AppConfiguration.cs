@@ -31,12 +31,12 @@ namespace Parking.Mobile.ApplicationCore
             AppContextGeneral.configurationApp = configurationApp;
         }
 
-        public ServiceResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode)
+        public ServiceResponseDefault<GetParkingInfoMobileResponse> GetParkingInfoMobile(string parkingCode)
         {
-            return new ServiceResponseDefault<GetParkingInfoResponse>
+            return new ServiceResponseDefault<GetParkingInfoMobileResponse>
             {
                 Success = true,
-                Data = new GetParkingInfoResponse()
+                Data = new GetParkingInfoMobileResponse()
                 {
                     ParkingCode = parkingCode,
                     Address = "Lab",

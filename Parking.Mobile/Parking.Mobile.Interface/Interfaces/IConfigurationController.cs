@@ -5,7 +5,7 @@ namespace Parking.Mobile.Interface.Interfaces
 {
 	public interface IConfigurationController
 	{
-        ServiceResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode);
+        ServiceResponseDefault<GetParkingInfoMobileResponse> GetParkingInfoMobile(string parkingCode);
 
         ServiceResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice);
 
