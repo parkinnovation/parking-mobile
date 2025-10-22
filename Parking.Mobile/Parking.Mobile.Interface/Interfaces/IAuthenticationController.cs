@@ -7,7 +7,7 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface IAuthenticationController
     {
-        ServiceResponseDefault<AuthenticateUserResponse> AuthenticateUser(AuthenticateUserRequest request);
+        ServiceResponseDefault<AuthenticateUserMobileResponse> AuthenticateUserMobile(AuthenticateUserMobileRequest request);
     }
 }
 

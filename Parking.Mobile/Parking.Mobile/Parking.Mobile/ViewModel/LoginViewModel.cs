@@ -115,7 +115,7 @@ namespace Parking.Mobile.ViewModel
         {
             AppAuthentication appAuthentication = new AppAuthentication();
 
-            var response = appAuthentication.AuthenticateUser(new AuthenticateUserRequest()
+            var response = appAuthentication.AuthenticateUserMobile(new AuthenticateUserMobileRequest()
             {
                 User = this.User,
                 Password = this.Password,

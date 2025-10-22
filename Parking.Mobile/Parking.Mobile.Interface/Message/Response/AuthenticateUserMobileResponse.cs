@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Parking.Mobile.Interface.Message.Response
 {
-    public class AuthenticateUserResponse
+    public class AuthenticateUserMobileResponse
     {
         public int IdUser { get; set; }
         public string Name { get; set; }
