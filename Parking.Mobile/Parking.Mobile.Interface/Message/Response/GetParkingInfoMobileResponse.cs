@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Parking.Mobile.Interface.Message.Response
 {
-    public class GetParkingInfoResponse
+    public class GetParkingInfoMobileResponse
     {
         public string ParkingCode { get; set; }
         public string Description { get; set; }

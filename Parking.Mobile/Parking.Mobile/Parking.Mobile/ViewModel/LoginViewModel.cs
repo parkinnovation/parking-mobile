@@ -166,7 +166,7 @@ namespace Parking.Mobile.ViewModel
         {
             AppConfiguration appConfiguration = new AppConfiguration();
 
-            var response = appConfiguration.GetParkingInfo(AppContextGeneral.configurationApp.ParkingCode);
+            var response = appConfiguration.GetParkingInfoMobile(AppContextGeneral.configurationApp.ParkingCode);
 
             if (!response.Success)
             {
