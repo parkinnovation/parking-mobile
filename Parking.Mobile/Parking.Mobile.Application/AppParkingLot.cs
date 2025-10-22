@@ -7,23 +7,23 @@ namespace Parking.Mobile.ApplicationCore
 {
     public class AppParkingLot : IParkingLotController
     {
-        public ResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request)
+        public ServiceResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public ResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request)
+        public ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request)
         {
-            return new ResponseDefault<ChangeSectorResponse>()
+            return new ServiceResponseDefault<ChangeSectorResponse>()
             {
                 Success = true,
                 Data = new ChangeSectorResponse()
             };
         }
 
-        public ResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request)
+        public ServiceResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request)
         {
-            return new ResponseDefault<GetTicketInfoResponse>()
+            return new ServiceResponseDefault<GetTicketInfoResponse>()
             {
                 Success = request.AccessCode == "123456789012",
                 Data = new GetTicketInfoResponse()
@@ -39,9 +39,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<ProcessEntryResponse> ProcessEntry(ProcessEntryRequest request)
+        public ServiceResponseDefault<ProcessEntryResponse> ProcessEntry(ProcessEntryRequest request)
         {
-            return new ResponseDefault<ProcessEntryResponse>()
+            return new ServiceResponseDefault<ProcessEntryResponse>()
             {
                 Success = true,
                 Data = new ProcessEntryResponse()
@@ -54,14 +54,14 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<ProcessTicketLossResponse> ProcessTicketLoss(ProcessTicketLossRequest request)
+        public ServiceResponseDefault<ProcessTicketLossResponse> ProcessTicketLoss(ProcessTicketLossRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public ResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate)
+        public ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate)
         {
-            return new ResponseDefault<ValidateEntryPlateResponse>()
+            return new ServiceResponseDefault<ValidateEntryPlateResponse>()
             {
                 Success = (plate == "AAA-0001" || plate == "AAA-0002"),
                 Data = new ValidateEntryPlateResponse(),

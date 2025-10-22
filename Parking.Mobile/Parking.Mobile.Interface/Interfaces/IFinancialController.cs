@@ -6,11 +6,11 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface IFinancialController
     {
-        ResponseDefault<GetCurrentCashierResponse> GetCurrentCashier(string parkingCode, int idDevice);
+        ServiceResponseDefault<GetCurrentCashierResponse> GetCurrentCashier(string parkingCode, int idDevice);
 
-        ResponseDefault<OpenCashierResponse> OpenCashier(OpenCashierRequest request);
+        ServiceResponseDefault<OpenCashierResponse> OpenCashier(OpenCashierRequest request);
 
-        ResponseDefault<CloseCashierResponse> CloseCashier(CloseCashierRequest request);
+        ServiceResponseDefault<CloseCashierResponse> CloseCashier(CloseCashierRequest request);
     }
 }
 

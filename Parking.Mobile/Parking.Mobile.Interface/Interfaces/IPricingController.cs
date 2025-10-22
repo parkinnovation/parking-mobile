@@ -6,11 +6,11 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface IPricingController
     {
-        ResponseDefault<GetTicketPriceResponse> GetTicketPrice(GetTicketPriceRequest request);
+        ServiceResponseDefault<GetTicketPriceResponse> GetTicketPrice(GetTicketPriceRequest request);
 
-        ResponseDefault<GetListPriceTableResponse> GetListPriceTable(GetListPriceTableRequest request);
+        ServiceResponseDefault<GetListPriceTableResponse> GetListPriceTable(GetListPriceTableRequest request);
 
-        ResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, int idPriceTable);
+        ServiceResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, int idPriceTable);
     }
 }
 

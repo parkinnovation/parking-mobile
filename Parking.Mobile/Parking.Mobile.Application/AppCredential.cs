@@ -8,7 +8,7 @@ namespace Parking.Mobile.ApplicationCore
 {
     public class AppCredential : ICredentialController
     {
-        public ResponseDefault<GetClientResponse> GetClientInfo(string parkingCode, int idClient)
+        public ServiceResponseDefault<GetClientResponse> GetClientInfo(string parkingCode, int idClient)
         {
             List<CredentialItemInfo> lst = new List<CredentialItemInfo>();
 
@@ -23,7 +23,7 @@ namespace Parking.Mobile.ApplicationCore
                 TypeDescription = "Credenciado"
             });
 
-            return new ResponseDefault<GetClientResponse>()
+            return new ServiceResponseDefault<GetClientResponse>()
             {
                 Success = true,
                 Data = new GetClientResponse()
@@ -43,7 +43,7 @@ namespace Parking.Mobile.ApplicationCore
                 };
         }
 
-        public ResponseDefault<GetCredentialByDocumentResponse> GetCredentialByDocument(string parkingCode, string document, bool activeOnly)
+        public ServiceResponseDefault<GetCredentialByDocumentResponse> GetCredentialByDocument(string parkingCode, string document, bool activeOnly)
         {
             List<CredentialItemInfo> lst = new List<CredentialItemInfo>();
 
@@ -58,7 +58,7 @@ namespace Parking.Mobile.ApplicationCore
                 TypeDescription = "Credenciado"
             });
 
-            return new ResponseDefault<GetCredentialByDocumentResponse>()
+            return new ServiceResponseDefault<GetCredentialByDocumentResponse>()
             {
                 Success = true,
                 Data = new GetCredentialByDocumentResponse()
@@ -68,9 +68,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request)
+        public ServiceResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request)
         {
-            return new ResponseDefault<GetCredentialInfoResponse>()
+            return new ServiceResponseDefault<GetCredentialInfoResponse>()
             {
                 Success = request.Plate == "AAA-0002",
                 Data = new GetCredentialInfoResponse()
@@ -86,13 +86,13 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<ListClientResponse> ListClient(ListClientRequest request)
+        public ServiceResponseDefault<ListClientResponse> ListClient(ListClientRequest request)
         {
             List<ClientInfo> lst = new List<ClientInfo>();
 
             lst.Add(new ClientInfo() { IDClient = 1, Name = "Cliente teste", Code = "999" });
 
-            return new ResponseDefault<ListClientResponse>()
+            return new ServiceResponseDefault<ListClientResponse>()
             {
                 Success = true,
                 Data = new ListClientResponse()

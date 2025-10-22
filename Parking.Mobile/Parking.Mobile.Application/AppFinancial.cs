@@ -7,9 +7,9 @@ namespace Parking.Mobile.ApplicationCore
 {
 	public class AppFinancial : IFinancialController
     {
-		public ResponseDefault<CloseCashierResponse> CloseCashier(CloseCashierRequest request)
+		public ServiceResponseDefault<CloseCashierResponse> CloseCashier(CloseCashierRequest request)
         {
-            return new ResponseDefault<CloseCashierResponse>()
+            return new ServiceResponseDefault<CloseCashierResponse>()
             {
                 Success = true,
                 Data = new CloseCashierResponse()
@@ -23,9 +23,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetCurrentCashierResponse> GetCurrentCashier(string parkingCode, int idDevice)
+        public ServiceResponseDefault<GetCurrentCashierResponse> GetCurrentCashier(string parkingCode, int idDevice)
         {
-            return new ResponseDefault<GetCurrentCashierResponse>()
+            return new ServiceResponseDefault<GetCurrentCashierResponse>()
             {
                 Success = true,
                 Data = new GetCurrentCashierResponse()
@@ -39,9 +39,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<OpenCashierResponse> OpenCashier(OpenCashierRequest request)
+        public ServiceResponseDefault<OpenCashierResponse> OpenCashier(OpenCashierRequest request)
         {
-            return new ResponseDefault<OpenCashierResponse>()
+            return new ServiceResponseDefault<OpenCashierResponse>()
             {
                 Success = true,
                 Data = new OpenCashierResponse()

@@ -31,9 +31,9 @@ namespace Parking.Mobile.ApplicationCore
             AppContextGeneral.configurationApp = configurationApp;
         }
 
-        public ResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode)
+        public ServiceResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode)
         {
-            return new ResponseDefault<GetParkingInfoResponse>
+            return new ServiceResponseDefault<GetParkingInfoResponse>
             {
                 Success = true,
                 Data = new GetParkingInfoResponse()
@@ -48,9 +48,9 @@ namespace Parking.Mobile.ApplicationCore
             
         }
 
-        public ResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice)
+        public ServiceResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice)
         {
-            return new ResponseDefault<GetTerminalInfoResponse>()
+            return new ServiceResponseDefault<GetTerminalInfoResponse>()
             {
                 Success = true,
                 Data = new GetTerminalInfoResponse()
@@ -68,7 +68,7 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode)
+        public ServiceResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode)
         {
             List<VehicleModelInfo> lst = new List<VehicleModelInfo>();
 
@@ -96,7 +96,7 @@ namespace Parking.Mobile.ApplicationCore
                 Type = 1
             });
 
-            return new ResponseDefault<GetListVehicleModelResponse>()
+            return new ServiceResponseDefault<GetListVehicleModelResponse>()
             {
                 Data = new GetListVehicleModelResponse()
                 {
@@ -106,7 +106,7 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetListColorResponse> GetListColor(string parkingCode)
+        public ServiceResponseDefault<GetListColorResponse> GetListColor(string parkingCode)
         {
             List<ColorInfo> lst = new List<ColorInfo>();
 
@@ -115,7 +115,7 @@ namespace Parking.Mobile.ApplicationCore
             lst.Add(new ColorInfo() { Description = "Prata" });
             lst.Add(new ColorInfo() { Description = "Vermelho" });
 
-            return new ResponseDefault<GetListColorResponse>()
+            return new ServiceResponseDefault<GetListColorResponse>()
             {
                 Success = true,
                 Data = new GetListColorResponse()

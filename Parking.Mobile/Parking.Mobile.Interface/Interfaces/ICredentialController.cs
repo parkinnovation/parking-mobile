@@ -6,13 +6,13 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface ICredentialController
     {
-        ResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request);
+        ServiceResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request);
 
-        ResponseDefault<GetCredentialByDocumentResponse> GetCredentialByDocument(string parkingCode, string document, bool activeOnly);
+        ServiceResponseDefault<GetCredentialByDocumentResponse> GetCredentialByDocument(string parkingCode, string document, bool activeOnly);
 
-        ResponseDefault<ListClientResponse> ListClient(ListClientRequest request);
+        ServiceResponseDefault<ListClientResponse> ListClient(ListClientRequest request);
 
-        ResponseDefault<GetClientResponse> GetClientInfo(string parkingCode, int idClient);
+        ServiceResponseDefault<GetClientResponse> GetClientInfo(string parkingCode, int idClient);
     }
 }
 

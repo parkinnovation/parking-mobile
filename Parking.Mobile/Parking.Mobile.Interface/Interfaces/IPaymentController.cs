@@ -6,11 +6,11 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface IPaymentController
     {
-        ResponseDefault<GetListPaymentMethodResponse> GetListPaymentMethod(GetListPaymentMethodRequest request);
+        ServiceResponseDefault<GetListPaymentMethodResponse> GetListPaymentMethod(GetListPaymentMethodRequest request);
 
-        ResponseDefault<ValidateSealResponse> ValidateSeal(ValidateSealRequest request);
+        ServiceResponseDefault<ValidateSealResponse> ValidateSeal(ValidateSealRequest request);
 
-        ResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request);
+        ServiceResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request);
 
     }
 }

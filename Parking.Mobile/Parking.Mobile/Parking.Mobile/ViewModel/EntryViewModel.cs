@@ -204,34 +204,21 @@ namespace Parking.Mobile.ViewModel
 
                         var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
 
-                            print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
-                            {
-                                CredentialName = CredentialName,
-                                CredentialNumber = Credential,
-                                DateEntry = response.Data.DateEntry,
-                                Plate = Plate,
-                                Prism = Prism,
-                                TicketNumber = response.Data.Ticket,
-                                VehicleColor = Color,
-                                VehicleModel = Vehicle
-                            });
+                        print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
+                        {
+                            CredentialName = CredentialName,
+                            CredentialNumber = Credential,
+                            DateEntry = response.Data.DateEntry,
+                            Plate = Plate,
+                            Prism = Prism,
+                            TicketNumber = response.Data.Ticket,
+                            VehicleColor = Color,
+                            VehicleModel = Vehicle
+                        });
                             
-                            /*Application.Current.MainPage.DisplayAlert(
-                            "Sucesso",
-                            $"Veículo: {Vehicle}\nCor: {Color}\nPlaca: {Plate}\nPrisma: {Prism} {response.Data.Ticket}",
-                            "OK");*/
-                            /*if (String.IsNullOrEmpty(this.Credential) || (!String.IsNullOrEmpty(this.Credential))
-                            {
-                                for (int i = 0; i < AppContextGeneral.parkingInfo.NumberPrintEntryCopies; i++)
-                                {
+                        Application.Current.MainPage = new MenuPage();
 
-                                    print.PrintTicketEntry(response.Data.Ticket, this.Credential, this.CredentialName, response.Data.DateEntry, this.Prism, this.Plate, this.VehicleModel, this.Color, response.Data.QrCodeContingency, (PrintTicketMobileLevel)AppContextGeneral.parkingInfo.PrintTicketMobileLevel, AppContextGeneral.parkingInfo.QrCodeFooter);
-                                }
-                            }*/
-
-                            Application.Current.MainPage = new MenuPage();
-
-                            UserDialogs.Instance.HideLoading();
+                        UserDialogs.Instance.HideLoading();
                         }
                         catch (Exception ex)
                         {

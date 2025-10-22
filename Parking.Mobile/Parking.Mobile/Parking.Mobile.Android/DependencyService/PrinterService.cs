@@ -29,6 +29,9 @@ namespace Parking.Mobile.Droid.DependencyService
         private readonly byte[] fontCondensed = new byte[] { 0x1B, 0x21, 0x01 }; // Fonte pequena/condensada
         private readonly byte[] fontNormal = new byte[] { 0x1B, 0x21, 0x00 };    // Fonte normal
         private readonly byte[] fontDouble = new byte[] { 0x1B, 0x21, 0x30 };    // Dobra largura e altura
+        private readonly byte[] selectCodePage = new byte[] { 0x1B, 0x52, 16 }; // Europa Ocidental
+
+        //private Encoding encoding = Encoding.utf;
 
         public void PrintText(string text)
         {
@@ -269,9 +272,6 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 PrintBarcode(output, info.TicketNumber);
 
-                //data = Encoding.UTF8.GetBytes($"\n\n");
-                //output.Write(data, 0, data.Length);
-
                 output.Write(fontCondensed, 0, fontCondensed.Length);
 
                 data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
@@ -291,7 +291,126 @@ namespace Parking.Mobile.Droid.DependencyService
 
         public void PrintPaymentReceipt(PrintTicketInfoModel info)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var printerDevice = FindPrinter();
+
+                if (printerDevice == null)
+                {
+                    Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
+                    return;
+                }
+
+                var uuid = Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+                socket = printerDevice.CreateRfcommSocketToServiceRecord(uuid);
+                socket.Connect();
+
+                var output = socket.OutputStream;
+
+                output.Write(init, 0, init.Length);
+
+              
+                output.Write(selectCodePage, 0, selectCodePage.Length);
+
+                output.Write(fontNormal, 0, fontNormal.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+                output.Write(boldOn, 0, boldOn.Length);
+
+                var data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Description}\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(boldOff, 0, boldOff.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Address}\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(fontDouble, 0, fontDouble.Length);
+
+                if (!String.IsNullOrEmpty(info.Plate))
+                {
+                    data = Encoding.UTF8.GetBytes($"{info.Plate}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                output.Write(alignLeft, 0, alignLeft.Length);
+
+                data = Encoding.UTF8.GetBytes($"Ticket      : {info.TicketNumber}\n");
+                output.Write(data, 0, data.Length);
+                data = Encoding.UTF8.GetBytes($"Entrada     : {info.DateEntry.ToString("dd/MM/yyyy hh:mm")}\n");
+                output.Write(data, 0, data.Length);
+                data = Encoding.UTF8.GetBytes($"Terminal    : {AppContextGeneral.deviceInfo.Description}\n");
+                output.Write(data, 0, data.Length);
+
+                if (!String.IsNullOrEmpty(info.CredentialName))
+                {
+                    data = Encoding.UTF8.GetBytes($"Cred/Mens   : {info.CredentialName}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(info.VehicleModel))
+                {
+                    data = Encoding.UTF8.GetBytes($"Veiculo     : {info.VehicleModel}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(info.VehicleColor))
+                {
+                    data = Encoding.UTF8.GetBytes($"Cor         : {info.VehicleColor}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(info.Prism))
+                {
+                data = Encoding.UTF8.GetBytes($"Prisma      : {info.Prism}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"Pagamento   : {info.DatePayment.ToString("dd/MM/yyyy HH:mm")}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Limite Saida: {info.DateLimitExit.ToString("dd/MM/yyyy HH:mm")}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Permanencia : {info.Stay}\n\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Valor Total : R$ {info.Amount.ToString("F2")}\n\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes("Formas de Pagamento\n");
+                output.Write(data, 0, data.Length);
+
+                foreach(var payment in info.Payments)
+                {
+                    data = Encoding.UTF8.GetBytes($"{payment.PaymentMethod}: R{(char)0x24} {payment.Amount.ToString("F2")}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(cut, 0, cut.Length);
+                output.Flush();
+
+                socket.Close();
+                Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+            }
         }
     }
 }

@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Data.Model;
 using Parking.Mobile.Interface.Message.Response;
+using Parking.Mobile.DependencyService.Interfaces;
+using Parking.Mobile.DependencyService.Model;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -503,18 +505,8 @@ namespace Parking.Mobile.ViewModel
                 return;
             }
 
-            TicketPaymentItemInfo ticketPaymentItemInfo = new TicketPaymentItemInfo()
-            {
-                Amount = TicketInfo.PaymentValue,
-                IDDiscount = IDDiscountIndex >= 0 ? Discounts[IDDiscountIndex].IdDiscount : -1,
-                IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].IDPaymentMethod
-            };
-
-            TicketInfo.Payments = new List<TicketPaymentItemInfo>();
-
-            TicketInfo.Payments.Add(ticketPaymentItemInfo);
-
             ProcessPayment();
+
 
             Application.Current.MainPage.DisplayAlert("Sucesso",
                 $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {PaymentMethods[IDPaymentMethodIndex].Description}",
@@ -539,6 +531,23 @@ namespace Parking.Mobile.ViewModel
                 if (TicketInfo.Payments == null)
                 {
                     TicketInfo.Payments = new List<TicketPaymentItemInfo>();
+
+                    TicketInfo.Payments.Add(new TicketPaymentItemInfo()
+                    {
+                        Amount = TicketInfo.Price,
+                        IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].IDPaymentMethod,
+                        Description = PaymentMethods[IDPaymentMethodIndex].Description
+                    });
+
+                    if (IDDiscountIndex >= 0)
+                    {
+                        TicketInfo.Payments.Add(new TicketPaymentItemInfo()
+                        {
+                            Amount = TicketInfo.DiscountValue,
+                            IDDiscount = Discounts[IDDiscountIndex].IdDiscount,
+                            Description = Discounts[IDDiscountIndex].Description
+                        });
+                    }
                 }
 
                 if (TicketInfo.PriceHistory == null)
@@ -585,6 +594,28 @@ namespace Parking.Mobile.ViewModel
 
                 if (response.Success)
                 {
+                    var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                    print.PrintPaymentReceipt(new DependencyService.Model.PrintTicketInfoModel()
+                    {
+                        DateEntry = TicketInfo.DateEntry,
+                        Plate = TicketInfo.Plate,
+                        Prism = TicketInfo.Prism,
+                        TicketNumber = TicketInfo.Ticket,
+                        VehicleColor = TicketInfo.VehicleColor,
+                        VehicleModel = TicketInfo.VehicleModel,
+                        DatePayment = response.Data.DatePayment.Value,
+                        DateLimitExit = response.Data.DateLimitExit.Value,
+                        Payments = (from l in TicketInfo.Payments select
+                            new PrintPaymentInfoModel()
+                            {
+                                PaymentMethod = l.Description,
+                                Amount = l.Amount.Value
+                            }
+                        ).ToList(),
+                        Amount = (from l in TicketInfo.Payments select l.Amount.Value).Sum()
+                    });
+
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         UserDialogs.Instance.HideLoading();

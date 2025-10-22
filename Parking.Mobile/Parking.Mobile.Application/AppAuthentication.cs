@@ -7,9 +7,9 @@ namespace Parking.Mobile.ApplicationCore
 {
     public class AppAuthentication : IAuthenticationController
     {
-        public ResponseDefault<AuthenticateUserResponse> AuthenticateUser(AuthenticateUserRequest request)
+        public ServiceResponseDefault<AuthenticateUserResponse> AuthenticateUser(AuthenticateUserRequest request)
         {
-            return new ResponseDefault<AuthenticateUserResponse>()
+            return new ServiceResponseDefault<AuthenticateUserResponse>()
             {
                 Success = true,
                 Data = new AuthenticateUserResponse()

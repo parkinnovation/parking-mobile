@@ -5,13 +5,13 @@ namespace Parking.Mobile.Interface.Interfaces
 {
 	public interface IConfigurationController
 	{
-        ResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode);
+        ServiceResponseDefault<GetParkingInfoResponse> GetParkingInfo(string parkingCode);
 
-        ResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice);
+        ServiceResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice);
 
-        ResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode);
+        ServiceResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode);
 
-        ResponseDefault<GetListColorResponse> GetListColor(string parkingCode);
+        ServiceResponseDefault<GetListColorResponse> GetListColor(string parkingCode);
     }
 }
 

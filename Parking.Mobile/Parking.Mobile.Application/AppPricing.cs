@@ -8,14 +8,14 @@ namespace Parking.Mobile.ApplicationCore
 {
     public class AppPricing : IPricingController
     {
-        public ResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, int idPriceTable)
+        public ServiceResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, int idPriceTable)
         {
             List<DiscountInfo> lst = new List<DiscountInfo>();
 
             lst.Add(new DiscountInfo() { Description = "NETPARK 50%", Percent = 1, IdDiscount = 1 });
             lst.Add(new DiscountInfo() { Description = "DESC 20%", Percent = 0.1m, IdDiscount = 2 });
 
-            return new ResponseDefault<GetListDiscountResponse>()
+            return new ServiceResponseDefault<GetListDiscountResponse>()
             {
 
                 Success = true,
@@ -26,14 +26,14 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetListPriceTableResponse> GetListPriceTable(GetListPriceTableRequest request)
+        public ServiceResponseDefault<GetListPriceTableResponse> GetListPriceTable(GetListPriceTableRequest request)
         {
             List<PriceTableInfo> lst = new List<PriceTableInfo>();
 
             lst.Add(new PriceTableInfo() { IdPriceTable = 1, Description = "Rotativo" });
             lst.Add(new PriceTableInfo() { IdPriceTable = 2, Description = "Convenio" });
 
-            return new ResponseDefault<GetListPriceTableResponse>()
+            return new ServiceResponseDefault<GetListPriceTableResponse>()
             {
                 Success = true,
                 Data = new GetListPriceTableResponse()
@@ -43,9 +43,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<GetTicketPriceResponse> GetTicketPrice(GetTicketPriceRequest request)
+        public ServiceResponseDefault<GetTicketPriceResponse> GetTicketPrice(GetTicketPriceRequest request)
         {
-            return new ResponseDefault<GetTicketPriceResponse>()
+            return new ServiceResponseDefault<GetTicketPriceResponse>()
             {
                 Success = true,
                 Data = new GetTicketPriceResponse()

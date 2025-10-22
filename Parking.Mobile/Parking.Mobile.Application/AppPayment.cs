@@ -8,7 +8,7 @@ namespace Parking.Mobile.ApplicationCore
 {
     public class AppPayment : IPaymentController
     {
-        public ResponseDefault<GetListPaymentMethodResponse> GetListPaymentMethod(GetListPaymentMethodRequest request)
+        public ServiceResponseDefault<GetListPaymentMethodResponse> GetListPaymentMethod(GetListPaymentMethodRequest request)
         {
             List<PaymentMethodInfo> lst = new List<PaymentMethodInfo>();
 
@@ -18,7 +18,7 @@ namespace Parking.Mobile.ApplicationCore
             lst.Add(new PaymentMethodInfo() { IDPaymentMethod = 1, Description = "PIX", Type = 4 });
 
 
-            return new ResponseDefault<GetListPaymentMethodResponse>()
+            return new ServiceResponseDefault<GetListPaymentMethodResponse>()
             {
                 Success = true,
                 Data = new GetListPaymentMethodResponse()
@@ -28,9 +28,9 @@ namespace Parking.Mobile.ApplicationCore
             };
         }
 
-        public ResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request)
+        public ServiceResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request)
         {
-            return new ResponseDefault<ProcessPaymentResponse>()
+            return new ServiceResponseDefault<ProcessPaymentResponse>()
             {
                 Success = true,
                 Data = new ProcessPaymentResponse()
@@ -43,9 +43,9 @@ namespace Parking.Mobile.ApplicationCore
              };
         }
 
-        public ResponseDefault<ValidateSealResponse> ValidateSeal(ValidateSealRequest request)
+        public ServiceResponseDefault<ValidateSealResponse> ValidateSeal(ValidateSealRequest request)
         {
-            return new ResponseDefault<ValidateSealResponse>()
+            return new ServiceResponseDefault<ValidateSealResponse>()
             {
                 Success = true,
                 Data = new ValidateSealResponse()

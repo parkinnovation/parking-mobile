@@ -6,17 +6,17 @@ namespace Parking.Mobile.Interface.Interfaces
 {
     public interface IParkingLotController
     {
-        ResponseDefault<ProcessEntryResponse> ProcessEntry(ProcessEntryRequest request);
+        ServiceResponseDefault<ProcessEntryResponse> ProcessEntry(ProcessEntryRequest request);
 
-        ResponseDefault<ProcessTicketLossResponse> ProcessTicketLoss(ProcessTicketLossRequest request);
+        ServiceResponseDefault<ProcessTicketLossResponse> ProcessTicketLoss(ProcessTicketLossRequest request);
 
-        ResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request);
+        ServiceResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request);
 
-        ResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate);
+        ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate);
 
-        ResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request);
+        ServiceResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request);
 
-        ResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request);
+        ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request);
     }
 }
 
