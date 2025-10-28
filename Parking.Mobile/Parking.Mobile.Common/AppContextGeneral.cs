@@ -20,13 +20,40 @@ namespace Parking.Mobile.Common
 
         public static ICamScanner scannerDep;
 
-        public static ConfigurationApp configurationApp;
+        private static ConfigurationApp _configurationApp;
+
+        public static ConfigurationApp configurationApp
+        {
+            get
+            {
+                return _configurationApp;
+            }
+
+            set
+            {
+                _configurationApp = value;
+
+                if(SignalRClient!=null)
+                {
+                    SignalRClient.StopAsync();
+                    SignalRClient = null;
+                }
+
+                SignalRClient = new SignalRClientService(value.UrlWebApi);
+
+                SignalRClient.StartAsync();
+            }
+        }
+        
+
         public static UserInfoModel userInfo;
         public static ParkingInfoModel parkingInfo;
         public static DeviceInfoModel deviceInfo;
         public static CashierInfoModel cashierInfo;
         public static List<VehicleModelInfo> vehicles;
         public static List<ColorInfo> colors;
+
+        public static SignalRClientService SignalRClient { get; set; }
     }
 }
 

@@ -14,6 +14,18 @@ namespace Parking.Mobile.Interface.Message.Response
         public string TypeDescription { get; set; }
         public int? RPSSeries { get; set; }
         public bool NfceEnable { get; set; }
+        public bool ModelRequired { get; set; }
+        public bool ColorRequired { get; set; }
+        public bool PrismRequired { get; set; }
+        public string TicketHeader1 { get; set; }
+        public string TicketHeader2 { get; set; }
+        public string TicketHeader3 { get; set; }
+        public string TicketFooter1 { get; set; }
+        public string TicketFooter2 { get; set; }
+        public string TicketFooter3 { get; set; }
+        public string ReceiptFooter1 { get; set; }
+        public string ReceiptFooter2 { get; set; }
+        public string ReceiptFooter3 { get; set; }
     }
 }
 

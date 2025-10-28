@@ -210,16 +210,29 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Write(fontNormal, 0, fontNormal.Length);
 
                 output.Write(alignCenter, 0, alignCenter.Length);
-                output.Write(boldOn, 0, boldOn.Length);
-
-                var data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Description}\n");
-                output.Write(data, 0, data.Length);
-
-                output.Write(boldOff, 0, boldOff.Length);
-
                 output.Write(fontCondensed, 0, fontCondensed.Length);
 
-                data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Address}\n\n");
+                byte[] data;
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader3}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"\n");
                 output.Write(data, 0, data.Length);
 
                 output.Write(fontDouble, 0, fontDouble.Length);
@@ -274,6 +287,24 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 output.Write(fontCondensed, 0, fontCondensed.Length);
 
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketFooter1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketFooter1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketFooter2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketFooter2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketFooter3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketFooter3}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
                 data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
                 output.Write(data, 0, data.Length);
 
@@ -315,16 +346,29 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Write(fontNormal, 0, fontNormal.Length);
 
                 output.Write(alignCenter, 0, alignCenter.Length);
-                output.Write(boldOn, 0, boldOn.Length);
-
-                var data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Description}\n");
-                output.Write(data, 0, data.Length);
-
-                output.Write(boldOff, 0, boldOff.Length);
-
                 output.Write(fontCondensed, 0, fontCondensed.Length);
 
-                data = Encoding.UTF8.GetBytes($"{AppContextGeneral.parkingInfo.Address}\n\n");
+                byte[] data;
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader3}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"\n");
                 output.Write(data, 0, data.Length);
 
                 output.Write(fontDouble, 0, fontDouble.Length);
@@ -397,6 +441,24 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Write(alignCenter, 0, alignCenter.Length);
 
                 output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.ReceiptFooter1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.ReceiptFooter1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.ReceiptFooter2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.ReceiptFooter2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.ReceiptFooter3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.ReceiptFooter3}\n");
+                    output.Write(data, 0, data.Length);
+                }
 
                 data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
                 output.Write(data, 0, data.Length);

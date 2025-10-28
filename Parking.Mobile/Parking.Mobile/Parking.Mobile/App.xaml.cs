@@ -36,6 +36,10 @@ namespace Parking.Mobile
                 
                 appConfiguration.SaveConfigurationApp(AppContextGeneral.configurationApp);
             }
+
+            
+
+
         }
 
         protected override void OnSleep ()

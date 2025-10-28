@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+    x:Class="Parking.Mobile.View.WhatsAppPopup">
+
+    <Frame Padding="20" BackgroundColor="White" CornerRadius="15" WidthRequest="300">
+        <StackLayout Spacing="10">
+            <Label Text="Digite o número do WhatsApp:" />
+            <Entry x:Name="entPhone" Placeholder="(99) 99999-9999" Keyboard="Telephone" />
+
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Button Text="Cancelar" Command="{Binding CloseCommand}" CommandParameter="Cancel" HorizontalOptions="FillAndExpand"/>
+                <Button Text="Enviar" Style="{StaticResource btnConfirm}" Command="{Binding CloseCommand}" CommandParameter="Send" HorizontalOptions="FillAndExpand"/>
+            </StackLayout>
+        </StackLayout>
+    </Frame>
+</toolkit:Popup>

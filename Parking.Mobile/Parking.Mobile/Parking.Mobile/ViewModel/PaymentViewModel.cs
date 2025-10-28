@@ -14,6 +14,7 @@ using Parking.Mobile.Data.Model;
 using Parking.Mobile.Interface.Message.Response;
 using Parking.Mobile.DependencyService.Interfaces;
 using Parking.Mobile.DependencyService.Model;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -150,6 +151,11 @@ namespace Parking.Mobile.ViewModel
 
             AppContextGeneral.scannerDep.ClearDelegates();
             AppContextGeneral.scannerDep.OnScannerReader += ScannerDep_OnScannerReader;
+
+            if (AppContextGeneral.cashierInfo == null)
+            {
+                var ret = Navigation.ShowPopupAsync<object>(new OpenCashierPage());
+            }
 
             ActionPage = new Command<string>(ActionButton);
         }

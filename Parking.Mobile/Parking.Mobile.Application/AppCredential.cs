@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
+using Xamarin.Forms;
 
 namespace Parking.Mobile.ApplicationCore
 {
@@ -70,20 +72,29 @@ namespace Parking.Mobile.ApplicationCore
 
         public ServiceResponseDefault<GetCredentialInfoResponse> GetCredentialInfo(GetCredentialInfoRequest request)
         {
-            return new ServiceResponseDefault<GetCredentialInfoResponse>()
+            try
             {
-                Success = request.Plate == "AAA-0002",
-                Data = new GetCredentialInfoResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<GetCredentialInfoResponse>>(
+                            "GetCredentialInfo",
+                            request 
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetCredentialInfoResponse>
                 {
-                    IDClient = 1,
-                    Name = "Cliente Teste",
-                    ClientActive = true,
-                    DateStart = new DateTime(2000, 1, 1),
-                    DateEnd = new DateTime(2049, 1, 1),
-                    Credential = "111",
-                    CredentialActive = true
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ListClientResponse> ListClient(ListClientRequest request)

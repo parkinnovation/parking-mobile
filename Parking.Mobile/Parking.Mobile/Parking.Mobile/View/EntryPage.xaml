@@ -24,8 +24,8 @@
                 <Label Text="{Binding CredentialName}" Style="{StaticResource lblInfoFlow}" />
 
                 <!-- Veículo -->
-                <Label Text="Veículo" Style="{StaticResource lblInfoFlow}" />
-                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10">
+                <Label Text="Veículo" Style="{StaticResource lblInfoFlow}" IsVisible="{Binding VehicleRequired}" />
+                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10" IsVisible="{Binding VehicleRequired}">
                     <Label Text="{Binding Vehicle}" />
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenVehiclePopup}" />
@@ -33,8 +33,8 @@
                 </Frame>
 
                 <!-- Cor -->
-                <Label Text="Cor" Style="{StaticResource lblInfoFlow}" />
-                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10">
+                <Label Text="Cor" Style="{StaticResource lblInfoFlow}" IsVisible="{Binding ColorRequired}"/>
+                <Frame Padding="10" HasShadow="False" BackgroundColor="#EEE" CornerRadius="10" IsVisible="{Binding ColorRequired}">
                     <Label Text="{Binding Color}" />
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenColorPopup}" />
@@ -42,8 +42,8 @@
                 </Frame>
 
                 <!-- Prisma -->
-                <Label Text="Prisma" Style="{StaticResource lblInfoFlow}" />
-                <Entry Keyboard="Text" 
+                <Label Text="Prisma" Style="{StaticResource lblInfoFlow}" IsVisible="{Binding PrismRequired}"/>
+                <Entry Keyboard="Text" IsVisible="{Binding PrismRequired}"
                        Style="{StaticResource entFlow}"
                        Text="{Binding Prism}" />
 

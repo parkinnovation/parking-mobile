@@ -263,11 +263,6 @@ namespace Parking.Mobile.ViewModel
 
                 case "Exit":
 
-                    //AppContextGeneral.connectionMonitoringDep.Stop();
-                    //AppContextGeneral.syncReceive.Stop();
-                    //AppContextGeneral.syncSend.Stop();
-
-                    /*
                     if (AppContextGeneral.cashierInfo != null)
                     {
                         CloseCashierPage closeCashierPage = new CloseCashierPage();
@@ -277,7 +272,7 @@ namespace Parking.Mobile.ViewModel
                     else
                     {
                         Application.Current.MainPage = new LoginPage();
-                    }*/
+                    }
                     break;
 
                 case "TicketLost":

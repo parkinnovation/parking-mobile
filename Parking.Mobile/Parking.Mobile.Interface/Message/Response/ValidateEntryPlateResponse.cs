@@ -3,9 +3,7 @@ namespace Parking.Mobile.Interface.Message.Response
 {
 	public class ValidateEntryPlateResponse
 	{
-		public ValidateEntryPlateResponse()
-		{
-		}
+		public Guid IDMessage { get; set; }
 	}
 }
 

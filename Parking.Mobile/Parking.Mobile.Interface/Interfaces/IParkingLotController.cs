@@ -12,7 +12,7 @@ namespace Parking.Mobile.Interface.Interfaces
 
         ServiceResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request);
 
-        ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate);
+        ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate, int idDevice);
 
         ServiceResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request);
 

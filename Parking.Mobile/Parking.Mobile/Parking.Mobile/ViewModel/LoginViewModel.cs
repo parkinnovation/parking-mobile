@@ -228,6 +228,18 @@ namespace Parking.Mobile.ViewModel
                 deviceInfoModel.TypeDescription = response.Data.TypeDescription;
                 deviceInfoModel.TEFMobileId = response.Data.TEFMobileId;
                 deviceInfoModel.RPSSeries = response.Data.RPSSeries;
+                deviceInfoModel.TicketHeader1 = response.Data.TicketHeader1;
+                deviceInfoModel.TicketHeader2 = response.Data.TicketHeader2;
+                deviceInfoModel.TicketHeader3 = response.Data.TicketHeader3;
+                deviceInfoModel.TicketFooter1 = response.Data.TicketFooter1;
+                deviceInfoModel.TicketFooter2 = response.Data.TicketFooter2;
+                deviceInfoModel.TicketFooter3 = response.Data.TicketFooter3;
+                deviceInfoModel.ReceiptFooter1 = response.Data.ReceiptFooter1;
+                deviceInfoModel.ReceiptFooter2 = response.Data.ReceiptFooter2;
+                deviceInfoModel.ReceiptFooter3 = response.Data.ReceiptFooter3;
+                deviceInfoModel.ModelRequired = response.Data.ModelRequired;
+                deviceInfoModel.PrismRequired = response.Data.PrismRequired;
+                deviceInfoModel.ColorRequired = response.Data.ColorRequired;
 
                 AppContextGeneral.deviceInfo = deviceInfoModel;
 

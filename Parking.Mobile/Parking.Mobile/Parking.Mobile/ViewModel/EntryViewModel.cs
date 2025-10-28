@@ -23,10 +23,31 @@ namespace Parking.Mobile.ViewModel
         private bool loading;
         private bool enableButton;
         private INavigation Navigation;
+        private bool vehicleRequired;
+        private bool colorRequired;
+        private bool prismRequired;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region Propriedades Bindáveis
+
+        public bool VehicleRequired
+        {
+            get => vehicleRequired;
+            set { vehicleRequired = value; OnPropertyChanged(nameof(VehicleRequired)); }
+        }
+
+        public bool ColorRequired
+        {
+            get => colorRequired;
+            set { colorRequired = value; OnPropertyChanged(nameof(ColorRequired)); }
+        }
+
+        public bool PrismRequired
+        {
+            get => prismRequired;
+            set { prismRequired = value; OnPropertyChanged(nameof(PrismRequired)); }
+        }
 
         public string Credential
         {
@@ -49,10 +70,7 @@ namespace Parking.Mobile.ViewModel
                 
                 if(!String.IsNullOrEmpty(value) && plate.Length>=8)
                 {
-                    if(CheckPlate())
-                    {
-                        CheckCredential();
-                    }
+                    CheckPlate();
                 }
 
                 OnPropertyChanged(nameof(Plate));
@@ -108,6 +126,14 @@ namespace Parking.Mobile.ViewModel
             ActionPage = new Command<string>(ActionButton);
             OpenVehiclePopup = new Command(OpenVehiclePopupAction);
             OpenColorPopup = new Command(OpenColorPopupAction);
+            VehicleRequired = AppContextGeneral.deviceInfo.ModelRequired;
+            ColorRequired = AppContextGeneral.deviceInfo.ColorRequired;
+            PrismRequired = AppContextGeneral.deviceInfo.PrismRequired;
+
+            if (AppContextGeneral.cashierInfo == null)
+            {
+                var ret = Navigation.ShowPopupAsync<object>(new OpenCashierPage());
+            }
 
             if (AppContextGeneral.parkingInfo.AllowEntryWithoutPlate)
                 EnableButton = true;
@@ -119,9 +145,9 @@ namespace Parking.Mobile.ViewModel
         private void ValidateButton()
         {
             EnableButton = !string.IsNullOrWhiteSpace(Plate)
-                           && !string.IsNullOrWhiteSpace(Vehicle)
-                           && !string.IsNullOrWhiteSpace(Color)
-                           && !string.IsNullOrWhiteSpace(Prism);
+                           && ((VehicleRequired && !string.IsNullOrWhiteSpace(Vehicle)) || !VehicleRequired)
+                           && ((ColorRequired && !string.IsNullOrWhiteSpace(Color)) || !ColorRequired)
+                           && ((PrismRequired && !string.IsNullOrWhiteSpace(Prism)) || !PrismRequired);
         }
 
         private async void OpenVehiclePopupAction()
@@ -168,13 +194,36 @@ namespace Parking.Mobile.ViewModel
             }
         }
 
-        private void ConfirmAction()
+        private async void ConfirmAction()
         {
-            ProcessEntry();
-           
+            // Exibe o modal de opções
+            var option = await Application.Current.MainPage.ShowPopupAsync(new TicketOptionPopup());
+
+            if (option == null)
+                return;
+
+            switch (option)
+            {
+                case "Print":
+                    // Fluxo normal de impressão
+                    ProcessEntry(printTicket: true, sendWhatsApp: false, phone: null);
+                    break;
+
+                case "WhatsApp":
+                    // Abre popup para pegar telefone
+                    var phone = await Application.Current.MainPage.ShowPopupAsync(new WhatsAppPopup());
+                    if (phone != null)
+                        ProcessEntry(printTicket: false, sendWhatsApp: true, phone: phone.ToString());
+                    break;
+
+                case "None":
+                    // Sem ticket
+                    ProcessEntry(printTicket: false, sendWhatsApp: false, phone: null);
+                    break;
+            }
         }
 
-        private void ProcessEntry()
+        private void ProcessEntry(bool printTicket, bool sendWhatsApp, string phone)
         {
             UserDialogs.Instance.ShowLoading("Processando...");
 
@@ -194,107 +243,120 @@ namespace Parking.Mobile.ViewModel
                     VehicleModel = this.Vehicle
                 });
 
-                if (response.Success)
+                Device.BeginInvokeOnMainThread(async () =>
                 {
-                    Device.BeginInvokeOnMainThread(() =>
+                    UserDialogs.Instance.HideLoading();
+
+                    if (response.Success)
                     {
-
-                    try
-                    {
-
-                        var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
-
-                        print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
+                        try
                         {
-                            CredentialName = CredentialName,
-                            CredentialNumber = Credential,
-                            DateEntry = response.Data.DateEntry,
-                            Plate = Plate,
-                            Prism = Prism,
-                            TicketNumber = response.Data.Ticket,
-                            VehicleColor = Color,
-                            VehicleModel = Vehicle
-                        });
-                            
-                        Application.Current.MainPage = new MenuPage();
+                            if (printTicket)
+                            {
+                                var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+                                print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
+                                {
+                                    CredentialName = CredentialName,
+                                    CredentialNumber = Credential,
+                                    DateEntry = response.Data.DateEntry,
+                                    Plate = Plate,
+                                    Prism = Prism,
+                                    TicketNumber = response.Data.Ticket,
+                                    VehicleColor = Color,
+                                    VehicleModel = Vehicle
+                                });
+                            }
+                            else if (sendWhatsApp && !string.IsNullOrEmpty(phone))
+                            {
+                                // Aqui você pode chamar um serviço para enviar o ticket via WhatsApp
+                                // Exemplo de placeholder:
+                                await Application.Current.MainPage.DisplayAlert("WhatsApp", $"Ticket enviado para {phone}", "OK");
+                            }
 
-                        UserDialogs.Instance.HideLoading();
+                            // Continua o fluxo normal pós-impressão
+                            Application.Current.MainPage = new MenuPage();
                         }
                         catch (Exception ex)
                         {
-                            UserDialogs.Instance.HideLoading();
-
-                            Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+                            await Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
                         }
-                    });
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    }
+                });
+            });
+        }
+
+
+        private void CheckPlate()
+        {
+            Task.Run(async () =>
+            {
+                AppParkingLot appParkingLot = new AppParkingLot();
+
+                var response = appParkingLot.ValidateEntryPlate(
+                    AppContextGeneral.parkingInfo.ParkingCode,
+                    this.Plate,
+                    AppContextGeneral.deviceInfo.IDDevice
+                );
+
+                if (response.Success)
+                {
+                    CheckCredential();
                 }
                 else
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         UserDialogs.Instance.HideLoading();
-
                         Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        Plate = null;
                     });
                 }
             });
         }
 
-        private bool CheckPlate()
-        {
-            
-            AppParkingLot appParkingLot = new AppParkingLot();
-
-            var response = appParkingLot.ValidateEntryPlate(AppContextGeneral.parkingInfo.ParkingCode, this.Plate);
-
-            if (response.Success)
-            {
-                return true;
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    UserDialogs.Instance.HideLoading();
-
-                    Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
-
-                    Plate = null;
-                });
-
-                
-
-                return false;
-            }
-        }
-
         private void CheckCredential()
         {
-            AppCredential appCredential = new AppCredential();
-
-            var response = appCredential.GetCredentialInfo(new GetCredentialInfoRequest()
+            Task.Run(async () =>
             {
-                AccessCode = null,
-                IDDevice = AppContextGeneral.deviceInfo.IDDevice,
-                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
-                Plate = this.Plate
-            });
+                AppCredential appCredential = new AppCredential();
 
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                if (response.Success)
+                var response = appCredential.GetCredentialInfo(new GetCredentialInfoRequest()
                 {
+                    AccessCode = null,
+                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                    Plate = this.Plate
+                });
 
-                    if (response.Data.ClientActive)
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    if (response.Success)
                     {
-                        if (response.Data.CredentialActive)
-                        {
-                            if (DateTime.Now >= response.Data.DateStart && DateTime.Now <= response.Data.DateEnd)
-                            {
-                                this.Credential = response.Data.Credential;
-                                this.CredentialName = response.Data.Name;
 
-                                UserDialogs.Instance.HideLoading();
+                        if (response.Data.ClientActive)
+                        {
+                            if (response.Data.CredentialActive)
+                            {
+                                if (DateTime.Now >= response.Data.DateStart && DateTime.Now <= response.Data.DateEnd)
+                                {
+                                    this.Credential = response.Data.Credential;
+                                    this.CredentialName = response.Data.Name + " (" + response.Data.Credential + ")";
+
+                                    UserDialogs.Instance.HideLoading();
+                                }
+                                else
+                                {
+                                    this.Credential = null;
+                                    this.CredentialName = null;
+
+                                    UserDialogs.Instance.HideLoading();
+
+                                    this.CredentialName = "Credencial expirada";
+                                }
                             }
                             else
                             {
@@ -303,7 +365,7 @@ namespace Parking.Mobile.ViewModel
 
                                 UserDialogs.Instance.HideLoading();
 
-                                this.CredentialName = "Credencial expirada";
+                                this.CredentialName = "Credencial inativa";
                             }
                         }
                         else
@@ -313,27 +375,17 @@ namespace Parking.Mobile.ViewModel
 
                             UserDialogs.Instance.HideLoading();
 
-                            this.CredentialName = "Credencial inativa";
+                            this.CredentialName = "Cliente inativo";
                         }
+
                     }
                     else
                     {
                         this.Credential = null;
                         this.CredentialName = null;
-
-                        UserDialogs.Instance.HideLoading();
-
-                        this.CredentialName = "Cliente inativo";
                     }
-
-                }
-                else
-                {
-                    this.Credential = null;
-                    this.CredentialName = null;
-                }
+                });
             });
-        
         }
 
         private void OnPropertyChanged(string nameProperty)

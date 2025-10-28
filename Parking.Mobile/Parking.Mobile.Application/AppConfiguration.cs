@@ -5,6 +5,7 @@ using Parking.Mobile.Data.Repository;
 using Parking.Mobile.Entity;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Response;
+using Xamarin.Forms;
 
 namespace Parking.Mobile.ApplicationCore
 {
@@ -33,96 +34,108 @@ namespace Parking.Mobile.ApplicationCore
 
         public ServiceResponseDefault<GetParkingInfoMobileResponse> GetParkingInfoMobile(string parkingCode)
         {
-            return new ServiceResponseDefault<GetParkingInfoMobileResponse>
+            try
             {
-                Success = true,
-                Data = new GetParkingInfoMobileResponse()
+                var result = AppContextGeneral.SignalRClient
+                    .SendMessageAsync<ServiceResponseDefault<GetParkingInfoMobileResponse>>(
+                        "GetParkingInfoMobile",
+                        parkingCode
+                    )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetParkingInfoMobileResponse>
                 {
-                    ParkingCode = parkingCode,
-                    Address = "Lab",
-                    Cnpj = "99999",
-                    Description = "Parking Dev MOCK",
-                    AllowEntryWithoutPlate = false
-                }
-            };
-            
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
+
         }
 
         public ServiceResponseDefault<GetTerminalInfoResponse> GetTerminalInfo(string parkingCode, int idDevice)
         {
-            return new ServiceResponseDefault<GetTerminalInfoResponse>()
+            try
             {
-                Success = true,
-                Data = new GetTerminalInfoResponse()
+                var result = AppContextGeneral.SignalRClient
+                    .SendMessageAsync<ServiceResponseDefault<GetTerminalInfoResponse>>(
+                        "GetTerminalInfo",
+                        parkingCode,
+                        idDevice
+                    )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetTerminalInfoResponse>
                 {
-                    Description = "POS MOCK",
-                    IDDevice = 1,
-                    Type = Interface.Message.Enum.TerminalTypeEnum.EntradaSaida,
-                    NfceEnable = false,
-                    PaymentInEntry =false,
-                    RPSSeries = 1,
-                    TEFId ="000",
-                    TEFMobileId ="AAA",
-                    TypeDescription = "ENTRY"
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<GetListVehicleModelResponse> GetListVehicleModel(string parkingCode)
         {
-            List<VehicleModelInfo> lst = new List<VehicleModelInfo>();
-
-            lst.Add(new VehicleModelInfo()
+            try
             {
-                Description = "Gol",
-                Type = 1
-            });
+                var result = AppContextGeneral.SignalRClient
+                    .SendMessageAsync<ServiceResponseDefault<GetListVehicleModelResponse>>(
+                        "GetListVehicleModel",
+                        parkingCode
+                    )
+                    .GetAwaiter()
+                    .GetResult();
 
-            lst.Add(new VehicleModelInfo()
+                return result;
+            }
+            catch (Exception ex)
             {
-                Description = "Uno",
-                Type = 1
-            });
-
-            lst.Add(new VehicleModelInfo()
-            {
-                Description = "Argo",
-                Type = 1
-            });
-
-            lst.Add(new VehicleModelInfo()
-            {
-                Description = "Kwid",
-                Type = 1
-            });
-
-            return new ServiceResponseDefault<GetListVehicleModelResponse>()
-            {
-                Data = new GetListVehicleModelResponse()
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetListVehicleModelResponse>
                 {
-                    Models = lst
-                },
-                Success = true
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<GetListColorResponse> GetListColor(string parkingCode)
         {
-            List<ColorInfo> lst = new List<ColorInfo>();
-
-            lst.Add(new ColorInfo() { Description = "Branco" });
-            lst.Add(new ColorInfo() { Description = "Preto" });
-            lst.Add(new ColorInfo() { Description = "Prata" });
-            lst.Add(new ColorInfo() { Description = "Vermelho" });
-
-            return new ServiceResponseDefault<GetListColorResponse>()
+            try
             {
-                Success = true,
-                Data = new GetListColorResponse()
+                var result = AppContextGeneral.SignalRClient
+                    .SendMessageAsync<ServiceResponseDefault<GetListColorResponse>>(
+                        "GetListColor",
+                        parkingCode
+                    )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetListColorResponse>
                 {
-                    Colors = lst
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
     }
 }

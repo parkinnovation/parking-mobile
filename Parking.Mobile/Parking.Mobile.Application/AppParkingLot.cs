@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
@@ -59,14 +61,33 @@ namespace Parking.Mobile.ApplicationCore
             throw new NotImplementedException();
         }
 
-        public ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate)
+        public ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate, int idDevice)
         {
-            return new ServiceResponseDefault<ValidateEntryPlateResponse>()
+            try
             {
-                Success = (plate == "AAA-0001" || plate == "AAA-0002"),
-                Data = new ValidateEntryPlateResponse(),
-                Message = (plate != "AAA-0001" && plate != "AAA-0002") ? "Placa no pátio" : null
-           };
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<ValidateEntryPlateResponse>>(
+                            "ValidateEntryPlate",
+                            parkingCode,
+                            plate,
+                            idDevice
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<ValidateEntryPlateResponse>
+                {
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
     }
 }

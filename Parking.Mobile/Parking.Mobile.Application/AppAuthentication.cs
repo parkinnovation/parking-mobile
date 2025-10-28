@@ -1,4 +1,5 @@
 ﻿using System;
+using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
@@ -9,18 +10,28 @@ namespace Parking.Mobile.ApplicationCore
     {
         public ServiceResponseDefault<AuthenticateUserMobileResponse> AuthenticateUserMobile(AuthenticateUserMobileRequest request)
         {
-            return new ServiceResponseDefault<AuthenticateUserMobileResponse>()
+            try
             {
-                Success = true,
-                Data = new AuthenticateUserMobileResponse()
+                var result = AppContextGeneral.SignalRClient
+                    .SendMessageAsync<ServiceResponseDefault<AuthenticateUserMobileResponse>>(
+                        "AuthenticateUserMobile",
+                        request
+                    )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<AuthenticateUserMobileResponse>
                 {
-                    ChangePasswordNextLogin = false,
-                    Disabled = false,
-                    IdUser = 1,
-                    Name = request.User,
-                    Profile = "ADMIN"
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
     }
 }
