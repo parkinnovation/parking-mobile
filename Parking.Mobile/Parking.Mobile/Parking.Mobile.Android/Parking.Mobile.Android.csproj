@@ -49,6 +49,11 @@
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidKeyStore>True</AndroidKeyStore>
+    <AndroidSigningKeyStore>/Users/charlesrossi/Documents/Projetos/parking-mobile/Parking.Mobile/parkingmobileapp.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>2379bb</AndroidSigningStorePass>
+    <AndroidSigningKeyAlias>parkingmobile</AndroidSigningKeyAlias>
+    <AndroidSigningKeyPass>2379bb</AndroidSigningKeyPass>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

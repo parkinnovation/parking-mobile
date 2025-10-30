@@ -32,7 +32,7 @@ namespace Parking.Mobile
 
                 AppContextGeneral.configurationApp.IDDevice = 0;
                 AppContextGeneral.configurationApp.ParkingCode = "000000";
-                AppContextGeneral.configurationApp.UrlWebApi = "http://localhost:8081/";
+                AppContextGeneral.configurationApp.UrlWebApi = "http://177.155.199.151:5005/ctxgohub";
                 
                 appConfiguration.SaveConfigurationApp(AppContextGeneral.configurationApp);
             }

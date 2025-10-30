@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0.0.0" package="br.com.parking.mobile">
 	<uses-sdk android:minSdkVersion="22" android:targetSdkVersion="22" />
-	<application android:label="NetPark Mobile" android:theme="@style/MainTheme" android:icon="@drawable/icon"></application>
+	<application android:label="LockiD Mobile" android:theme="@style/MainTheme" android:icon="@drawable/icon"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

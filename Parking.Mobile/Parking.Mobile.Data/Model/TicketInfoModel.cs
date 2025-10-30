@@ -72,7 +72,7 @@ namespace Parking.Mobile.Data.Model
         public DateTime? DateLimitExit { get; set; }
         public decimal Price { get; set; }
         public bool DiscountAuthorized { get; set; }
-        public decimal DiscountPercent { get; set; }
+        public decimal Discount { get; set; }
         public string DiscountHash { get; set; }
         public DateTime? DatePriceScheduller { get; set; }
         public DateTime? DateBillingLimit { get; set; }
@@ -97,14 +97,7 @@ namespace Parking.Mobile.Data.Model
         {
             get
             {
-                if (this.DiscountPercent > 0)
-                {
-                    return this.Price * (this.DiscountPercent / (decimal)100);
-                }
-                else
-                {
-                    return 0;
-                }
+                return Discount;
             }
         }
 
@@ -164,7 +157,7 @@ namespace Parking.Mobile.Data.Model
     {
         public Int64 IDPayment { get; set; }
         public int? IDPaymentMethod { get; set; }
-        public int? IDDiscount { get; set; }
+        public Guid? IDDiscount { get; set; }
         public int? IDParkingSeal { get; set; }
         public decimal? Amount { get; set; }
         public string Description { get; set; }

@@ -4,6 +4,7 @@ using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
+using Xamarin.Forms;
 
 namespace Parking.Mobile.ApplicationCore
 {
@@ -16,49 +17,115 @@ namespace Parking.Mobile.ApplicationCore
 
         public ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request)
         {
-            return new ServiceResponseDefault<ChangeSectorResponse>()
+            try
             {
-                Success = true,
-                Data = new ChangeSectorResponse()
-            };
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<ChangeSectorResponse>>(
+                            "ChangeSector",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<ChangeSectorResponse>
+                {
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<GetTicketInfoResponse> GetTicketInfo(GetTicketInfoRequest request)
         {
-            return new ServiceResponseDefault<GetTicketInfoResponse>()
+            try
             {
-                Success = request.AccessCode == "123456789012",
-                Data = new GetTicketInfoResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<GetTicketInfoResponse>>(
+                            "GetTicketInfo",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetTicketInfoResponse>
                 {
-                    DateEntry = DateTime.Now,
-                    IDParkingLot = 999,
-                    Plate = "AAA-0004",
-                    Ticket = "123456789012",
-                    VehicleColor = "Azul",
-                    VehicleModel = "A5"
-                },
-                Message = request.AccessCode != "123456789012" ? "Ticket não encontrado" : null
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ProcessEntryResponse> ProcessEntry(ProcessEntryRequest request)
         {
-            return new ServiceResponseDefault<ProcessEntryResponse>()
+            try
             {
-                Success = true,
-                Data = new ProcessEntryResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<ProcessEntryResponse>>(
+                            "ProcessEntry",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<ProcessEntryResponse>
                 {
-                    DateEntry = DateTime.Now,
-                    PaymentInEntry = false,
-                    QrCodeContingency = null,
-                    Ticket = "123456789012"
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ProcessTicketLossResponse> ProcessTicketLoss(ProcessTicketLossRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public ServiceResponseDefault<SendTicketResponse> SendTicket(SendTicketRequest request)
+        {
+            try
+            {
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<SendTicketResponse>>(
+                            "SendTicket",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<SendTicketResponse>
+                {
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ValidateEntryPlateResponse> ValidateEntryPlate(string parkingCode, string plate, int idDevice)

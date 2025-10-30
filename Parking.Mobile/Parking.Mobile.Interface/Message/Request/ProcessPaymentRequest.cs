@@ -11,7 +11,7 @@ namespace Parking.Mobile.Interface.Message.Request
         public DateTime? DateBillingLimit { get; set; }
         public int IDDevice { get; set; }
         public int IDUser { get; set; }
-        public int IDPriceTable { get; set; }
+        public Guid IDPriceTable { get; set; }
         public int IDCashTransaction { get; set; }
         public string CPF { get; set; }
         public string CNPJ { get; set; }
@@ -29,7 +29,7 @@ namespace Parking.Mobile.Interface.Message.Request
     {
         public Int64 IDPayment { get; set; }
         public int? IDPaymentMethod { get; set; }
-        public int? IDDiscount { get; set; }
+        public Guid? IDDiscount { get; set; }
         public int? IDParkingSeal { get; set; }
         public decimal? Amount { get; set; }
         public string Nsu { get; set; }

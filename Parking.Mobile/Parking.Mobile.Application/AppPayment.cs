@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
@@ -10,22 +11,29 @@ namespace Parking.Mobile.ApplicationCore
     {
         public ServiceResponseDefault<GetListPaymentMethodResponse> GetListPaymentMethod(GetListPaymentMethodRequest request)
         {
-            List<PaymentMethodInfo> lst = new List<PaymentMethodInfo>();
-
-            lst.Add(new PaymentMethodInfo() { IDPaymentMethod = 1, Description = "POS Crédito", Type = 1 });
-            lst.Add(new PaymentMethodInfo() { IDPaymentMethod = 1, Description = "POS Débito", Type = 2 });
-            lst.Add(new PaymentMethodInfo() { IDPaymentMethod = 1, Description = "Dinheiro", Type = 3 });
-            lst.Add(new PaymentMethodInfo() { IDPaymentMethod = 1, Description = "PIX", Type = 4 });
-
-
-            return new ServiceResponseDefault<GetListPaymentMethodResponse>()
+            try
             {
-                Success = true,
-                Data = new GetListPaymentMethodResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<GetListPaymentMethodResponse>>(
+                            "GetListPaymentMethod",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetListPaymentMethodResponse>
                 {
-                    Methods = lst
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request)

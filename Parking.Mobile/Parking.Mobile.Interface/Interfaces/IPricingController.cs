@@ -10,7 +10,7 @@ namespace Parking.Mobile.Interface.Interfaces
 
         ServiceResponseDefault<GetListPriceTableResponse> GetListPriceTable(GetListPriceTableRequest request);
 
-        ServiceResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, int idPriceTable);
+        ServiceResponseDefault<GetListDiscountResponse> GetListDiscount(string parkingCode, Guid idPriceTable);
     }
 }
 

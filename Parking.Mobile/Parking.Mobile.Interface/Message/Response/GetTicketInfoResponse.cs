@@ -31,7 +31,7 @@ namespace Parking.Mobile.Interface.Message.Response
     {
         public Int64 IDPayment { get; set; }
         public int? IDPaymentMethod { get; set; }
-        public int? IDDiscount { get; set; }
+        public Guid? IDDiscount { get; set; }
         public int? IDParkingSeal { get; set; }
         public decimal? Amount { get; set; }
         public string Description { get; set; }

@@ -17,6 +17,8 @@ namespace Parking.Mobile.Interface.Interfaces
         ServiceResponseDefault<CancelTicketResponse> CancelTicket(CancelTicketRequest request);
 
         ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request);
+
+        ServiceResponseDefault<SendTicketResponse> SendTicket(SendTicketRequest request);
     }
 }
 

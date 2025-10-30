@@ -39,9 +39,12 @@ namespace Parking.Mobile.Common
                     SignalRClient = null;
                 }
 
-                SignalRClient = new SignalRClientService(value.UrlWebApi);
+                if (value != null)
+                {
+                    SignalRClient = new SignalRClientService(value.UrlWebApi);
 
-                SignalRClient.StartAsync();
+                    SignalRClient.StartAsync();
+                }
             }
         }
         

@@ -444,47 +444,58 @@ namespace Parking.Mobile.ViewModel
             });
         }
 
-        private bool GetTicketPrice()
+        private void GetTicketPrice()
         {
-            
-            AppPricing appPricing = new AppPricing();
+            UserDialogs.Instance.ShowLoading("Processando...");
 
-            var response = appPricing.GetTicketPrice(new GetTicketPriceRequest()
+            Task.Run(async () =>
             {
-                AccessCode = this.TicketInfo.Ticket,
-                IdParkingLot = this.TicketInfo.IDParkingLot,
-                IdPriceTable = PriceTables[IDPriceTableIndex].IdPriceTable,
-                IdDevice = AppContextGeneral.deviceInfo.IDDevice,
-                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
-                DatePriceScheduller = this.TicketInfo.DatePriceScheduller,
-                DateBillingLimit = this.TicketInfo.DateBillingLimit,
-                IdDiscount = IDDiscountIndex>=0 ? Discounts[IDDiscountIndex].IdDiscount : -1
-            });
+                AppPricing appPricing = new AppPricing();
 
-            if (response.Success)
-            {
-                TicketInfoModel model = this.TicketInfo;
-
-                model.DateLimitExit = response.Data.DateLimitExit;
-                model.Price = response.Data.Price;
-                model.DiscountPercent = response.Data.DiscountPercent;
-
-                this.TicketInfo = model;
-
-                return true;
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() =>
+                var response = appPricing.GetTicketPrice(new GetTicketPriceRequest()
                 {
-                    UserDialogs.Instance.HideLoading();
-
-                    Application.Current.MainPage.DisplayAlert("Aviso", response.Message, "Ok");
+                    AccessCode = this.TicketInfo.Ticket,
+                    IdParkingLot = this.TicketInfo.IDParkingLot,
+                    IdPriceTable = PriceTables[IDPriceTableIndex].IdPriceTable,
+                    IdDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                    DatePriceScheduller = this.TicketInfo.DatePriceScheduller,
+                    DateBillingLimit = this.TicketInfo.DateBillingLimit,
+                    IdDiscount = IDDiscountIndex >= 0 ? Discounts[IDDiscountIndex].IdDiscount : (Guid?)null,
+                    Credential = this.TicketInfo.Credential,
+                    DateEntry = this.TicketInfo.DateEntry
                 });
 
-                return false;
-            }
-            
+                if (response.Success)
+                {
+                    TicketInfoModel model = this.TicketInfo;
+
+                    model.DateLimitExit = response.Data.DateLimitExit;
+                    model.Price = response.Data.Price;
+                    model.Discount = response.Data.Discount;
+
+                    this.TicketInfo = model;
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                    });
+
+                   
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Aviso", response.Message, "Ok");
+                    });
+
+                    
+                }
+            });
         }
 
         private void SearchTicket()
@@ -496,8 +507,7 @@ namespace Parking.Mobile.ViewModel
             }
 
             UserDialogs.Instance.ShowLoading("Buscando ticket...");
-            Thread.Sleep(500); // Simula busca
-
+            
             GetTicketInfo();
 
             UserDialogs.Instance.HideLoading();
@@ -549,7 +559,7 @@ namespace Parking.Mobile.ViewModel
                     {
                         TicketInfo.Payments.Add(new TicketPaymentItemInfo()
                         {
-                            Amount = TicketInfo.DiscountValue,
+                            Amount = TicketInfo.DiscountValue * -1,
                             IDDiscount = Discounts[IDDiscountIndex].IdDiscount,
                             Description = Discounts[IDDiscountIndex].Description
                         });

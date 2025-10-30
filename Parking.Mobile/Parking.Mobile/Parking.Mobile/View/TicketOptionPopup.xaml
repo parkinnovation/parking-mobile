@@ -2,18 +2,42 @@
 <toolkit:Popup
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Size="300,300"
+    
     xmlns:toolkit="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
-    x:Class="Parking.Mobile.View.TicketOptionPopup">
+    x:Class="Parking.Mobile.View.TicketOptionPopup"
+    BackgroundColor="#80000000"> <!-- fundo semitransparente -->
 
-    <Frame Padding="20" BackgroundColor="White" CornerRadius="15" WidthRequest="300">
-        <StackLayout Spacing="15">
+    <Grid VerticalOptions="Center" HorizontalOptions="Center">
+        <Frame
+            Padding="20"
+            BackgroundColor="White"
+            CornerRadius="20"
+            WidthRequest="280"
+            HeightRequest="240"
+            HasShadow="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
 
-            <Label Text="Selecione uma opção" FontAttributes="Bold" HorizontalOptions="Center" />
+            <StackLayout Spacing="15" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <Label Text="Selecione uma opção"
+                       Style="{StaticResource lblInfoFlow}" />
 
-            <Button Text="🖨️ Imprimir Ticket" Style="{StaticResource btnConfirm}" Command="{Binding ClosePopupCommand}" CommandParameter="Print" />
-            <Button Text="📱 Enviar por WhatsApp" Style="{StaticResource btnConfirm}" Command="{Binding ClosePopupCommand}" CommandParameter="WhatsApp" />
-            <Button Text="🚫 Sem Ticket" Style="{StaticResource btnConfirm}" Command="{Binding ClosePopupCommand}" CommandParameter="None" />
+                <Button Text="🖨️ Imprimir Ticket"
+                        Style="{StaticResource btnConfirm}"
+                        Command="{Binding ClosePopupCommand}"
+                        CommandParameter="Print" />
 
-        </StackLayout>
-    </Frame>
+                <Button Text="📱 Enviar por WhatsApp"
+                        Style="{StaticResource btnConfirm}"
+                        Command="{Binding ClosePopupCommand}"
+                        CommandParameter="WhatsApp" />
+
+                <Button Text="🚫 Sem Ticket"
+                        Style="{StaticResource btnConfirm}"
+                        Command="{Binding ClosePopupCommand}"
+                        CommandParameter="None" />
+            </StackLayout>
+        </Frame>
+    </Grid>
 </toolkit:Popup>

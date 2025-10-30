@@ -40,7 +40,7 @@ namespace Parking.Mobile.Droid.DependencyService
                 var printerDevice = FindPrinter();
                 if (printerDevice == null)
                 {
-                    Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
+                    //Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
                     return;
                 }
 
@@ -75,11 +75,11 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Flush();
 
                 socket.Close();
-                Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+                //Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
             }
             catch (Exception ex)
             {
-                Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+                //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
             }
         }
 
@@ -174,7 +174,7 @@ namespace Parking.Mobile.Droid.DependencyService
             var adapter = BluetoothAdapter.DefaultAdapter;
             if (adapter == null || !adapter.IsEnabled)
             {
-                Toast.MakeText(Android.App.Application.Context, "Bluetooth desativado.", ToastLength.Long).Show();
+                //Toast.MakeText(Android.App.Application.Context, "Bluetooth desativado.", ToastLength.Long).Show();
                 return null;
             }
 
@@ -195,7 +195,7 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 if (printerDevice == null)
                 {
-                    Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
+                    //Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
                     return;
                 }
 
@@ -249,7 +249,7 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 data = Encoding.UTF8.GetBytes($"Ticket   : {info.TicketNumber}\n");
                 output.Write(data, 0, data.Length);
-                data = Encoding.UTF8.GetBytes($"Entrada  : {info.DateEntry.ToString("dd/MM/yyyy hh:mm")}\n");
+                data = Encoding.UTF8.GetBytes($"Entrada  : {info.DateEntry.ToString("dd/MM/yyyy HH:mm")}\n");
                 output.Write(data, 0, data.Length);
                 data = Encoding.UTF8.GetBytes($"Terminal : {AppContextGeneral.deviceInfo.Description}\n");
                 output.Write(data, 0, data.Length);
@@ -312,11 +312,11 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Flush();
 
                 socket.Close();
-                Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+                //Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
             }
             catch (Exception ex)
             {
-                Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+                //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
             }
         }
 
@@ -328,7 +328,7 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 if (printerDevice == null)
                 {
-                    Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
+                    //Toast.MakeText(Android.App.Application.Context, "Impressora não encontrada.", ToastLength.Long).Show();
                     return;
                 }
 
@@ -385,7 +385,7 @@ namespace Parking.Mobile.Droid.DependencyService
 
                 data = Encoding.UTF8.GetBytes($"Ticket      : {info.TicketNumber}\n");
                 output.Write(data, 0, data.Length);
-                data = Encoding.UTF8.GetBytes($"Entrada     : {info.DateEntry.ToString("dd/MM/yyyy hh:mm")}\n");
+                data = Encoding.UTF8.GetBytes($"Entrada     : {info.DateEntry.ToString("dd/MM/yyyy HH:mm")}\n");
                 output.Write(data, 0, data.Length);
                 data = Encoding.UTF8.GetBytes($"Terminal    : {AppContextGeneral.deviceInfo.Description}\n");
                 output.Write(data, 0, data.Length);
@@ -467,11 +467,11 @@ namespace Parking.Mobile.Droid.DependencyService
                 output.Flush();
 
                 socket.Close();
-                Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+                //Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
             }
             catch (Exception ex)
             {
-                Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+                //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
             }
         }
     }

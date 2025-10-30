@@ -56,7 +56,7 @@ namespace Parking.Mobile.ViewModel
             {
                 this.parkingCode = value;
 
-                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length == 6 && this.IDDevice > 0 && this.UrlService.Length >= 10)
+                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length > 0 && this.IDDevice > 0 && this.UrlService.Length >= 10)
                 {
                     this.EnableButton = true;
                 }
@@ -80,7 +80,7 @@ namespace Parking.Mobile.ViewModel
             {
                 this.idDevice = value;
 
-                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length == 6 && this.IDDevice > 0 && this.UrlService.Length >= 10)
+                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length > 0 && this.IDDevice > 0 && this.UrlService.Length >= 10)
                 {
                     this.EnableButton = true;
                 }
@@ -104,7 +104,7 @@ namespace Parking.Mobile.ViewModel
             {
                 this.urlService = value;
 
-                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length == 6 && this.IDDevice > 0 && this.UrlService.Length >= 10)
+                if (!String.IsNullOrEmpty(this.UrlService) && !String.IsNullOrEmpty(this.ParkingCode) && this.ParkingCode.Length > 0 && this.IDDevice > 0 && this.UrlService.Length >= 10)
                 {
                     this.EnableButton = true;
                 }

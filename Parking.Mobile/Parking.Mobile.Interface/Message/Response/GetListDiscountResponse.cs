@@ -10,7 +10,7 @@ namespace Parking.Mobile.Interface.Message.Response
 
     public class DiscountInfo
     {
-        public int IdDiscount { get; set; }
+        public Guid IdDiscount { get; set; }
         public int DiscountType { get; set; }
         public string Description { get; set; }
         public decimal Percent { get; set; }

@@ -9,10 +9,9 @@ namespace Parking.Mobile.Interface.Message.Response
         public DateTime DateEntry { get; set; }
         public DateTime DateLimitExit { get; set; }
         public decimal Price { get; set; }
-        public decimal DiscountPercent { get; set; }
+        public decimal Discount { get; set; }
         public decimal Amount { get; set; }
         public bool DisableDiscount { get; set; }
-        public List<TicketPriceInfo> TicketPriceHistory { get; set; }
     }
 
     public class TicketPriceInfo

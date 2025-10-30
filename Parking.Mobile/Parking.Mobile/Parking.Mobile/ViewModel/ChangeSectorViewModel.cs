@@ -55,12 +55,10 @@ namespace Parking.Mobile.ViewModel
 
             if (!String.IsNullOrEmpty(barCode))
             {
-                //Thread.Sleep(200);
-
-                //Device.BeginInvokeOnMainThread(() =>
-                //{
-                //    ActionButton("NextPage");
-                //});
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    SearchTicket();
+                });
             }
         }
 
@@ -89,7 +87,7 @@ namespace Parking.Mobile.ViewModel
 
         private void SearchTicket()
         {
-            if (string.IsNullOrEmpty(Plate) && string.IsNullOrEmpty(Ticket))
+            if (string.IsNullOrEmpty(Plate) && string.IsNullOrEmpty(Ticket) && string.IsNullOrEmpty(this.CodeRead))
             {
                 Application.Current.MainPage.DisplayAlert("Aviso", "Informe a placa ou o ticket.", "OK");
                 return;
@@ -177,11 +175,48 @@ namespace Parking.Mobile.ViewModel
 
         private void ConfirmChange()
         {
-            Application.Current.MainPage.DisplayAlert("Sucesso",
-                $"Mudança confirmada!\n\nTicket: {TicketInfo.Ticket}",
-                "OK");
+            UserDialogs.Instance.ShowLoading("Processando...");
 
-            ResetScreen();
+            Task.Run(async () =>
+            {
+                AppParkingLot appParkingLot = new AppParkingLot();
+
+                var response = appParkingLot.ChangeSector(new ChangeSectorRequest()
+                {
+                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                    Plate = TicketInfo.Plate,
+                    TicketNumber = TicketInfo.Ticket
+                });
+
+                if (response.Success)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Sucesso",
+                        $"Mudança confirmada!\n\nTicket: {TicketInfo.Ticket}",
+                        "OK");
+
+                                ResetScreen();
+                            });
+                }
+                else
+                {
+                    string codeAux = this.CodeRead;
+
+                    this.CodeRead = null;
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    });
+                }
+            });
+            
         }
 
         private void ResetScreen()

@@ -243,49 +243,96 @@ namespace Parking.Mobile.ViewModel
                     VehicleModel = this.Vehicle
                 });
 
-                Device.BeginInvokeOnMainThread(async () =>
+
+
+
+                if (response.Success)
                 {
-                    UserDialogs.Instance.HideLoading();
-
-                    if (response.Success)
+                    try
                     {
-                        try
+                        if (printTicket)
                         {
-                            if (printTicket)
+                            var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                            print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
                             {
-                                var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
-                                print.PrintTicketEntry(new DependencyService.Model.PrintTicketInfoModel()
+                                CredentialName = CredentialName,
+                                CredentialNumber = Credential,
+                                DateEntry = response.Data.DateEntry,
+                                Plate = Plate,
+                                Prism = Prism,
+                                TicketNumber = response.Data.Ticket,
+                                VehicleColor = Color,
+                                VehicleModel = Vehicle
+                            });
+
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                Application.Current.MainPage = new MenuPage();
+                            });
+                        }
+                        else if (sendWhatsApp && !string.IsNullOrEmpty(phone))
+                        {
+                            Task.Run(async () =>
+                            {
+                                var responseSendTicket = appParkingLot.SendTicket(new SendTicketRequest()
                                 {
-                                    CredentialName = CredentialName,
-                                    CredentialNumber = Credential,
-                                    DateEntry = response.Data.DateEntry,
-                                    Plate = Plate,
-                                    Prism = Prism,
+                                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
                                     TicketNumber = response.Data.Ticket,
-                                    VehicleColor = Color,
-                                    VehicleModel = Vehicle
-                                });
-                            }
-                            else if (sendWhatsApp && !string.IsNullOrEmpty(phone))
-                            {
-                                // Aqui você pode chamar um serviço para enviar o ticket via WhatsApp
-                                // Exemplo de placeholder:
-                                await Application.Current.MainPage.DisplayAlert("WhatsApp", $"Ticket enviado para {phone}", "OK");
-                            }
+                                    DateEntry = response.Data.DateEntry,
+                                    Plate = plate,
+                                    PhoneNumber = phone
 
-                            // Continua o fluxo normal pós-impressão
-                            Application.Current.MainPage = new MenuPage();
+                                });
+
+                                Device.BeginInvokeOnMainThread(async () =>
+                                {
+                                    UserDialogs.Instance.HideLoading();
+
+                                    if (responseSendTicket.Success)
+                                    {
+
+                                        Application.Current.MainPage = new MenuPage();
+                                    }
+                                    else
+                                    {
+                                        await Application.Current.MainPage.DisplayAlert("Erro", responseSendTicket.Message, "Ok");
+                                    }
+                                });
+                            });
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            await Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+                                Application.Current.MainPage = new MenuPage();
+                            });
                         }
+
+
+                        
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        Device.BeginInvokeOnMainThread(async () =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+                            await Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
+                        });
                     }
-                });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+                        await Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                    });
+                }
+
             });
         }
 
