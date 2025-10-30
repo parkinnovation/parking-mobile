@@ -34,7 +34,15 @@ namespace Parking.Mobile.ViewModel
         {
             get
             {
-                return AppContextGeneral.userInfo.ShowEntry;
+                return AppContextGeneral.deviceInfo.MobileEntry;
+            }
+        }
+
+        public bool ShowChangeSector
+        {
+            get
+            {
+                return AppContextGeneral.deviceInfo.MobileChangeSector;
             }
         }
 
@@ -42,7 +50,7 @@ namespace Parking.Mobile.ViewModel
         {
             get
             {
-                return AppContextGeneral.userInfo.ShowPayment;
+                return AppContextGeneral.deviceInfo.MobilePayment;
             }
         }
 
@@ -134,6 +142,14 @@ namespace Parking.Mobile.ViewModel
         }
 
         public string ParkingDescription { get; set; }
+        public string DeviceDescription
+        {
+            get
+            {
+                return AppContextGeneral.deviceInfo.Description;
+            }
+        }
+
         private bool isRefreshing = false;
         public bool IsRefreshing
         {

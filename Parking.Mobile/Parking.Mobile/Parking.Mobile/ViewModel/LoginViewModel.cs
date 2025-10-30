@@ -240,6 +240,10 @@ namespace Parking.Mobile.ViewModel
                 deviceInfoModel.ModelRequired = response.Data.ModelRequired;
                 deviceInfoModel.PrismRequired = response.Data.PrismRequired;
                 deviceInfoModel.ColorRequired = response.Data.ColorRequired;
+                deviceInfoModel.MobileChangeSector = response.Data.MobileChangeSector;
+                deviceInfoModel.MobileEntry = response.Data.MobileEntry;
+                deviceInfoModel.MobileExit = response.Data.MobileExit;
+                deviceInfoModel.MobilePayment = response.Data.MobilePayment;
 
                 AppContextGeneral.deviceInfo = deviceInfoModel;
 

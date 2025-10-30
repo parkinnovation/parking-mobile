@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <MasterDetailPage
-
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pag="clr-namespace:Parking.Mobile.View"
     xmlns:model="clr-namespace:Parking.Mobile.Model"
-    
     x:Class="Parking.Mobile.View.MenuPage">
+
+    <!-- Página de detalhe (conteúdo principal) -->
     <MasterDetailPage.Detail>
         <NavigationPage>
             <x:Arguments>
@@ -14,55 +14,67 @@
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>
+
+    <!-- Menu lateral -->
     <MasterDetailPage.Master>
         <ContentPage Title="Menu Title">
             <ContentPage.ToolbarItems>
                 <ToolbarItem IconImageSource="@drawable/User"/>
             </ContentPage.ToolbarItems>
+
             <StackLayout Style="{StaticResource stkMenu}">
 
-                <StackLayout VerticalOptions="FillAndExpand" HeightRequest="100"/>
+                <!-- Espaçamento superior -->
+                <StackLayout HeightRequest="50"/>
 
+                <!-- Logo -->
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" HeightRequest="100">
                     <Image Source="@drawable/BrandIco"/>
                 </StackLayout>
 
+                <!-- Descrição -->
                 <StackLayout>
-                    <Label Text="{Binding ParkingDescription}" FontAttributes="Bold" TextColor="Black" Padding="0,15,0,50" HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding ParkingDescription}" 
+                           FontAttributes="Bold" 
+                           TextColor="Black" 
+                           Padding="0,15,0,0" 
+                           HorizontalTextAlignment="Center"/>
+
+                    <Label Text="{Binding DeviceDescription}" 
+                           FontAttributes="Bold" 
+                           FontSize="Micro" 
+                           Padding="0,0,0,0" 
+                           HorizontalTextAlignment="Center"/>
                 </StackLayout>
 
+                <!-- Espaço entre descrição e botão de sair -->
                 <StackLayout VerticalOptions="FillAndExpand"/>
 
-                
-                <Label Text="" Style="{StaticResource lblInfoFlow}"/>
+               
 
-                <StackLayout VerticalOptions="FillAndExpand"/>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <StackLayout x:Name="btnSair"
+                                 Orientation="Horizontal"
+                                 HorizontalOptions="Center"
+                                 Padding="10"
+                                 Spacing="8">
+                        <Image Source="@drawable/Exit" />
+                        <Label Text="Sair"
+                               Style="{StaticResource lblMenu}"
+                               VerticalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
 
-                <ListView x:Name="lstMenu">
-                    <ListView.ItemsSource>
-                        <x:Array Type="{x:Type model:MenuModel}">
-                            <model:MenuModel Image="@drawable/Exit" Description="Sair" Action="Exit"/>
-                        </x:Array>
-                    </ListView.ItemsSource>
-                    <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal" VerticalOptions="CenterAndExpand" Padding="10">
-                                        <Image HeightRequest="32" WidthRequest="32" Source="{Binding Image}"/>
-                                        <Label Text="{Binding Description}" Style="{StaticResource lblMenu}"/>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <StackLayout HeightRequest="10"/>
 
-                
+                <!-- Versão -->
+                <Label FontAttributes="Bold" 
+                       FontSize="Micro" 
+                       HorizontalTextAlignment="Center" 
+                       Text="{Binding Version}"/>
 
-
-
-                <Label FontAttributes="Bold" FontSize="Micro" HorizontalTextAlignment="Center" Text="{Binding Version}"/>
             </StackLayout>
         </ContentPage>
     </MasterDetailPage.Master>
-    
+
 </MasterDetailPage>

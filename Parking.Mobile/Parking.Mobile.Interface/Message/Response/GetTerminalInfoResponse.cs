@@ -26,6 +26,10 @@ namespace Parking.Mobile.Interface.Message.Response
         public string ReceiptFooter1 { get; set; }
         public string ReceiptFooter2 { get; set; }
         public string ReceiptFooter3 { get; set; }
+        public bool MobileEntry { get; set; }
+        public bool MobileExit { get; set; }
+        public bool MobilePayment { get; set; }
+        public bool MobileChangeSector { get; set; }
     }
 }
 

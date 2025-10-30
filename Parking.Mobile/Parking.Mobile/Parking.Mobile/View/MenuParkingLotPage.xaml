@@ -19,7 +19,7 @@
                         </Grid.RowDefinitions>
 
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="1" >
+                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="1" IsVisible="{Binding ShowEntry}">
                        <Frame.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#00D4FF"
@@ -38,7 +38,7 @@
                         </Frame>
                     </Frame>
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="2" >
+                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="2"  IsVisible="{Binding ShowPayment}">
                         <Frame.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#00D4FF"
@@ -57,7 +57,7 @@
                         </Frame>
                     </Frame>
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="3" >
+                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="3"  IsVisible="{Binding ShowChangeSector}">
                         <Frame.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                     <GradientStop Color="#00D4FF"

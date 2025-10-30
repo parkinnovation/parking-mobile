@@ -1,32 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using Parking.Mobile.Model;
 using Parking.Mobile.ViewModel;
 using Xamarin.Forms;
 
 namespace Parking.Mobile.View
-{	
-	public partial class MenuPage : MasterDetailPage
+{
+    public partial class MenuPage : MasterDetailPage
     {
-        private MenuViewModel _menuViewModel;
+        private readonly MenuViewModel _menuViewModel;
 
         public MenuPage()
         {
             InitializeComponent();
 
-            _menuViewModel = new MenuViewModel(false, this.Navigation);
-
+            _menuViewModel = new MenuViewModel(false, Navigation);
             BindingContext = _menuViewModel;
 
-            lstMenu.ItemTapped += LstMenu_ItemTapped;
+            // Adiciona ação de toque no botão "Sair"
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += OnExitTapped;
+            btnSair.GestureRecognizers.Add(tapGesture);
         }
 
-        private void LstMenu_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void OnExitTapped(object sender, EventArgs e)
         {
-            MenuModel menuViewModel = (MenuModel)((ListView)sender).SelectedItem;
-
-            _menuViewModel.ActionOpenPage.Execute(menuViewModel.Action);
+            bool confirm = await DisplayAlert("Confirmação", "Deseja realmente sair?", "Sim", "Não");
+            if (confirm)
+            {
+                try
+                {
+                    _menuViewModel.ActionOpenPage?.Execute("Exit");
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Erro", $"Falha ao sair: {ex.Message}", "OK");
+                }
+            }
         }
     }
 }
-
