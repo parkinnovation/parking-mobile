@@ -6,6 +6,7 @@ namespace Parking.Mobile.Interface.Message.Request
         public int IdUser { get; set; }
         public int IdDevice { get; set; }
         public decimal Amount { get; set; }
+        public string UserName { get; set; }
     }
 }
 

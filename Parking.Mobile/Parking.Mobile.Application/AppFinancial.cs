@@ -1,7 +1,9 @@
 ﻿using System;
+using Parking.Mobile.Common;
 using Parking.Mobile.Interface.Interfaces;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
+using Xamarin.Forms;
 
 namespace Parking.Mobile.ApplicationCore
 {
@@ -9,50 +11,84 @@ namespace Parking.Mobile.ApplicationCore
     {
 		public ServiceResponseDefault<CloseCashierResponse> CloseCashier(CloseCashierRequest request)
         {
-            return new ServiceResponseDefault<CloseCashierResponse>()
+            try
             {
-                Success = true,
-                Data = new CloseCashierResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<CloseCashierResponse>>(
+                            "CloseCashier",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<CloseCashierResponse>
                 {
-                    CashTransactionId = 1,
-                    DateOpen = DateTime.Now,
-                    IdDevice = 1,
-                    IdUser = 1,
-                    DateClose = DateTime.Now
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<GetCurrentCashierResponse> GetCurrentCashier(string parkingCode, int idDevice)
         {
-            return new ServiceResponseDefault<GetCurrentCashierResponse>()
+            try
             {
-                Success = true,
-                Data = new GetCurrentCashierResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<GetCurrentCashierResponse>>(
+                            "GetCurrentCashier",
+                            parkingCode,
+                            idDevice
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<GetCurrentCashierResponse>
                 {
-                    CashTransactionId = 1,
-                    DateOpen = DateTime.Now,
-                    IdDevice = 1,
-                    IDGlobalCashTransaction = Guid.NewGuid().ToString(),
-                    IdUser = 1
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<OpenCashierResponse> OpenCashier(OpenCashierRequest request)
         {
-            return new ServiceResponseDefault<OpenCashierResponse>()
+            try
             {
-                Success = true,
-                Data = new OpenCashierResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<OpenCashierResponse>>(
+                            "OpenCashier",
+                            request         
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<OpenCashierResponse>
                 {
-                    CashTransactionId = 1,
-                    DateOpen = DateTime.Now,
-                    IdDevice = 1,
-                    IDGlobalCashTransaction = Guid.NewGuid().ToString(),
-                    IdUser = 1
-                }
-            };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
     }
 }

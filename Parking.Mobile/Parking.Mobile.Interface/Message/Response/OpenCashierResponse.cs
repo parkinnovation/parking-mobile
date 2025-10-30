@@ -7,7 +7,7 @@ namespace Parking.Mobile.Interface.Message.Response
         public DateTime DateOpen { get; set; }
         public int IdUser { get; set; }
         public int IdDevice { get; set; }
-        public string IDGlobalCashTransaction { get; set; }
+        public Guid IDCashier { get; set; }
     }
 }
 

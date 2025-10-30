@@ -47,8 +47,7 @@ namespace Parking.Mobile.ViewModel
             {
                 ParkingCode = AppContextGeneral.configurationApp.ParkingCode,
                 Amount = amount,
-                CashTransactionId = this.CashierInfo.CashTransactionId,
-                IdUser = AppContextGeneral.userInfo.IdUser
+                IDCashier = this.CashierInfo.IDCashier
             });
 
             if (!response.Success)
@@ -64,7 +63,10 @@ namespace Parking.Mobile.ViewModel
             }
             else
             {
-                PrintReport(this.CashierInfo.CashTransactionId);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    UserDialogs.Instance.HideLoading();
+                });
 
                 AppContextGeneral.cashierInfo = null;
 

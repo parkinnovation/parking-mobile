@@ -12,7 +12,7 @@ namespace Parking.Mobile.Data.Model
                 return this.DateOpen.ToString("dd/MM/yyyy HH:mm");
             }
         }
-        public string IDGlobalCashTransaction { get; set; }
+        public Guid IDCashier { get; set; }
     }
 }
 

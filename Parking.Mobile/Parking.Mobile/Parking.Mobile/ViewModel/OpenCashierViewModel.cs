@@ -41,7 +41,8 @@ namespace Parking.Mobile.ViewModel
                 ParkingCode = AppContextGeneral.configurationApp.ParkingCode,
                 IdDevice = AppContextGeneral.deviceInfo.IDDevice,
                 IdUser = AppContextGeneral.userInfo.IdUser,
-                Amount = amount
+                Amount = amount,
+                UserName = AppContextGeneral.userInfo.Name
             });
 
             if (!response.Success)
@@ -61,7 +62,7 @@ namespace Parking.Mobile.ViewModel
                 {
                     CashTransactionId = response.Data.CashTransactionId,
                     DateOpen = response.Data.DateOpen,
-                    IDGlobalCashTransaction = response.Data.IDGlobalCashTransaction
+                    IDCashier = response.Data.IDCashier
                 };
 
                 Device.BeginInvokeOnMainThread(() =>

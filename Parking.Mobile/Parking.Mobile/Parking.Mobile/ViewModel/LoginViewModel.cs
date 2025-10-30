@@ -259,43 +259,14 @@ namespace Parking.Mobile.ViewModel
             {
                 if (response.Data != null)
                 {
-                    if (response.Data.IdUser == AppContextGeneral.userInfo.IdUser)
+                    AppContextGeneral.cashierInfo = new CashierInfoModel()
                     {
-                        AppContextGeneral.cashierInfo = new CashierInfoModel()
-                        {
-                            CashTransactionId = response.Data.CashTransactionId,
-                            DateOpen = response.Data.DateOpen,
-                            IDGlobalCashTransaction = response.Data.IDGlobalCashTransaction
-                        };
+                        CashTransactionId = response.Data.CashTransactionId,
+                        DateOpen = response.Data.DateOpen,
+                        IDCashier = response.Data.IDCashier
+                    };
 
-                        return true;
-                    }
-                    else
-                    {
-                        var responseClose = appFinancial.CloseCashier(new CloseCashierRequest()
-                        {
-                            CashTransactionId = response.Data.CashTransactionId,
-                            IdUser = response.Data.IdUser,
-                            Amount = 0,
-                            ParkingCode = AppContextGeneral.configurationApp.ParkingCode
-                        });
-
-                        if (!responseClose.Success)
-                        {
-                            Device.BeginInvokeOnMainThread(() =>
-                            {
-                                UserDialogs.Instance.HideLoading();
-
-                                Application.Current.MainPage.DisplayAlert("Erro", responseClose.Message, "Ok");
-                            });
-
-                            return false;
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                    }
+                    return true;
                 }
                 else
                 {
