@@ -25,6 +25,7 @@ namespace Parking.Mobile.Interface.Message.Response
         }
         public bool InValet { get; set; }
         public List<TicketPaymentInfo> Payments { get; set; }
+        public int IDDeviceEntry { get; set; }
     }
 
     public class TicketPaymentInfo

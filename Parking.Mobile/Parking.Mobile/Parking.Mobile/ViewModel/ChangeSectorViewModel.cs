@@ -96,8 +96,6 @@ namespace Parking.Mobile.ViewModel
             UserDialogs.Instance.ShowLoading("Buscando ticket...");
 
             GetTicketInfo();
-    
-            UserDialogs.Instance.HideLoading();
         }
 
         private void GetTicketInfo()
@@ -155,6 +153,12 @@ namespace Parking.Mobile.ViewModel
 
                         IsSearchMode = false;
                         IsTicketMode = true;
+                    });
+
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
                     });
                 }
                 else

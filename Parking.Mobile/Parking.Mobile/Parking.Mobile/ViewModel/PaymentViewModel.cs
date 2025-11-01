@@ -400,7 +400,8 @@ namespace Parking.Mobile.ViewModel
                             Stay = response.Data.Stay,
                             Ticket = response.Data.Ticket,
                             VehicleColor = response.Data.VehicleColor,
-                            VehicleModel = response.Data.VehicleModel
+                            VehicleModel = response.Data.VehicleModel,
+                            IDDeviceEntry = response.Data.IDDeviceEntry
                         };
 
                         if (response.Data.Payments != null)
@@ -524,138 +525,138 @@ namespace Parking.Mobile.ViewModel
             ProcessPayment();
 
 
-            Application.Current.MainPage.DisplayAlert("Sucesso",
-                $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {PaymentMethods[IDPaymentMethodIndex].Description}",
-                "OK");
-
-            ResetScreen();
+           
         }
 
         private void ProcessPayment()
         {
-            try
+            UserDialogs.Instance.ShowLoading("Processando...");
+
+            Task.Run(async () =>
             {
-                AppPayment appPayment = new AppPayment();
-
-                DateTime? dateExit = null;
-
-                if (this.TicketInfo.DatePriceScheduller.HasValue && AppContextGeneral.deviceInfo.PaymentInEntry)
+                try
                 {
-                    dateExit = this.TicketInfo.DatePriceScheduller.Value;
-                }
+                    AppPayment appPayment = new AppPayment();
 
-                if (TicketInfo.Payments == null)
-                {
-                    TicketInfo.Payments = new List<TicketPaymentItemInfo>();
+                    DateTime? dateExit = null;
 
-                    TicketInfo.Payments.Add(new TicketPaymentItemInfo()
+                    if (this.TicketInfo.DatePriceScheduller.HasValue && AppContextGeneral.deviceInfo.PaymentInEntry)
                     {
-                        Amount = TicketInfo.Price,
-                        IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].IDPaymentMethod,
-                        Description = PaymentMethods[IDPaymentMethodIndex].Description
-                    });
+                        dateExit = this.TicketInfo.DatePriceScheduller.Value;
+                    }
 
-                    if (IDDiscountIndex >= 0)
+                    if (TicketInfo.Payments == null)
                     {
+                        TicketInfo.Payments = new List<TicketPaymentItemInfo>();
+
                         TicketInfo.Payments.Add(new TicketPaymentItemInfo()
                         {
-                            Amount = TicketInfo.DiscountValue * -1,
-                            IDDiscount = Discounts[IDDiscountIndex].IdDiscount,
-                            Description = Discounts[IDDiscountIndex].Description
+                            Amount = TicketInfo.Price,
+                            IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].Type,
+                            Description = PaymentMethods[IDPaymentMethodIndex].Description
+                        });
+
+                        if (IDDiscountIndex >= 0)
+                        {
+                            TicketInfo.Payments.Add(new TicketPaymentItemInfo()
+                            {
+                                Amount = TicketInfo.DiscountValue * -1,
+                                IDDiscount = Discounts[IDDiscountIndex].IdDiscount,
+                                Description = Discounts[IDDiscountIndex].Description
+                            });
+                        }
+                    }
+
+                    if (TicketInfo.PriceHistory == null)
+                    {
+                        TicketInfo.PriceHistory = new List<TicketHistoryPriceInfo>();
+                    }
+
+
+                    var response = appPayment.ProcessPayment(new ProcessPaymentRequest()
+                    {
+                        DatePayment = this.TicketInfo.DatePriceScheduller.HasValue ? this.TicketInfo.DatePriceScheduller.Value : DateTime.Now,
+                        DateLimit = this.TicketInfo.DateLimitExit.Value,
+                        IDCashTransaction = AppContextGeneral.cashierInfo.CashTransactionId,
+                        IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                        PriceTableName = this.PriceTables[IDPriceTableIndex].Description,
+                        IDUser = AppContextGeneral.userInfo.IdUser,
+                        ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                        TicketNumber = this.TicketInfo.Ticket,
+                        DateExit = dateExit,
+                        UserName = AppContextGeneral.userInfo.Name,
+                        DateEntry = this.TicketInfo.DateEntry,
+                        IDDeviceEntry = this.TicketInfo.IDDeviceEntry,
+                        Plate = this.TicketInfo.Plate,
+                        ExitVehicle = AppContextGeneral.deviceInfo.MobileExit,
+                        Credential = this.TicketInfo.Credential,
+                        Payments = (from l in this.TicketInfo.Payments
+                                    select new PaymentItemInfo()
+                                    {
+                                        Amount = Convert.ToDouble(l.Amount),
+                                        Discount = Convert.ToDouble(l.Amount),
+                                        IDPaymentMethod = l.IDPaymentMethod.HasValue ? l.IDPaymentMethod.Value : -1,
+                                        PaymentMethod = l.Description
+
+                                    }).ToList()
+                    });
+
+                    if (response.Success)
+                    {
+                        var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                        print.PrintPaymentReceipt(new DependencyService.Model.PrintTicketInfoModel()
+                        {
+                            DateEntry = TicketInfo.DateEntry,
+                            Plate = TicketInfo.Plate,
+                            Prism = TicketInfo.Prism,
+                            TicketNumber = TicketInfo.Ticket,
+                            VehicleColor = TicketInfo.VehicleColor,
+                            VehicleModel = TicketInfo.VehicleModel,
+                            DatePayment = response.Data.DatePayment.Value,
+                            DateLimitExit = response.Data.DateLimitExit.Value,
+                            Payments = (from l in TicketInfo.Payments
+                                        select
+                                new PrintPaymentInfoModel()
+                                {
+                                    PaymentMethod = l.Description,
+                                    Amount = l.Amount.Value
+                                }
+                            ).ToList(),
+                            Amount = (from l in TicketInfo.Payments select l.Amount.Value).Sum()
+                        });
+
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Sucesso",
+                               $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {PaymentMethods[IDPaymentMethodIndex].Description}",
+                               "OK");
+
+                            ResetScreen();
+                        });
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
                         });
                     }
                 }
-
-                if (TicketInfo.PriceHistory == null)
-                {
-                    TicketInfo.PriceHistory = new List<TicketHistoryPriceInfo>();
-                }
-
-                
-                var response = appPayment.ProcessPayment(new ProcessPaymentRequest()
-                {
-                    CNPJ = this.TicketInfo.Cnpj,
-                    CPF = this.TicketInfo.Cpf,
-                    DatePayment = this.TicketInfo.DatePriceScheduller.HasValue ? this.TicketInfo.DatePriceScheduller.Value : DateTime.Now,
-                    DateBillingLimit = this.TicketInfo.DateBillingLimit,
-                    IDCashTransaction = AppContextGeneral.cashierInfo.CashTransactionId,
-                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
-                    IDPriceTable = this.PriceTables[IDPriceTableIndex].IdPriceTable,
-                    IDUser = AppContextGeneral.userInfo.IdUser,
-                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
-                    TicketNumber = this.TicketInfo.Ticket,
-                    DateExit = dateExit,
-                    Payments = (from l in this.TicketInfo.Payments
-                                select new PaymentItemInfo()
-                                {
-                                    Amount = l.Amount,
-                                    AuthorizationCode = l.AuthorizationCode,
-                                    Brand = l.Brand,
-                                    CardNumberTruncated = l.CardNumberTruncated,
-                                    IDDiscount = l.IDDiscount,
-                                    IDParkingSeal = l.IDParkingSeal,
-                                    IDPayment = l.IDPayment,
-                                    IDPaymentMethod = l.IDPaymentMethod,
-                                    Nsu = l.Nsu,
-                                    NsuHost = l.NsuHost,
-                                    PriceTableValue = l.PriceTableValue,
-                                    SealCode = l.SealCode,
-                                    SealCodeRead = l.SealCodeRead,
-                                    SealNumber = l.SealNumber,
-                                    SealTypeAccess = l.SealTypeAccess,
-                                    SealValue = l.SealValue,
-                                    IDBrand = l.IDBrand
-                                }).ToList()
-                });
-
-                if (response.Success)
-                {
-                    var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
-
-                    print.PrintPaymentReceipt(new DependencyService.Model.PrintTicketInfoModel()
-                    {
-                        DateEntry = TicketInfo.DateEntry,
-                        Plate = TicketInfo.Plate,
-                        Prism = TicketInfo.Prism,
-                        TicketNumber = TicketInfo.Ticket,
-                        VehicleColor = TicketInfo.VehicleColor,
-                        VehicleModel = TicketInfo.VehicleModel,
-                        DatePayment = response.Data.DatePayment.Value,
-                        DateLimitExit = response.Data.DateLimitExit.Value,
-                        Payments = (from l in TicketInfo.Payments select
-                            new PrintPaymentInfoModel()
-                            {
-                                PaymentMethod = l.Description,
-                                Amount = l.Amount.Value
-                            }
-                        ).ToList(),
-                        Amount = (from l in TicketInfo.Payments select l.Amount.Value).Sum()
-                    });
-
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        UserDialogs.Instance.HideLoading();
-                    });
-                }
-                else
+                catch (Exception ex)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         UserDialogs.Instance.HideLoading();
 
-                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        Application.Current.MainPage.DisplayAlert("Erro ex", ex.StackTrace, "Ok");
                     });
                 }
-            }
-            catch (Exception ex)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    UserDialogs.Instance.HideLoading();
-
-                    Application.Current.MainPage.DisplayAlert("Erro ex", ex.StackTrace, "Ok");
-                });
-            }
+            });
         }
 
         private void UpdateCalculatedPrice()

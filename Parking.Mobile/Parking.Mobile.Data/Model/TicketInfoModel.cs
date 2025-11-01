@@ -151,6 +151,7 @@ namespace Parking.Mobile.Data.Model
         public List<TicketPaymentItemInfo> Payments { get; set; }
         public List<TicketPaymentItemInfo> PaymentsOriginal { get; set; }
         public List<TicketHistoryPriceInfo> PriceHistory { get; set; }
+        public int IDDeviceEntry { get; set; }
     }
 
     public class TicketPaymentItemInfo

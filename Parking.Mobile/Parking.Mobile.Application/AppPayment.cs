@@ -38,17 +38,29 @@ namespace Parking.Mobile.ApplicationCore
 
         public ServiceResponseDefault<ProcessPaymentResponse> ProcessPayment(ProcessPaymentRequest request)
         {
-            return new ServiceResponseDefault<ProcessPaymentResponse>()
+            try
             {
-                Success = true,
-                Data = new ProcessPaymentResponse()
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<ProcessPaymentResponse>>(
+                            "ProcessPayment",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<ProcessPaymentResponse>
                 {
-                    DateExit = DateTime.Now,
-                    DateLimitExit = DateTime.Now.AddMinutes(20),
-                    DatePayment = DateTime.Now,
-                    RpsNumber = "001-000001"
-                }
-             };
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
         }
 
         public ServiceResponseDefault<ValidateSealResponse> ValidateSeal(ValidateSealRequest request)
