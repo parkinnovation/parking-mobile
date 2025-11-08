@@ -6,6 +6,7 @@ using Parking.Mobile.Interface.Message.Request;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Acr.UserDialogs;
+using Parking.Mobile.DependencyService.Interfaces;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -63,6 +64,29 @@ namespace Parking.Mobile.ViewModel
             }
             else
             {
+                try
+                {
+                    var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                    print.PrintCashier(new DependencyService.Model.PrintTicketInfoModel()
+                    {
+                        CashierOpen = this.CashierInfo.DateOpen,
+                        CashierClose = DateTime.Now,
+                        CashierNumber = this.CashierInfo.CashTransactionId,
+                        CashierAmount = Convert.ToDouble(this.CashFund),
+                        UserName = AppContextGeneral.userInfo.Name
+                    });
+                }
+                catch(Exception ex2)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage.DisplayAlert("Erro", ex2.Message, "OK");
+                    });
+                }
+
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     UserDialogs.Instance.HideLoading();

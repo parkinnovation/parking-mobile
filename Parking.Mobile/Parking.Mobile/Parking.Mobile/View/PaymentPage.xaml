@@ -139,8 +139,9 @@
                         </StackLayout>
                     </Grid>
 
-                    <Label Text="Forma de Pagamento:" Style="{StaticResource lblInfoFlow}" />
-                    <Picker ItemsSource="{Binding PaymentMethods}" ItemDisplayBinding="{Binding Description}"  SelectedIndex="{Binding IDPaymentMethodIndex}" Title="Selecione" />
+
+                    <Label Text="Forma de Pagamento:" Style="{StaticResource lblInfoFlow}" IsVisible="{Binding RequestPaymentMethod}" />
+                    <Picker IsVisible="{Binding RequestPaymentMethod}" ItemsSource="{Binding PaymentMethods}" ItemDisplayBinding="{Binding Description}"  SelectedIndex="{Binding IDPaymentMethodIndex}" Title="Selecione" />
 
                    
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">

@@ -1,28 +1,48 @@
 ﻿<Properties StartupConfiguration="{CE3EA955-5618-4B02-9F74-E7352DBF0D22}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Parking.Mobile.Interface/Message/Request/GetCredentialInfoRequest.cs">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Android AndroidDesignerPreferredTheme="MainTheme" PreferredExecutionTarget="Android.pixel_5_-_api_22" />
+  <MonoDevelop.MonoDroid LastDeploySdkVersion="13.2.2.0" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Parking.Mobile/Parking.Mobile/ViewModel/LoginViewModel.cs">
     <Files>
-      <File FileName="Parking.Mobile.Common/AppContextGeneral.cs" Line="42" Column="1" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/MainActivity.cs" Line="1" Column="1" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/SplashActivity.cs" Line="1" Column="1" />
+      <File FileName="Parking.Mobile.Common/AppContextGeneral.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/MainActivity.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/SplashActivity.cs" />
       <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AndroidManifest.xml" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AssemblyInfo.cs" Line="1" Column="1" />
-      <File FileName="Parking.Mobile.Interface/Message/Request/GetCredentialInfoRequest.cs" Line="1" Column="1" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AssemblyInfo.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Request/GetCredentialInfoRequest.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Request/ProcessPaymentRequest.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/ViewModel/PaymentViewModel.cs" Line="590" Column="55" />
+      <File FileName="Parking.Mobile.Interface/Message/Request/ProcessTicketLossRequest.cs" />
+      <File FileName="Parking.Mobile.Data/Model/TicketInfoModel.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Response/ServiceResponseDefault.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Response/GetTicketInfoResponse.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/App.xaml.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/ViewModel/ChangeSectorViewModel.cs" />
+      <File FileName="Parking.Mobile.Application/AppPayment.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Response/ProcessPaymentResponse.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Request/ListClientRequest.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/ViewModel/LoginViewModel.cs" Line="114" Column="22" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="Parking.Mobile" expanded="True">
-            <Node name="Parking.Mobile.Android">
-              <Node name="DependencyService" expanded="True" />
+          <Node name="Parking.Mobile">
+            <Node name="Parking.Mobile">
+              <Node name="ViewModel" expanded="True">
+                <Node name="LoginViewModel.cs" selected="True" />
+              </Node>
+              <Node name="App.xaml" expanded="True" />
             </Node>
-            <Node name="Parking.Mobile.DependencyService">
-              <Node name="Interfaces" expanded="True" />
+            <Node name="Parking.Mobile.Android">
+              <Node name="Properties" expanded="True" />
+            </Node>
+            <Node name="Parking.Mobile.Data">
+              <Node name="Model" expanded="True" />
             </Node>
             <Node name="Parking.Mobile.Interface">
               <Node name="Message" expanded="True">
-                <Node name="Request" expanded="True">
-                  <Node name="GetCredentialInfoRequest.cs" selected="True" />
-                </Node>
+                <Node name="Request" expanded="True" />
                 <Node name="Response" expanded="True" />
               </Node>
             </Node>
@@ -31,15 +51,12 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.pixel_5_-_api_22" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/charlesrossi/Documents/Projetos/parking-mobile/Parking.Mobile/Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" relfile="Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" line="320" column="1" />
+      <Breakpoint file="/Users/charlesrossi/Documents/Projetos/parking-mobile/Parking.Mobile/Parking.Mobile/Parking.Mobile/ViewModel/LoginViewModel.cs" relfile="Parking.Mobile/Parking.Mobile/ViewModel/LoginViewModel.cs" line="352" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Android AndroidDesignerPreferredTheme="MainTheme" PreferredExecutionTarget="Android.pixel_5_-_api_22" />
-  <MonoDevelop.MonoDroid LastDeploySdkVersion="13.2.2.0" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.pixel_5_-_api_22" />
 </Properties>

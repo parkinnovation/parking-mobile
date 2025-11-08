@@ -141,7 +141,6 @@ namespace Parking.Mobile.Droid.DependencyService
             output.Write(Encoding.UTF8.GetBytes("\n\n"), 0, 2);
         }
 
-
         private void PrintQrCode(Stream output, string content)
         {
             byte model = 49; // Modelo 2
@@ -429,7 +428,7 @@ namespace Parking.Mobile.Droid.DependencyService
                 data = Encoding.UTF8.GetBytes("Formas de Pagamento\n");
                 output.Write(data, 0, data.Length);
 
-                foreach(var payment in info.Payments)
+                foreach(var payment in info.Payments.Where(x=>x.Amount!=0))
                 {
                     data = Encoding.UTF8.GetBytes($"{payment.PaymentMethod}: R{(char)0x24} {payment.Amount.ToString("F2")}\n");
                     output.Write(data, 0, data.Length);
@@ -461,6 +460,97 @@ namespace Parking.Mobile.Droid.DependencyService
                 }
 
                 data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(cut, 0, cut.Length);
+                output.Flush();
+
+                socket.Close();
+                //Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+            }
+            catch (Exception ex)
+            {
+                //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+            }
+        }
+
+        public void PrintCashier(PrintTicketInfoModel info)
+        {
+            try
+            {
+                var printerDevice = FindPrinter();
+
+                if (printerDevice == null)
+                {
+                    return;
+                }
+
+                var uuid = Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+                socket = printerDevice.CreateRfcommSocketToServiceRecord(uuid);
+                socket.Connect();
+
+                var output = socket.OutputStream;
+
+                output.Write(init, 0, init.Length);
+
+                output.Write(fontNormal, 0, fontNormal.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                byte[] data;
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader3}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                data = Encoding.UTF8.GetBytes($"Relatorio Parcial\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(alignLeft, 0, alignLeft.Length);
+
+                data = Encoding.UTF8.GetBytes($"Operador   : {info.UserName.ToUpper()}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Terminal   : {AppContextGeneral.deviceInfo.Description}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Parcial No : {info.CashierNumber.ToString()}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Abertura   : {info.CashierOpen.ToString("dd/MM/yyyy HH:mm")}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Fechamento : {info.CashierClose.ToString("dd/MM/yyyy HH:mm")}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Fundo      : RS {info.CashierAmount.ToString("F2")}\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+
+                data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n\n");
                 output.Write(data, 0, data.Length);
 
                 output.Write(cut, 0, cut.Length);

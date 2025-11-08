@@ -46,6 +46,7 @@ namespace Parking.Mobile.DependencyService.Model
         public string VehicleModel { get; set; }
 		public string VehicleColor { get; set; }
         public decimal Amount { get; set; }
+
         public string Stay
         {
             get
@@ -55,6 +56,12 @@ namespace Parking.Mobile.DependencyService.Model
                 return permanency.ToString(@"dd\.hh\:mm\:ss");
             }
         }
+
+        public DateTime CashierOpen { get; set; }
+        public DateTime CashierClose { get; set; }
+        public string UserName { get; set; }
+        public int CashierNumber { get; set; }
+        public double CashierAmount { get; set; }
     }
 
     public class PrintPaymentInfoModel

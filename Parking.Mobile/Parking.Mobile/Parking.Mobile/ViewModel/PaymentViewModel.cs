@@ -91,6 +91,9 @@ namespace Parking.Mobile.ViewModel
         private bool isPaymentMode;
         public bool IsPaymentMode { get => isPaymentMode; set { isPaymentMode = value; OnPropertyChanged(nameof(IsPaymentMode)); } }
 
+        private bool requestPaymentMethod;
+        public bool RequestPaymentMethod { get => requestPaymentMethod; set { requestPaymentMethod = value; OnPropertyChanged(nameof(RequestPaymentMethod)); } }
+
         private TicketInfoModel ticketInfo;
         public TicketInfoModel TicketInfo { get => ticketInfo; set { ticketInfo = value; OnPropertyChanged(nameof(TicketInfo)); } }
 
@@ -118,6 +121,7 @@ namespace Parking.Mobile.ViewModel
                 {
                     UpdateCalculatedPrice();
                     IsPaymentMode = true;
+                    RequestPaymentMethod = true;
                 }
             }
         }
@@ -449,6 +453,8 @@ namespace Parking.Mobile.ViewModel
         {
             UserDialogs.Instance.ShowLoading("Processando...");
 
+            RequestPaymentMethod = true;
+
             Task.Run(async () =>
             {
                 AppPricing appPricing = new AppPricing();
@@ -475,7 +481,10 @@ namespace Parking.Mobile.ViewModel
                     model.Price = response.Data.Price;
                     model.Discount = response.Data.Discount;
 
+                    
                     this.TicketInfo = model;
+
+                    RequestPaymentMethod = this.TicketInfo.PaymentValue > 0;
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -516,7 +525,7 @@ namespace Parking.Mobile.ViewModel
 
         private void ConfirmPayment()
         {
-            if (IDPaymentMethodIndex<0)
+            if (IDPaymentMethodIndex<0 && this.TicketInfo.PaymentValue>0)
             {
                 Application.Current.MainPage.DisplayAlert("Aviso", "Selecione a forma de pagamento.", "OK");
                 return;
@@ -551,9 +560,9 @@ namespace Parking.Mobile.ViewModel
 
                         TicketInfo.Payments.Add(new TicketPaymentItemInfo()
                         {
-                            Amount = TicketInfo.Price,
-                            IDPaymentMethod = PaymentMethods[IDPaymentMethodIndex].Type,
-                            Description = PaymentMethods[IDPaymentMethodIndex].Description
+                            Amount = TicketInfo.PaymentValue,
+                            IDPaymentMethod = this.TicketInfo.PaymentValue>0 ? PaymentMethods[IDPaymentMethodIndex].Type : 0,
+                            Description = this.TicketInfo.PaymentValue > 0 ? PaymentMethods[IDPaymentMethodIndex].Description : "DINHEIRO"
                         });
 
                         if (IDDiscountIndex >= 0)
@@ -623,16 +632,12 @@ namespace Parking.Mobile.ViewModel
                                     Amount = l.Amount.Value
                                 }
                             ).ToList(),
-                            Amount = (from l in TicketInfo.Payments select l.Amount.Value).Sum()
+                            Amount = (from l in TicketInfo.Payments select Math.Abs(l.Amount.Value)).Sum()
                         });
 
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             UserDialogs.Instance.HideLoading();
-
-                            Application.Current.MainPage.DisplayAlert("Sucesso",
-                               $"Pagamento confirmado!\n\nTicket: {TicketInfo.Ticket}\nPreço: R$ {CalculatedPrice:F2}\nForma: {PaymentMethods[IDPaymentMethodIndex].Description}",
-                               "OK");
 
                             ResetScreen();
                         });
