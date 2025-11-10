@@ -1,17 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.0.3" package="br.com.parking.mobile" android:versionCode="3">
-	<uses-sdk android:minSdkVersion="22" android:targetSdkVersion="22" />
-	<application android:label="LockiD Mobile" android:theme="@style/MainTheme" android:icon="@drawable/icon"></application>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.FLASHLIGHT" />
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.BLUETOOTH" />
-	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-	<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
+          package="br.com.parking.mobile" 
+          android:versionCode="4" 
+          android:versionName="1.0.0.4">
+
+    <!-- ESSAS DUAS LINHAS SÃO OBRIGATÓRIAS -->
+    <uses-sdk android:minSdkVersion="22" 
+              android:targetSdkVersion="22" />  <!-- Android 14 -->
+
+    <application android:label="LockiD Mobile"
+                 android:theme="@style/MainTheme"
+                 android:icon="@drawable/icon"
+                 android:requestLegacyExternalStorage="true"  
+                 android:allowBackup="true"
+                 android:usesCleartextTraffic="true">
+    </application>
+
+    <!-- PERMISSÕES -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    
+    <!-- Armazenamento (só funciona com requestLegacyExternalStorage + target 34) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
+                     android:maxSdkVersion="28" />  <!-- Ignorado acima do 28 -->
+
 </manifest>

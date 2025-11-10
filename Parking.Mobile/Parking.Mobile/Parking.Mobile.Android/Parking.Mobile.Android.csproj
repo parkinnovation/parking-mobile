@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
@@ -78,6 +79,9 @@
     <PackageReference Include="Xamarin.Forms">
       <Version>5.0.0.2612</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Tesseract">
+      <Version>0.3.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -87,6 +91,10 @@
     <Compile Include="DependencyService\CamScanner.cs" />
     <Compile Include="DependencyService\FilePath.cs" />
     <Compile Include="DependencyService\PrinterService.cs" />
+    <Compile Include="DependencyService\TesseractOcr.cs" />
+    <Compile Include="DependencyService\OcrReaderImplementation.cs" />
+    <Compile Include="CameraOcrActivity.cs" />
+    <Compile Include="DependencyService\PlateRecognizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -193,6 +201,10 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\Brand.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\CarScanner.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

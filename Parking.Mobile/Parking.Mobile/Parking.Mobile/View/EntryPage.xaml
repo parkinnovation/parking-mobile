@@ -21,6 +21,11 @@
                     </Entry.Behaviors>
                 </Entry>
 
+                 <StackLayout>
+                    <Button ImageSource="@drawable/CarScanner" Style="{StaticResource btnScanner}" Command="{Binding ActionPage}" CommandParameter="LPR"/>
+                </StackLayout>
+
+              
                 <Label Text="{Binding CredentialName}" Style="{StaticResource lblInfoFlow}" />
 
                 <!-- Veículo -->

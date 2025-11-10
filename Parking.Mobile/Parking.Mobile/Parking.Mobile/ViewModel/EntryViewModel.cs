@@ -191,6 +191,15 @@ namespace Parking.Mobile.ViewModel
                 case "NextPage":
                     // código existente mantido
                     break;
+                case "LPR":
+                    Task.Run(async () =>
+                    {
+                        var plate = await Xamarin.Forms.DependencyService.Get<IOcrReader>().ReadPlateAsync(null);
+
+                        this.Plate = plate;
+
+                    });
+                    break;
             }
         }
 
