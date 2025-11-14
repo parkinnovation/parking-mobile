@@ -144,10 +144,10 @@ namespace Parking.Mobile.ViewModel
 
         private void ValidateButton()
         {
-            EnableButton = !string.IsNullOrWhiteSpace(Plate)
-                           && ((VehicleRequired && !string.IsNullOrWhiteSpace(Vehicle)) || !VehicleRequired)
-                           && ((ColorRequired && !string.IsNullOrWhiteSpace(Color)) || !ColorRequired)
-                           && ((PrismRequired && !string.IsNullOrWhiteSpace(Prism)) || !PrismRequired);
+            EnableButton = !string.IsNullOrWhiteSpace(Plate) && Plate.Replace("-","").Length>=7;
+                           //&& ((VehicleRequired && !string.IsNullOrWhiteSpace(Vehicle)) || !VehicleRequired)
+                           //&& ((ColorRequired && !string.IsNullOrWhiteSpace(Color)) || !ColorRequired)
+                           //&& ((PrismRequired && !string.IsNullOrWhiteSpace(Prism)) || !PrismRequired);
         }
 
         private async void OpenVehiclePopupAction()
@@ -206,7 +206,7 @@ namespace Parking.Mobile.ViewModel
         private async void ConfirmAction()
         {
             // Exibe o modal de opções
-            var option = await Application.Current.MainPage.ShowPopupAsync(new TicketOptionPopup());
+            var option = await Application.Current.MainPage.ShowPopupAsync(new TicketOptionPopup(false));
 
             if (option == null)
                 return;
@@ -292,7 +292,8 @@ namespace Parking.Mobile.ViewModel
                                     TicketNumber = response.Data.Ticket,
                                     DateEntry = response.Data.DateEntry,
                                     Plate = plate,
-                                    PhoneNumber = phone
+                                    PhoneNumber = phone,
+                                    Type = 1
 
                                 });
 

@@ -95,6 +95,7 @@
     <Compile Include="DependencyService\OcrReaderImplementation.cs" />
     <Compile Include="CameraOcrActivity.cs" />
     <Compile Include="DependencyService\PlateRecognizer.cs" />
+    <Compile Include="KeepAliveService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

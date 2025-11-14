@@ -2,7 +2,7 @@
 <toolkit:Popup
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Size="300,200"
+    Size="300, 300"
     
     xmlns:toolkit="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
     x:Class="Parking.Mobile.View.TicketOptionPopup"
@@ -14,7 +14,7 @@
             BackgroundColor="White"
             CornerRadius="20"
             WidthRequest="280"
-            HeightRequest="160"
+            HeightRequest="240"
             HasShadow="True"
             HorizontalOptions="Center"
             VerticalOptions="Center">
@@ -33,9 +33,10 @@
                         Command="{Binding ClosePopupCommand}"
                         CommandParameter="WhatsApp" />
 
-                <Button Text="🚫 Sem Ticket" IsVisible="False"
+                <Button Text="🚫 Sem Ticket" IsVisible="{Binding ShowWithoutTicket}"
                         Style="{StaticResource btnConfirm}"
                         Command="{Binding ClosePopupCommand}"
+                        
                         CommandParameter="None" />
             </StackLayout>
         </Frame>

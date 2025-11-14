@@ -564,5 +564,87 @@ namespace Parking.Mobile.Droid.DependencyService
                 //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
             }
         }
+
+        public void PrintChangeSector(PrintTicketInfoModel info)
+        {
+            try
+            {
+                var printerDevice = FindPrinter();
+
+                if (printerDevice == null)
+                {
+                    return;
+                }
+
+                var uuid = Java.Util.UUID.FromString("00001101-0000-1000-8000-00805f9b34fb");
+                socket = printerDevice.CreateRfcommSocketToServiceRecord(uuid);
+                socket.Connect();
+
+                var output = socket.OutputStream;
+
+                output.Write(init, 0, init.Length);
+
+                output.Write(fontNormal, 0, fontNormal.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                byte[] data;
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader1))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader1}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader2))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader2}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                if (!String.IsNullOrEmpty(AppContextGeneral.deviceInfo.TicketHeader3))
+                {
+                    data = Encoding.UTF8.GetBytes($"{AppContextGeneral.deviceInfo.TicketHeader3}\n");
+                    output.Write(data, 0, data.Length);
+                }
+
+                data = Encoding.UTF8.GetBytes($"\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                data = Encoding.UTF8.GetBytes($"Mudanca de Setor\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(alignLeft, 0, alignLeft.Length);
+
+                data = Encoding.UTF8.GetBytes($"Ticket     : {info.TicketNumber}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Terminal   : {AppContextGeneral.deviceInfo.Description}\n");
+                output.Write(data, 0, data.Length);
+
+                data = Encoding.UTF8.GetBytes($"Data       : {DateTime.Now.ToString("dd/MM/yyyy HH:mm")}\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(fontCondensed, 0, fontCondensed.Length);
+
+                output.Write(alignCenter, 0, alignCenter.Length);
+
+                data = Encoding.UTF8.GetBytes($"LokiD  v{AppContextGeneral.Version}\n\n\n\n");
+                output.Write(data, 0, data.Length);
+
+                output.Write(cut, 0, cut.Length);
+                output.Flush();
+
+                socket.Close();
+                //Toast.MakeText(Android.App.Application.Context, "Impressão enviada!", ToastLength.Short).Show();
+            }
+            catch (Exception ex)
+            {
+                //Toast.MakeText(Android.App.Application.Context, $"Erro: {ex.Message}", ToastLength.Long).Show();
+            }
+        }
     }
 }

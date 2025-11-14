@@ -13,6 +13,8 @@ namespace Parking.Mobile.DependencyService.Interfaces
         void PrintPaymentReceipt(PrintTicketInfoModel info);
 
         void PrintCashier(PrintTicketInfoModel info);
+
+        void PrintChangeSector(PrintTicketInfoModel info);
     }
 }
 

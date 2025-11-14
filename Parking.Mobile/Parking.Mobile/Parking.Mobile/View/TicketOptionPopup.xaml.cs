@@ -6,10 +6,15 @@ namespace Parking.Mobile.View
 {
     public partial class TicketOptionPopup : Popup
     {
-        public TicketOptionPopup()
+        private bool showWithoutTicket;
+
+        public bool ShowWithoutTicket { get => showWithoutTicket; set { showWithoutTicket = value; OnPropertyChanged(nameof(ShowWithoutTicket)); } }
+
+        public TicketOptionPopup(bool _showWithoutTicket)
         {
             InitializeComponent();
             BindingContext = this;
+            ShowWithoutTicket = _showWithoutTicket;
         }
 
         public Command<string> ClosePopupCommand => new Command<string>((option) =>

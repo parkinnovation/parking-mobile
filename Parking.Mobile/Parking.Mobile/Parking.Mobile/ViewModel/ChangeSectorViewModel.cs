@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.ApplicationCore;
 using System.Linq;
+using Parking.Mobile.DependencyService.Interfaces;
+using Parking.Mobile.DependencyService.Model;
+using Xamarin.CommunityToolkit.Extensions;
 
 namespace Parking.Mobile.ViewModel
 {
@@ -183,46 +186,125 @@ namespace Parking.Mobile.ViewModel
 
             Task.Run(async () =>
             {
-                AppParkingLot appParkingLot = new AppParkingLot();
-
-                var response = appParkingLot.ChangeSector(new ChangeSectorRequest()
+                try
                 {
-                    IDDevice = AppContextGeneral.deviceInfo.IDDevice,
-                    ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
-                    Plate = TicketInfo.Plate,
-                    TicketNumber = TicketInfo.Ticket
-                });
+                    AppParkingLot appParkingLot = new AppParkingLot();
 
-                if (response.Success)
+                    var response = appParkingLot.ChangeSector(new ChangeSectorRequest()
+                    {
+                        IDDevice = AppContextGeneral.deviceInfo.IDDevice,
+                        ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                        Plate = TicketInfo.Plate,
+                        TicketNumber = TicketInfo.Ticket
+                    });
+
+                    if (response.Success)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            ConfirmAction();
+                        });
+                    }
+                    else
+                    {
+                        string codeAux = this.CodeRead;
+
+                        this.CodeRead = null;
+
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserDialogs.Instance.HideLoading();
+
+                            Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        });
+                    }
+                }catch(Exception ex)
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         UserDialogs.Instance.HideLoading();
 
-                        Application.Current.MainPage.DisplayAlert("Sucesso",
-                        $"Mudança confirmada!\n\nTicket: {TicketInfo.Ticket}",
-                        "OK");
-
-                                ResetScreen();
-                            });
-                }
-                else
-                {
-                    string codeAux = this.CodeRead;
-
-                    this.CodeRead = null;
-
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        UserDialogs.Instance.HideLoading();
-
-                        Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
+                        Application.Current.MainPage.DisplayAlert("Erro", ex.Message, "Ok");
                     });
                 }
             });
             
         }
 
+        private async void ConfirmAction()
+        {
+            var option = await Application.Current.MainPage.ShowPopupAsync(new TicketOptionPopup(true));
+
+            if (option == null)
+                return;
+
+            switch (option)
+            {
+                case "Print":
+                    var print = Xamarin.Forms.DependencyService.Get<IPrinterService>();
+
+                    print.PrintChangeSector(new DependencyService.Model.PrintTicketInfoModel()
+                    {
+                        TicketNumber = TicketInfo.Ticket
+                    });
+
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage = new MenuPage();
+
+                    });
+                    break;
+
+                case "WhatsApp":
+                    var phone = await Application.Current.MainPage.ShowPopupAsync(new WhatsAppPopup());
+
+                    if (phone != null)
+                    {
+                        AppParkingLot appParkingLot = new AppParkingLot();
+
+                        _ = Task.Run(async () =>
+                        {
+                            var responseSendTicket = appParkingLot.SendTicket(new SendTicketRequest()
+                            {
+                                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                                TicketNumber = this.TicketInfo.Ticket,
+                                PhoneNumber = phone.ToString(),
+                                Plate = TicketInfo.Plate,
+                                Type = 2
+
+                            });
+
+                            Device.BeginInvokeOnMainThread(async () =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                if (responseSendTicket.Success)
+                                {
+
+                                    Application.Current.MainPage = new MenuPage();
+                                }
+                                else
+                                {
+                                    await Application.Current.MainPage.DisplayAlert("Erro", responseSendTicket.Message, "Ok");
+                                }
+                            });
+                        });
+                    }
+                    break;
+
+                case "None":
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+
+                        Application.Current.MainPage = new MenuPage();
+                                
+                    });
+                    break;
+            }
+        }
         private void ResetScreen()
         {
             Application.Current.MainPage = new MenuPage();

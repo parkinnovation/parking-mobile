@@ -22,6 +22,10 @@
                         </Entry.Behaviors>
                     </Entry>
 
+                    <StackLayout>
+                        <Button ImageSource="@drawable/CarScanner" Style="{StaticResource btnScanner}" Command="{Binding ActionPage}" CommandParameter="LPR"/>
+                    </StackLayout>
+
                     <Label Text="Ticket"  Style="{StaticResource lblInfoFlow}"/>
                     <Entry Keyboard="Numeric" MaxLength="30" Text="{Binding Ticket}" Style="{StaticResource entFlow}"/>
 

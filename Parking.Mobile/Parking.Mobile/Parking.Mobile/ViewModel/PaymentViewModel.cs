@@ -199,6 +199,15 @@ namespace Parking.Mobile.ViewModel
                 case "Cancel":
                     ResetScreen();
                     break;
+                case "LPR":
+                    Task.Run(async () =>
+                    {
+                        var plate = await Xamarin.Forms.DependencyService.Get<IOcrReader>().ReadPlateAsync(null);
+
+                        this.Plate = plate;
+
+                    });
+                    break;
             }
         }
 

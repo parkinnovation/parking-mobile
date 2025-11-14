@@ -1,38 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
-          package="br.com.parking.mobile" 
-          android:versionCode="4" 
-          android:versionName="1.0.0.4">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="br.com.parking.mobile"
+    android:versionName="1.0.0.5"
+    android:versionCode="5">
 
-    <!-- ESSAS DUAS LINHAS SÃO OBRIGATÓRIAS -->
-    <uses-sdk android:minSdkVersion="22" 
-              android:targetSdkVersion="22" />  <!-- Android 14 -->
+    <!-- ================================
+         SDK CONFIG
+         ================================ -->
+    <uses-sdk
+        android:minSdkVersion="22"
+        android:targetSdkVersion="22" />
 
-    <application android:label="LockiD Mobile"
-                 android:theme="@style/MainTheme"
-                 android:icon="@drawable/icon"
-                 android:requestLegacyExternalStorage="true"  
-                 android:allowBackup="true"
-                 android:usesCleartextTraffic="true">
-    </application>
-
-    <!-- PERMISSÕES -->
+    <!-- ================================
+         PERMISSÕES NECESSÁRIAS
+         ================================ -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- localizar usuário se necessário -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- câmera -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    
-    <!-- Armazenamento (só funciona com requestLegacyExternalStorage + target 34) -->
+
+    <!-- wakelock, importante para evitar que Android mate o app -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- armazenamento -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
-                     android:maxSdkVersion="28" />  <!-- Ignorado acima do 28 -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+
+    <!-- foreground service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- permitir ignorar otimização de bateria -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
+    <!-- ================================
+         APLICATIVO
+         ================================ -->
+    <application
+        android:label="LockiD Mobile"
+        android:theme="@style/MainTheme"
+        android:icon="@drawable/icon"
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true">
+
+        <!-- Serviço que mantém app vivo -->
+        
+
+    </application>
 
 </manifest>

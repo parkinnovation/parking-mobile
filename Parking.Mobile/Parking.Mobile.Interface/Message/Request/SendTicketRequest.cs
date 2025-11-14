@@ -7,6 +7,7 @@ namespace Parking.Mobile.Interface.Message.Request
 		public DateTime DateEntry { get; set; }
 		public string Plate { get; set; }
 		public string PhoneNumber { get; set; }
+		public int Type { get; set; }
 	}
 }
 

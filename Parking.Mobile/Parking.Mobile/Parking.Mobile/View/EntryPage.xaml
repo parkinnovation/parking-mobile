@@ -21,7 +21,7 @@
                     </Entry.Behaviors>
                 </Entry>
 
-                 <StackLayout>
+                <StackLayout>
                     <Button ImageSource="@drawable/CarScanner" Style="{StaticResource btnScanner}" Command="{Binding ActionPage}" CommandParameter="LPR"/>
                 </StackLayout>
 
