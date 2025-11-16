@@ -361,6 +361,9 @@ namespace Parking.Mobile.ViewModel
 
                 if (response.Success)
                 {
+                    this.Color = response.Data.VehicleColor;
+                    this.Vehicle = response.Data.VehicleModel;
+
                     CheckCredential();
                 }
                 else
