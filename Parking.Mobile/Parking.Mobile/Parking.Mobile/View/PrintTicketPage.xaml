@@ -91,6 +91,11 @@
                         </StackLayout>
                     </Grid>
 
+                    <Label Text="Prisma" Style="{StaticResource lblInfoFlow}"/>
+                    <Entry Keyboard="Text" 
+                           Style="{StaticResource entFlow}"
+                           Text="{Binding Prism}" />
+
                     <StackLayout VerticalOptions="FillAndExpand" HeightRequest="40" />
 
                     <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Spacing="10">

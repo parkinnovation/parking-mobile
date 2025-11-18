@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Parking.Mobile.Interface.Message.Request;
 using Parking.Mobile.Interface.Message.Response;
 
@@ -19,6 +20,8 @@ namespace Parking.Mobile.Interface.Interfaces
         ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request);
 
         ServiceResponseDefault<SendTicketResponse> SendTicket(SendTicketRequest request);
+
+        ServiceResponseDefault<ChangePrismResponse> ChangePrism(ChangePrismRequest request);
     }
 }
 

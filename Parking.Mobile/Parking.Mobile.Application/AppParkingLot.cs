@@ -15,6 +15,33 @@ namespace Parking.Mobile.ApplicationCore
             throw new NotImplementedException();
         }
 
+        public ServiceResponseDefault<ChangePrismResponse> ChangePrism(ChangePrismRequest request)
+        {
+            try
+            {
+
+                var result = AppContextGeneral.SignalRClient
+                        .SendMessageAsync<ServiceResponseDefault<ChangePrismResponse>>(
+                            "ChangePrism",
+                            request
+                        )
+                    .GetAwaiter()
+                    .GetResult();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Erro ao enviar mensagem SignalR: {ex.Message}");
+                return new ServiceResponseDefault<ChangePrismResponse>
+                {
+                    Success = false,
+                    Message = "Erro de comunicação com o servidor",
+                    Data = null
+                };
+            }
+        }
+
         public ServiceResponseDefault<ChangeSectorResponse> ChangeSector(ChangeSectorRequest request)
         {
             try

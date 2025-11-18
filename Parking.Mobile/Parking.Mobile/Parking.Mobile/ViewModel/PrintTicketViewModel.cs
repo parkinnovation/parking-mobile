@@ -19,6 +19,14 @@ namespace Parking.Mobile.ViewModel
 
         private string CodeRead;
 
+        private string prism;
+
+        public string Prism
+        {
+            get => prism;
+            set { prism = value; OnPropertyChanged(nameof(Prism));}
+        }
+
         private string plate;
         public string Plate { get => plate; set { plate = value; OnPropertyChanged(nameof(Plate)); } }
 
@@ -150,6 +158,8 @@ namespace Parking.Mobile.ViewModel
                             VehicleModel = response.Data.VehicleModel
                         };
 
+                        this.Prism = response.Data.Prism;
+
                         IsSearchMode = false;
                         IsTicketMode = true;
                     });
@@ -192,11 +202,35 @@ namespace Parking.Mobile.ViewModel
                         CredentialNumber = this.TicketInfo.Credential,
                         DateEntry = this.TicketInfo.DateEntry,
                         Plate = this.TicketInfo.Plate,
-                        Prism = this.TicketInfo.Prism,
+                        Prism = this.Prism.ToUpper()??null,
                         TicketNumber = this.TicketInfo.Ticket,
                         VehicleColor = this.TicketInfo.VehicleColor,
                         VehicleModel = this.TicketInfo.VehicleModel
                     });
+
+                    if (!String.IsNullOrEmpty(this.Prism) && this.Prism!=this.TicketInfo.Prism)
+                    {
+                        try
+                        {
+                            AppParkingLot appParkingLot = new AppParkingLot();
+
+                            var response = appParkingLot.ChangePrism(new ChangePrismRequest()
+                            {
+                                ParkingCode = AppContextGeneral.parkingInfo.ParkingCode,
+                                TicketNumber = this.TicketInfo.Ticket,
+                                Prism = this.Prism.ToUpper()
+                            });
+                        }
+                        catch(Exception ex2)
+                        {
+                            Device.BeginInvokeOnMainThread(() =>
+                            {
+                                UserDialogs.Instance.HideLoading();
+
+                                Application.Current.MainPage.DisplayAlert("Erro", ex2.Message, "Ok");
+                            });
+                        }
+                    }
 
                     Device.BeginInvokeOnMainThread(async () =>
                     {
