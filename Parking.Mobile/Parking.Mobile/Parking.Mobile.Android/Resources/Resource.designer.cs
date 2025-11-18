@@ -22262,46 +22262,49 @@ namespace Parking.Mobile.Droid
 			public const int preference_list_divider_material = 2131165341;
 			
 			// aapt resource value: 0x7F07009E
-			public const int Report = 2131165342;
+			public const int PrintTicket = 2131165342;
 			
 			// aapt resource value: 0x7F07009F
-			public const int roundedbg = 2131165343;
+			public const int Report = 2131165343;
 			
 			// aapt resource value: 0x7F0700A0
-			public const int roundedbgdark = 2131165344;
+			public const int roundedbg = 2131165344;
 			
 			// aapt resource value: 0x7F0700A1
-			public const int SearchCredential = 2131165345;
+			public const int roundedbgdark = 2131165345;
 			
 			// aapt resource value: 0x7F0700A2
-			public const int splash_screen = 2131165346;
+			public const int SearchCredential = 2131165346;
 			
 			// aapt resource value: 0x7F0700A3
-			public const int test_custom_background = 2131165347;
+			public const int splash_screen = 2131165347;
 			
 			// aapt resource value: 0x7F0700A4
-			public const int test_level_drawable = 2131165348;
+			public const int test_custom_background = 2131165348;
 			
 			// aapt resource value: 0x7F0700A5
-			public const int TicketCancel = 2131165349;
+			public const int test_level_drawable = 2131165349;
 			
 			// aapt resource value: 0x7F0700A6
-			public const int TicketEntry = 2131165350;
+			public const int TicketCancel = 2131165350;
 			
 			// aapt resource value: 0x7F0700A7
-			public const int TicketLoss = 2131165351;
+			public const int TicketEntry = 2131165351;
 			
 			// aapt resource value: 0x7F0700A8
-			public const int TicketPayment = 2131165352;
+			public const int TicketLoss = 2131165352;
 			
 			// aapt resource value: 0x7F0700A9
-			public const int tooltip_frame_dark = 2131165353;
+			public const int TicketPayment = 2131165353;
 			
 			// aapt resource value: 0x7F0700AA
-			public const int tooltip_frame_light = 2131165354;
+			public const int tooltip_frame_dark = 2131165354;
 			
 			// aapt resource value: 0x7F0700AB
-			public const int User = 2131165355;
+			public const int tooltip_frame_light = 2131165355;
+			
+			// aapt resource value: 0x7F0700AC
+			public const int User = 2131165356;
 			
 			static Drawable()
 			{

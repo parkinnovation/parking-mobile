@@ -1,36 +1,8 @@
 ﻿<Properties StartupConfiguration="{CE3EA955-5618-4B02-9F74-E7352DBF0D22}|Default">
   <MonoDevelop.MonoDroid LastDeploySdkVersion="13.2.2.0" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Parking.Mobile/Parking.Mobile/App.xaml">
-    <Files>
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/SplashActivity.cs" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/MainActivity.cs" Line="65" Column="19" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/KeepAliveService.cs" />
-      <File FileName="Parking.Mobile.Common/SignalRClientService.cs" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AndroidManifest.xml" />
-      <File FileName="Parking.Mobile.Application/AppParkingLot.cs" Line="131" Column="59" />
-      <File FileName="Parking.Mobile.Interface/Message/Response/ValidateEntryPlateResponse.cs" Line="8" Column="41" />
-      <File FileName="Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" Line="369" Column="21" />
-      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AssemblyInfo.cs" Line="26" Column="40" />
-      <File FileName="Parking.Mobile/Parking.Mobile/View/EntryPage.xaml" Line="29" Column="95" />
-      <File FileName="Parking.Mobile/Parking.Mobile/App.xaml" Line="150" Column="58" />
-    </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="Parking.Mobile" expanded="True">
-            <Node name="Parking.Mobile">
-              <Node name="App.xaml" selected="True" />
-            </Node>
-            <Node name="Parking.Mobile.Android" expanded="True">
-              <Node name="Properties" expanded="True" />
-            </Node>
-            <Node name="Parking.Mobile.ApplicationCore" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <Xamarin.Addins.Core.Project ActiveDebugTarget="Android.pixel_5_-_api_22" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <Debugger.DebugSourceFolders>
     <String>/Users/charlesrossi/Library/Caches/VisualStudio/17.0/Symbols/raw.githubusercontent.com/mono/mono/d9a6e8710b37cd7f16cf52eff4f772556e57cc41</String>
   </Debugger.DebugSourceFolders>
@@ -39,8 +11,43 @@
       <Breakpoint file="/Users/charlesrossi/Documents/Projetos/parking-mobile/Parking.Mobile/Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" relfile="Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" line="330" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Android PreferredExecutionTarget="Android.pixel_5_-_api_22" AndroidDesignerPreferredTheme="MainTheme" />
+  <MonoDevelop.Ide.ItemProperties.Parking.Mobile.Android AndroidDesignerPreferredTheme="MainTheme" PreferredExecutionTarget="Android.pixel_5_-_api_22" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Parking.Mobile/Parking.Mobile.Android/DependencyService/PrinterService.cs">
+    <Files>
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/SplashActivity.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/MainActivity.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/KeepAliveService.cs" />
+      <File FileName="Parking.Mobile.Common/SignalRClientService.cs" />
+      <File FileName="Parking.Mobile.Application/AppParkingLot.cs" />
+      <File FileName="Parking.Mobile.Interface/Message/Response/ValidateEntryPlateResponse.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/ViewModel/EntryViewModel.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AssemblyInfo.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile/View/EntryPage.xaml" />
+      <File FileName="Parking.Mobile/Parking.Mobile/App.xaml" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/DependencyService/PrinterService.cs" Line="30" Column="77" />
+      <File FileName="Parking.Mobile.DependencyService/Interfaces/IPrinterService.cs" />
+      <File FileName="Parking.Mobile/Parking.Mobile.Android/Properties/AndroidManifest.xml" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Parking.Mobile" expanded="True">
+            <Node name="Parking.Mobile">
+              <Node name="ViewModel" expanded="True" />
+            </Node>
+            <Node name="Parking.Mobile.Android">
+              <Node name="DependencyService" expanded="True">
+                <Node name="PrinterService.cs" selected="True" />
+              </Node>
+              <Node name="Properties" expanded="True" />
+            </Node>
+            <Node name="Parking.Mobile.DependencyService">
+              <Node name="Interfaces" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
 </Properties>

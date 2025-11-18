@@ -2,82 +2,100 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    
     x:Class="Parking.Mobile.View.MenuParkingLotPage">
+
     <ContentPage.Content>
-         <StackLayout Style="{StaticResource stkDefault}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition  Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="{Binding HeightRowParkingLotCounter}"/>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="100"/>
-                            <RowDefinition Height="100"/>
-                        </Grid.RowDefinitions>
+        <StackLayout Style="{StaticResource stkDefault}">
+            
+            <!-- StackLayout para empilhar os botões verticalmente SEM buracos -->
+            <StackLayout Spacing="10" Padding="5">
 
+                <!-- Entrada -->
+                <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" HeightRequest="100"
+                       IsVisible="{Binding ShowEntry}">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#00D4FF" Offset="0" />
+                            <GradientStop Color="Orange" Offset="1" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="1" IsVisible="{Binding ShowEntry}">
-                       <Frame.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#00D4FF"
-                                                        Offset="0.00" />
-
-                                    <GradientStop Color="Orange"
-                                                Offset="1.00" />
-                                
-                            </LinearGradientBrush>
-                        </Frame.Background>
-
-                        <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False">
-                            <StackLayout HorizontalOptions="FillAndExpand">
-                                <Button ImageSource="@drawable/TicketEntry" Style="{StaticResource btnMenu}" Text="Entrada de veículo" Command="{Binding ActionOpenPage}" CommandParameter="Entry"/>
-                            </StackLayout>
-                        </Frame>
+                    <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False" HeightRequest="100">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                            <Button ImageSource="@drawable/TicketEntry"
+                                    Style="{StaticResource btnMenu}"
+                                    Text="Entrada de veículo"
+                                    Command="{Binding ActionOpenPage}"
+                                    CommandParameter="Entry"/>
+                        </StackLayout>
                     </Frame>
+                </Frame>
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="2"  IsVisible="{Binding ShowPayment}">
-                        <Frame.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#00D4FF"
-                                                        Offset="0.00" />
+                <!-- Pagamento -->
+                <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" HeightRequest="100"
+                       IsVisible="{Binding ShowPayment}">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#00D4FF" Offset="0" />
+                            <GradientStop Color="LightGreen" Offset="1" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
 
-                                    <GradientStop Color="LightGreen"
-                                                Offset="1.00" />
-                                
-                            </LinearGradientBrush>
-                        </Frame.Background>
-
-                        <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False">
-                            <StackLayout HorizontalOptions="FillAndExpand">
-                                <Button ImageSource="@drawable/TicketPayment" Style="{StaticResource btnMenu}" Text="Saída/Pagto de ticket" Command="{Binding ActionOpenPage}" CommandParameter="Payment"/>
-                            </StackLayout>
-                        </Frame>
+                    <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False" HeightRequest="100">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                            <Button ImageSource="@drawable/TicketPayment"
+                                    Style="{StaticResource btnMenu}"
+                                    Text="Saída/Pagto de ticket"
+                                    Command="{Binding ActionOpenPage}"
+                                    CommandParameter="Payment"/>
+                        </StackLayout>
                     </Frame>
+                </Frame>
 
-                    <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" Margin="5"  Grid.Column="0" Grid.Row="3"  IsVisible="{Binding ShowChangeSector}">
-                        <Frame.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                    <GradientStop Color="#00D4FF"
-                                                        Offset="0.00" />
+                <!-- Mudança de setor -->
+                <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" HeightRequest="100"
+                       IsVisible="{Binding ShowChangeSector}">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#00D4FF" Offset="0" />
+                            <GradientStop Color="Violet" Offset="1" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
 
-                                    <GradientStop Color="Violet"
-                                                Offset="1.00" />
-                            </LinearGradientBrush>
-                        </Frame.Background>
+                    <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False" HeightRequest="100">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                            <Button ImageSource="@drawable/ChangeSector"
+                                    Style="{StaticResource btnMenu}"
+                                    Text="Mudança de setor"
+                                    Command="{Binding ActionOpenPage}"
+                                    CommandParameter="ChangeSector"/>
+                        </StackLayout>
+                    </Frame>
+                </Frame>
 
-                        <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False">
-                            <StackLayout HorizontalOptions="FillAndExpand">
-                                <Button ImageSource="@drawable/ChangeSector" Style="{StaticResource btnMenu}" Text="Mudança de setor" Command="{Binding ActionOpenPage}" CommandParameter="ChangeSector"/>
-                            </StackLayout>
-                        </Frame>
-                    </Frame>   
+                <!-- Imprimir ticket -->
+                <Frame BackgroundColor="Blue" HasShadow="False" CornerRadius="10" Padding="0" HeightRequest="100"
+                       IsVisible="{Binding ShowPrintTicket}">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#00D4FF" Offset="0" />
+                            <GradientStop Color="Violet" Offset="1" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
 
-                        
-                    </Grid>
-                </StackLayout>
+                    <Frame BackgroundColor="#F2E8EC" CornerRadius="10" Margin="0" HasShadow="False" HeightRequest="100">
+                        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                            <Button ImageSource="@drawable/PrintTicket"
+                                    Style="{StaticResource btnMenu}"
+                                    Text="Imprimir ticket"
+                                    Command="{Binding ActionOpenPage}"
+                                    CommandParameter="PrintTicket"/>
+                        </StackLayout>
+                    </Frame>
+                </Frame>
+
+            </StackLayout>
+
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
-

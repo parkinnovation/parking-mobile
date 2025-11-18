@@ -46,6 +46,14 @@ namespace Parking.Mobile.ViewModel
             }
         }
 
+        public bool ShowPrintTicket
+        {
+            get
+            {
+                return AppContextGeneral.deviceInfo.MobileSecondCopy;
+            }
+        }
+
         public bool ShowPayment
         {
             get
@@ -223,6 +231,12 @@ namespace Parking.Mobile.ViewModel
         {
             switch (page)
             {
+                case "PrintTicket":
+
+                    Navigation.PushAsync(new PrintTicketPage());
+
+                    break;
+
                 case "Entry":
 
                     Navigation.PushAsync(new EntryPage());

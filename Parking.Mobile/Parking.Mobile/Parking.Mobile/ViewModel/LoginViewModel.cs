@@ -244,6 +244,7 @@ namespace Parking.Mobile.ViewModel
                 deviceInfoModel.MobileEntry = response.Data.MobileEntry;
                 deviceInfoModel.MobileExit = response.Data.MobileExit;
                 deviceInfoModel.MobilePayment = response.Data.MobilePayment;
+                deviceInfoModel.MobileSecondCopy = response.Data.MobileSecondCopy;
 
                 AppContextGeneral.deviceInfo = deviceInfoModel;
 

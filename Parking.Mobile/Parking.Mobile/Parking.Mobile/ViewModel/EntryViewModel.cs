@@ -349,6 +349,8 @@ namespace Parking.Mobile.ViewModel
 
         private void CheckPlate()
         {
+            UserDialogs.Instance.ShowLoading("Processando...");
+
             Task.Run(async () =>
             {
                 AppParkingLot appParkingLot = new AppParkingLot();
@@ -443,6 +445,8 @@ namespace Parking.Mobile.ViewModel
                     {
                         this.Credential = null;
                         this.CredentialName = null;
+
+                        UserDialogs.Instance.HideLoading();
                     }
                 });
             });

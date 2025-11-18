@@ -27,6 +27,8 @@ namespace Parking.Mobile.Data.Model
         public bool MobileExit { get; set; }
         public bool MobilePayment { get; set; }
         public bool MobileChangeSector { get; set; }
+        public bool MobileSecondCopy { get; set; }
+
     }
 }
 
