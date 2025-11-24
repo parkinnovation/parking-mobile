@@ -372,7 +372,16 @@ namespace Parking.Mobile.ViewModel
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        UserDialogs.Instance.HideLoading();
+                        try
+                        {
+                            if (Application.Current?.MainPage != null)
+                                UserDialogs.Instance.HideLoading();
+                        }
+                        catch
+                        {
+                            // Se der erro, simplesmente ignora para não quebrar o app
+                        }
+
                         Application.Current.MainPage.DisplayAlert("Erro", response.Message, "Ok");
                         Plate = null;
                     });
@@ -408,14 +417,14 @@ namespace Parking.Mobile.ViewModel
                                     this.Credential = response.Data.Credential;
                                     this.CredentialName = response.Data.Name + " (" + response.Data.Credential + ")";
 
-                                    UserDialogs.Instance.HideLoading();
+                                    //UserDialogs.Instance.HideLoading();
                                 }
                                 else
                                 {
                                     this.Credential = null;
                                     this.CredentialName = null;
 
-                                    UserDialogs.Instance.HideLoading();
+                                    //UserDialogs.Instance.HideLoading();
 
                                     this.CredentialName = "Credencial expirada";
                                 }
@@ -425,7 +434,7 @@ namespace Parking.Mobile.ViewModel
                                 this.Credential = null;
                                 this.CredentialName = null;
 
-                                UserDialogs.Instance.HideLoading();
+                                //UserDialogs.Instance.HideLoading();
 
                                 this.CredentialName = "Credencial inativa";
                             }
@@ -435,7 +444,7 @@ namespace Parking.Mobile.ViewModel
                             this.Credential = null;
                             this.CredentialName = null;
 
-                            UserDialogs.Instance.HideLoading();
+                            //UserDialogs.Instance.HideLoading();
 
                             this.CredentialName = "Cliente inativo";
                         }
@@ -446,7 +455,17 @@ namespace Parking.Mobile.ViewModel
                         this.Credential = null;
                         this.CredentialName = null;
 
-                        UserDialogs.Instance.HideLoading();
+                        //UserDialogs.Instance.HideLoading();
+                    }
+
+                    try
+                    {
+                        if (Application.Current?.MainPage != null)
+                            UserDialogs.Instance.HideLoading();
+                    }
+                    catch
+                    {
+                        // Se der erro, simplesmente ignora para não quebrar o app
                     }
                 });
             });
